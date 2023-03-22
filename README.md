@@ -1,6 +1,6 @@
 # PlantParenthood
 
-PlantParenthood is an Android app that helps users keep track of their plant care. This app was created using Android Studio Electric Eel 2022.1.1.
+PlantParenthood is an Android app that helps users keep track of their plant care. This app is being created using Android Studio Electric Eel 2022.1.1.
 
 ## Features
 Here is a list of a few of the features that PlantParenthood will have.
