@@ -8,63 +8,51 @@
 
     <Button
         android:id="@+id/qrcode_print_button"
-        android:layout_width="302dp"
+        android:layout_width="wrap_content"
         android:layout_height="56dp"
-        android:layout_marginTop="621dp"
-        android:layout_marginBottom="54dp"
+        android:layout_marginBottom="88dp"
         android:text="@string/print_qr_code"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/qrcode_generate_button"
-        android:layout_width="302dp"
+        android:layout_width="wrap_content"
         android:layout_height="56dp"
-        android:layout_marginTop="554dp"
-        android:layout_marginBottom="121dp"
+        android:layout_marginBottom="164dp"
         android:text="@string/generate_qr_code"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/qrcode_image"
         android:layout_width="300dp"
         android:layout_height="300dp"
-        android:layout_marginStart="54dp"
-        android:layout_marginTop="93dp"
-        android:layout_marginEnd="57dp"
-        android:layout_marginBottom="338dp"
+        android:layout_marginTop="108dp"
         android:contentDescription="@string/qrcode_image"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.567"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/ic_launcher_background" />
 
     <EditText
         android:id="@+id/debug_plantIDEntry"
-        android:layout_width="263dp"
-        android:layout_height="82dp"
-        android:layout_marginStart="74dp"
-        android:layout_marginTop="482dp"
-        android:layout_marginEnd="111dp"
-        android:layout_marginBottom="204dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="34dp"
+        android:layout_marginBottom="225dp"
         android:ems="10"
         android:inputType="number"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.486" />
+        app:layout_constraintTop_toBottomOf="@+id/debug_plantIDprompt"
+        app:layout_constraintVertical_bias="0.35000002" />
 
     <TextView
         android:id="@+id/debug_plantIDprompt"
@@ -77,8 +65,8 @@
         android:text="Enter Plant ID:"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.521"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.259" />
 </androidx.constraintlayout.widget.ConstraintLayout>
