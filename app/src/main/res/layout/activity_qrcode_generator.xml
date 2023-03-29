@@ -7,32 +7,46 @@
     tools:context=".QRCodeGenerator">
 
     <Button
+        android:id="@+id/qrcode_print_button"
+        android:layout_width="302dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="621dp"
+        android:layout_marginBottom="54dp"
+        android:text="Print QR Code"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
         android:id="@+id/qrcode_generate_button"
         android:layout_width="302dp"
         android:layout_height="56dp"
-        android:layout_marginStart="54dp"
-        android:layout_marginTop="589dp"
-        android:layout_marginEnd="55dp"
-        android:layout_marginBottom="86dp"
+        android:layout_marginTop="554dp"
+        android:layout_marginBottom="121dp"
         android:text="Generate QR Code"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/qrcode_image"
-        android:contentDescription="QRCode image"
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:layout_marginStart="54dp"
         android:layout_marginTop="93dp"
         android:layout_marginEnd="57dp"
         android:layout_marginBottom="338dp"
+        android:contentDescription="QRCode image"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/ic_launcher_background" />
 
     <EditText
@@ -50,7 +64,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.486" />
 
     <TextView
         android:id="@+id/debug_plantIDprompt"
