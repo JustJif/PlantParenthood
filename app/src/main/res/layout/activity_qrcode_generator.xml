@@ -10,31 +10,31 @@
         android:id="@+id/qrcode_print_button"
         android:layout_width="wrap_content"
         android:layout_height="56dp"
-        android:layout_marginBottom="88dp"
+        android:layout_marginBottom="96dp"
         android:text="@string/print_qr_code"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/qrcode_generate_button"
         android:layout_width="wrap_content"
         android:layout_height="56dp"
-        android:layout_marginBottom="164dp"
+        android:layout_marginBottom="16dp"
         android:text="@string/generate_qr_code"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/qrcode_print_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
         android:id="@+id/qrcode_image"
         android:layout_width="300dp"
         android:layout_height="300dp"
-        android:layout_marginTop="108dp"
+        android:layout_marginTop="96dp"
         android:contentDescription="@string/qrcode_image"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.567"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_launcher_background" />
@@ -43,16 +43,14 @@
         android:id="@+id/debug_plantIDEntry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="34dp"
-        android:layout_marginBottom="225dp"
+        android:layout_marginBottom="36dp"
         android:ems="10"
         android:inputType="number"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/qrcode_generate_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/debug_plantIDprompt"
-        app:layout_constraintVertical_bias="0.35000002" />
+        app:layout_constraintTop_toBottomOf="@+id/qrcode_image"
+        app:layout_constraintVertical_bias="0.902" />
 
     <TextView
         android:id="@+id/debug_plantIDprompt"
@@ -63,7 +61,7 @@
         android:layout_marginEnd="162dp"
         android:layout_marginBottom="276dp"
         android:text="Enter Plant ID:"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/qrcode_generate_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.521"
         app:layout_constraintStart_toStartOf="parent"
