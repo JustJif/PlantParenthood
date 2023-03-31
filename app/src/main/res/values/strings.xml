@@ -10,6 +10,7 @@
 
     <!--austen strings -->
     <string name="qrcode_generator_label">QR Code Generator</string>
+    <string name="qrcode_scanner_label">QR Code Scanner</string>
     <string name="generate_qr_code">Generate QR Code</string>
     <string name="print_qr_code">Print QR Code</string>
     <string name="qrcode_image">QRCode image</string>

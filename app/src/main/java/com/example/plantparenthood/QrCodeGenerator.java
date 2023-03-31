@@ -16,7 +16,7 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 
-public class QRCodeGenerator extends AppCompatActivity {
+public class QrCodeGenerator extends AppCompatActivity {
     private String qrData = "-1";
 
     public void setData(int qrDataIn){
@@ -27,7 +27,7 @@ public class QRCodeGenerator extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_qrcode_generator);
+        setContentView(R.layout.activity_qr_code_generator);
 
         //get references to the generate button and QR code image views.
         Button generateButton = findViewById(R.id.qrcode_generate_button);

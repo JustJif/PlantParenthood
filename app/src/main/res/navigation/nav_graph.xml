@@ -15,15 +15,26 @@
             android:id="@+id/action_FirstFragment_to_QRCodeGenerator"
             app:destination="@id/QRCodeGenerator"
             app:popUpTo="@id/QRCodeGenerator" />
+        <action
+            android:id="@+id/action_FirstFragment_to_QrScanner"
+            app:destination="@id/QRCodeScanner"
+            app:popUpTo="@id/QRCodeScanner" />
     </fragment>
     <fragment
         android:id="@+id/QRCodeGenerator"
-        android:name="com.example.plantparenthood.QRCodeGenerator"
+        android:name="com.example.plantparenthood.QrCodeGenerator"
         android:label="@string/qrcode_generator_label"
-        tools:layout="@layout/activity_qrcode_generator">
+        tools:layout="@layout/activity_qr_code_generator">
 
         <action
             android:id="@+id/action_QRCodeGenerator_to_FirstFragment"
             app:destination="@id/FirstFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/QRCodeScanner"
+        android:name="com.example.plantparenthood.QrCodeScanner"
+        android:label="@string/qrcode_scanner_label"
+        tools:layout="@layout/fragment_qr_code_scanner">
+
     </fragment>
 </navigation>
