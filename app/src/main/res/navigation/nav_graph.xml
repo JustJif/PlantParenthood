@@ -22,7 +22,7 @@
     </fragment>
     <fragment
         android:id="@+id/QRCodeGenerator"
-        android:name="com.example.plantparenthood.QrCodeGenerator"
+        android:name="com.example.plantparenthood.QRCodeGeneratorActivity"
         android:label="@string/qrcode_generator_label"
         tools:layout="@layout/activity_qr_code_generator">
 

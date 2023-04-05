@@ -16,7 +16,7 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 
-public class QrCodeGenerator extends AppCompatActivity {
+public class QRCodeGeneratorActivity extends AppCompatActivity {
     private String qrData = "-1";
 
     public void setData(int qrDataIn){
@@ -39,25 +39,9 @@ public class QrCodeGenerator extends AppCompatActivity {
         generateButton.setOnClickListener(v -> {
             //generate a QR code and set it to the image view.
             //get the text from debugNumberEntry to turn into a QR code.
-            //eventually delete this when setQRdata is implemented elsewhere.
+            //eventually delete this because we'll just implement the call to QRCodeManager.generateQRCodeBitmap elsewhere.
             qrData = (debugNumberEntry.getText().toString());
-            int size = qrCodeImage.getWidth();
-            QRCodeWriter writer = new QRCodeWriter();
-            try{
-                BitMatrix bitMatrix = writer.encode(qrData, BarcodeFormat.QR_CODE, size, size);
-                int[] pixels = new int[size*size];
-                for(int y = 0; y<size; y++){
-                    int offset = y*size;
-                    for(int x = 0; x<size; x++){
-                        pixels[offset+x] = bitMatrix.get(x, y)? 0xFF000000: 0xFFFFFFFF;
-                    }
-                }
-                Bitmap qrCodeBitmap = Bitmap.createBitmap(size, size, Bitmap.Config.RGB_565);
-                qrCodeBitmap.setPixels(pixels, 0, size, 0, 0, size, size);
-                qrCodeImage.setImageBitmap(qrCodeBitmap);
-            }catch(WriterException e){
-                e.printStackTrace();
-            }
+            qrCodeImage.setImageBitmap(QRCodeManager.generateQRCodeBitmap(qrData, qrCodeImage.getWidth()));
 
         });
 
