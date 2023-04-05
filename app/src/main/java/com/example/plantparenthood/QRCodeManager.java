@@ -7,10 +7,19 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 
+/**
+ * Class which manages the generation of QR codes.
+ */
 public class QRCodeManager {
 
+    /**
+     * Generates a Bitmap image of a QR Code.
+     * @param qrData the string representing the data to encode.
+     * @param size The width/height of the square image to generate.
+     * @return the image of the QR Code.
+     */
     public static Bitmap generateQRCodeBitmap(String qrData, int size){
-        Bitmap qrCodeBitmap = Bitmap.createBitmap(size, size, Bitmap.Config.RGB_565 );
+        Bitmap qrCodeBitmap = Bitmap.createBitmap(size, size, Bitmap.Config.RGB_565);
         QRCodeWriter writer = new QRCodeWriter();
         try{
             BitMatrix bitMatrix = writer.encode(qrData, BarcodeFormat.QR_CODE, size, size);

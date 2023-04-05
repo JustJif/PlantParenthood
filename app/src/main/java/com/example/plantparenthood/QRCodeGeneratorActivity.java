@@ -11,10 +11,6 @@ import android.widget.ImageView;
 
 import android.os.Bundle;
 
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.WriterException;
-import com.google.zxing.common.BitMatrix;
-import com.google.zxing.qrcode.QRCodeWriter;
 
 public class QRCodeGeneratorActivity extends AppCompatActivity {
     private String qrData = "-1";
