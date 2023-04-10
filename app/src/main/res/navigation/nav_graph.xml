@@ -12,17 +12,18 @@
         tools:layout="@layout/fragment_first">
 
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            android:id="@+id/action_FirstFragment_to_QRCodeGenerator"
+            app:destination="@id/QRCodeGenerator"
+            app:popUpTo="@id/QRCodeGenerator" />
     </fragment>
     <fragment
-        android:id="@+id/SecondFragment"
-        android:name="com.example.plantparenthood.SecondFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
+        android:id="@+id/QRCodeGenerator"
+        android:name="com.example.plantparenthood.QRCodeGenerator"
+        android:label="@string/qrcode_generator_label"
+        tools:layout="@layout/activity_qrcode_generator">
 
         <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
+            android:id="@+id/action_QRCodeGenerator_to_FirstFragment"
             app:destination="@id/FirstFragment" />
     </fragment>
 </navigation>
