@@ -2,17 +2,14 @@
     <string name="app_name">PlantParenthood</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="qrcode_generator_label">QR Code Generator</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
+    <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-
-
-    <!--austen strings -->
-    <string name="qrcode_generator_label">QR Code Generator</string>
-    <string name="qrcode_scanner_label">QR Code Scanner</string>
-    <string name="generate_qr_code">Generate QR Code</string>
-    <string name="print_qr_code">Print QR Code</string>
-    <string name="qrcode_image">QRCode image</string>
-    <string name="scan_qr_code">Scan QR Code</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
