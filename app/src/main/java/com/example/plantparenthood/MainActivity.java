@@ -2,10 +2,10 @@ package com.example.plantparenthood;
 
 import android.os.Bundle;
 
-import om.google.android.material.snackbar.Snackbar;
+import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
-import n droidx.fragment.app.Fragment;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
 
-        proected void onCreate(Bundle savedInstanceState) {
+        protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
