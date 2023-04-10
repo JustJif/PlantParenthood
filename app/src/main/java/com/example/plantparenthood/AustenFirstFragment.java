@@ -12,7 +12,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.plantparenthood.databinding.FragmentAustenMainmenuBinding;
 
-public class FirstFragment extends Fragment {
+public class AustenFirstFragment extends Fragment {
 
     private FragmentAustenMainmenuBinding binding;
 
@@ -41,7 +41,7 @@ public class FirstFragment extends Fragment {
         binding.buttonQrcodeScanner.setOnClickListener(new View.OnClickListener() {
             @Override
            public void onClick(View view) {
-                NavHostFragment.findNavController(FirstFragment.this)
+                NavHostFragment.findNavController(AustenFirstFragment.this)
                         .navigate(R.id.action_FirstFragment_to_QrScanner);
             }
         });

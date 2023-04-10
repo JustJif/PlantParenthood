@@ -18,7 +18,7 @@
             android:name=".QRCodeGeneratorActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".AustenMainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.PlantParenthood.NoActionBar">

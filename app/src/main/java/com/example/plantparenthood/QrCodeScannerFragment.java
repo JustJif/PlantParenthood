@@ -23,13 +23,13 @@ import com.google.zxing.Result;
 
 
 
-public class QrCodeScanner extends Fragment implements View.OnClickListener {
+public class QrCodeScannerFragment extends Fragment implements View.OnClickListener {
 
 
     private CodeScanner mCodeScanner;
 
 
-    public QrCodeScanner() {
+    public QrCodeScannerFragment() {
         // Required empty public constructor
     }
 
