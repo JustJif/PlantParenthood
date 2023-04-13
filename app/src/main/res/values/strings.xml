@@ -18,4 +18,6 @@
     <string name="print_qr_code">Print QR Code</string>
     <string name="qrcode_image">QRCode image</string>
     <string name="scan_qr_code">Scan QR Code</string>
+    <string name="channel_name">Notification</string>
+    <string name="channel_description">Placeholder Desc</string>
 </resources>
