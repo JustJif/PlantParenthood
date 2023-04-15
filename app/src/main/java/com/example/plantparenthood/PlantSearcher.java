@@ -85,7 +85,7 @@ public class PlantSearcher extends AppCompatActivity
         currentDisplayedPlants = plantsList;
         TextView text = findViewById(R.id.errorText);
         RecyclerView plantGrid = findViewById(R.id.plantGridView);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 1);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
         plantGrid.setLayoutManager(gridLayoutManager);
 
         if(plantsList.size() > 0)
@@ -101,7 +101,7 @@ public class PlantSearcher extends AppCompatActivity
             new Handler().postDelayed(new Runnable() {
                 public void run()
                 {
-                    PlantCreatorAdapter plantAdapter = new PlantCreatorAdapter(plantsList);
+                    PlantCreatorAdapter plantAdapter = new PlantCreatorAdapter(plantsList, PlantSearcher.this);
                     plantGrid.setAdapter(plantAdapter);
                 }
             }, 3000); // 3 seconds

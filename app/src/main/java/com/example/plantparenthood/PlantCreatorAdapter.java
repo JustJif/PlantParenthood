@@ -1,5 +1,7 @@
 package com.example.plantparenthood;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +16,11 @@ import java.util.ArrayList;
 public class PlantCreatorAdapter extends RecyclerView.Adapter
 {
     private ArrayList<Plant> plantsList;
-
-    public PlantCreatorAdapter(ArrayList<Plant> newPlantsList)
+    private Context whatContext;
+    public PlantCreatorAdapter(ArrayList<Plant> newPlantsList, Context newContext)
     {
         plantsList = newPlantsList;
+        whatContext = newContext;
     }
 
     @NonNull
@@ -40,6 +43,17 @@ public class PlantCreatorAdapter extends RecyclerView.Adapter
         plantCommonName.setText(thisPlant.common_name);
         plantImage.setImageBitmap(thisPlant.default_image);
         plantOtherNames.setText(thisPlant.scientific_name[0]);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                Intent currentActivity = new Intent(whatContext, PlantPopup.class);
+                currentActivity.putExtra("image", thisPlant.default_image);
+                whatContext.startActivity(currentActivity);
+            }
+        });
     }
 
     @Override
@@ -47,4 +61,5 @@ public class PlantCreatorAdapter extends RecyclerView.Adapter
     {
         return plantsList.size();
     }
+
 }
