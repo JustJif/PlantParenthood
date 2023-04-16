@@ -76,13 +76,6 @@ public class Plant_Activity extends AppCompatActivity {
 
     private ArrayList<Plant> getPlantsFromDB() {
         ArrayList<Plant> plantList = new ArrayList<Plant>();
-        for(int i = 0; i < 5; i++) {
-            Plant plantToAdd = new Plant();
-            plantToAdd.common_name = "BlahBlahBlahBlah";
-            plantToAdd.scientific_name = new String[1];
-            plantToAdd.scientific_name[0] ="BlehBlehBlehBleh";
-            plantList.add(plantToAdd);
-        }
         return plantList;
     }
 
