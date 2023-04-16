@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,6 +20,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import io.reactivex.rxjava3.core.Single;
 
 public class Plant_Activity extends AppCompatActivity {
     CardView addPlant;
@@ -74,19 +78,21 @@ public class Plant_Activity extends AppCompatActivity {
         });
     }
 
-    private ArrayList<Plant> getPlantsFromDB() {
-        ArrayList<Plant> plantList = new ArrayList<Plant>();
+    private List<Plant> getPlantsFromDB() {
+        PlantDatabase plantDB = Room.databaseBuilder(getApplicationContext(),PlantDatabase.class, "PlantDatabase").allowMainThreadQueries().build();
+        List<Plant> plantList = plantDB.dataAccessObject().loadAllPlants();
+
         return plantList;
     }
 
     public void createPlantGrid()
     {
-        ArrayList<Plant> dataBasePlants = getPlantsFromDB();
+        List<Plant> dataBasePlants =  getPlantsFromDB();
 
         RecyclerView plantGrid = findViewById(R.id.plant_recycler_view);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 1);
         plantGrid.setLayoutManager(gridLayoutManager);
-        PlantActivityCreatorAdapter plantAdapter = new PlantActivityCreatorAdapter(dataBasePlants,Plant_Activity.this);
+        PlantActivityCreatorAdapter plantAdapter = new PlantActivityCreatorAdapter( dataBasePlants,Plant_Activity.this);
         plantGrid.setAdapter(plantAdapter);
 
     }

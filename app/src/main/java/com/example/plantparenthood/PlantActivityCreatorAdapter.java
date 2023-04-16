@@ -1,7 +1,6 @@
 package com.example.plantparenthood;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,12 +11,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import io.reactivex.rxjava3.core.Single;
 
 public class PlantActivityCreatorAdapter extends RecyclerView.Adapter
 {
-    private ArrayList<Plant> plantsList;
+    private List<Plant> plantsList;
     private Context whatContext;
-    public PlantActivityCreatorAdapter(ArrayList<Plant> newPlantsList, Context newContext)
+    public PlantActivityCreatorAdapter(List<Plant> newPlantsList, Context newContext)
     {
         plantsList = newPlantsList;
         whatContext = newContext;
@@ -42,7 +44,7 @@ public class PlantActivityCreatorAdapter extends RecyclerView.Adapter
 
         plantCommonName.setText(thisPlant.common_name);
         plantImage.setImageBitmap(thisPlant.default_image);
-        plantOtherNames.setText(thisPlant.scientific_name[0]);
+        plantOtherNames.setText(thisPlant.scientific_name);
 
         holder.itemView.setOnClickListener(new View.OnClickListener()
         {
