@@ -169,7 +169,6 @@ public class PlantSearcher extends AppCompatActivity
         if(pageNumber > 1)
             pageNumber--;
 
-        //searchPage.setText(pageNumber + "/" + maxPageNumber);
         searchByNameForPlant();
     }
 
@@ -178,7 +177,6 @@ public class PlantSearcher extends AppCompatActivity
         if(pageNumber < maxPageNumber)
             pageNumber++;
 
-        //searchPage.setText(pageNumber + "/" + maxPageNumber);
         searchByNameForPlant();
     }
 

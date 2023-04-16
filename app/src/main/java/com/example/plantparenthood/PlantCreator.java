@@ -1,6 +1,9 @@
 package com.example.plantparenthood;
 
+import android.content.Context;
 import android.widget.ImageView;
+
+import androidx.room.Room;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,7 +47,7 @@ public class PlantCreator
             Plant newPlant = new Plant();
             newPlant.id = id;
             newPlant.common_name = common_name;
-            newPlant.scientific_name = plantScientificNames;
+            newPlant.scientific_name = plantScientificNames[0];
             //newPlant.other_name = other_name;
             newPlant.cycle = cycle;
             newPlant.watering = watering;
@@ -62,5 +65,11 @@ public class PlantCreator
     public static void addCustomPlant()
     {
 
+    }
+
+    public static void addPlantToDatabase(Plant plant, Context context)
+    {
+        PlantDatabase plantDatabase = Room.databaseBuilder(context, PlantDatabase.class, "PlantDatabase").build();
+        plantDatabase.dataAccessObject().addPlant(plant);
     }
 }

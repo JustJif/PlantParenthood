@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import java.util.ArrayList;
 
@@ -48,7 +49,7 @@ public class PlantCreatorAdapter extends RecyclerView.Adapter
 
         plantCommonName.setText(thisPlant.common_name);
         plantImage.setImageBitmap(thisPlant.default_image);
-        plantOtherNames.setText(thisPlant.scientific_name[0]);
+        plantOtherNames.setText(thisPlant.scientific_name);
 
         holder.itemView.setOnClickListener(new View.OnClickListener()
         {
@@ -78,7 +79,7 @@ public class PlantCreatorAdapter extends RecyclerView.Adapter
         plantCommonName.setText(thisPlant.common_name);
 
         TextView plantScientificName = newPopup.findViewById(R.id.plantScientificName);
-        plantScientificName.setText(thisPlant.scientific_name[0]);
+        plantScientificName.setText(thisPlant.scientific_name);
 
         ImageView plantImage = newPopup.findViewById(R.id.plantImage);
         plantImage.setImageBitmap(thisPlant.default_image);
@@ -98,6 +99,7 @@ public class PlantCreatorAdapter extends RecyclerView.Adapter
         {
             public void onClick(View view)
             {
+                PlantCreator.addPlantToDatabase(thisPlant,view.getContext());
                 Toast.makeText(view.getContext(), "Plant successfully added", Toast.LENGTH_SHORT).show();
             }
         });
