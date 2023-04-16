@@ -13,77 +13,61 @@ import com.android.volley.toolbox.StringRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-
-public class Perenual extends com.example.plantparenthood.AbstractAPI
-{
+public class Perenual extends com.example.plantparenthood.AbstractAPI {
     private String APIUrl;
     private String APIPage;
     private String APIKey;
     private String APIParams;
-    private Integer pageNumber;
     private JSONObject queryReceived;
 
-    public Perenual()
-    {
-        pageNumber = 1; //unused for now but add more pages and modify URL later
+    public Perenual() {
         APIUrl = "https://perenual.com/api/species-list?";
-        APIPage = "page=" + pageNumber;
+        APIPage = "page=";
         APIKey = "&key=" + "sk-d6w863e859a77e76936";
         APIParams = "&q=";
         queryReceived = null;
     }
 
     @Override
-    public void queryAPI(RequestQueue queue, String queryParams)
-    {
-        APIParams = "&q=" + queryParams;
-        String APIQuery = APIUrl + APIPage + APIKey + APIParams;
+    public void queryAPI(RequestQueue queue, String queryParams, Integer page) {
+        String localParams = APIParams + queryParams;
+        String localPage = APIPage + page;
+
+        String APIQuery = APIUrl + localPage + APIKey + localParams;
         System.out.println("User query is: " + APIQuery);
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, APIQuery,
-                new Response.Listener<String>()
-                {
+                new Response.Listener<String>() {
                     @Override
-                    public void onResponse(String response)
-                    {
-                        try
-                        {
+                    public void onResponse(String response) {
+                        try {
                             queryReceived = new JSONObject(response);
                             com.example.plantparenthood.PlantCreator.addPlant(queryReceived, plantsearchref);
-                        } catch (JSONException e)
-                        {
+                        } catch (JSONException e) {
                             throw new RuntimeException(e);
                         }
                     }
                 },
-                new Response.ErrorListener()
-                {
+                new Response.ErrorListener() {
                     @Override
-                    public void onErrorResponse(VolleyError error)
-                    {
-                        System.out.println("Error");
+                    public void onErrorResponse(VolleyError error) {
+                        System.out.println("Error failed connecting to API");
                     }
                 });
         queue.add(stringRequest);
     }
 
     @Override
-    public void queryImageAPI(RequestQueue queue, Plant plant)
-    {
-        ImageRequest imageRequest = new ImageRequest(plant.plantImageURL, new Response.Listener<Bitmap>()
-        {
+    public void queryImageAPI(RequestQueue queue, Plant plant) {
+        ImageRequest imageRequest = new ImageRequest(plant.plantImageURL, new Response.Listener<Bitmap>() {
             @Override
-            public void onResponse(Bitmap response)
-            {
+            public void onResponse(Bitmap response) {
                 System.out.println("Found image for: " + plant.common_name);
                 plant.default_image = response;
             }
-        }, 0, 0, ImageView.ScaleType.FIT_XY, Bitmap.Config.ARGB_8888, new Response.ErrorListener()
-        {
+        }, 0, 0, ImageView.ScaleType.FIT_XY, Bitmap.Config.ARGB_8888, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error)
-            {
+            public void onErrorResponse(VolleyError error) {
                 System.out.println("Error finding image");
             }
         });

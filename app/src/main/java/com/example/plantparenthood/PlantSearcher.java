@@ -1,4 +1,6 @@
 package com.example.plantparenthood;
+
+import android.app.Activity;
 import android.os.Bundle;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -21,16 +23,17 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
 
-public class PlantSearcher extends AppCompatActivity
-{
+public class PlantSearcher extends AppCompatActivity {
     private ActivityPlantSearcherBinding binding;
     private AbstractAPI api;
     private RequestQueue queue;
     private TextView errorText;
     private ArrayList<Plant> currentDisplayedPlants;
+    private Integer pageNumber, maxPageNumber;
+    private String plantName, previousPlantName;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         binding = ActivityPlantSearcherBinding.inflate(getLayoutInflater());
@@ -42,95 +45,122 @@ public class PlantSearcher extends AppCompatActivity
         toolBarLayout.setTitle(getTitle());
         errorText = findViewById(R.id.errorText);
 
-        api = new Perenual(); //new obj of Perenual API class
-        api.plantsearchref = this; //debug remove this later... passes this class as a reference for testing/debug
+        api = new Perenual(); // new obj of Perenual API class
+        api.plantsearchref = this; // debug remove this later... passes this class as a reference for testing/debug
         queue = Volley.newRequestQueue(getApplicationContext());
+
+        pageNumber = 1;
+        maxPageNumber = 1;
+        plantName = "";
+        previousPlantName = "";
+
+        TextView searchPage = findViewById(R.id.pageNum);
+        Button leftButton = findViewById(R.id.leftButton);
+        Button rightButton = findViewById(R.id.rightButton);
+
+        leftButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                previousArrow(searchPage);
+            }
+        });
+
+        rightButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                nextArrow(searchPage);
+            }
+        });
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
+    public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_scrolling, menu);
         TextInputEditText text = findViewById(R.id.textBoxText);
         Button searchButton = findViewById(R.id.sendQuery);
-        searchButton.setOnClickListener(new View.OnClickListener()
-        {
+        searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
-                searchByNameForPlant(String.valueOf(text.getText()));
+            public void onClick(View view) {
+                plantName = String.valueOf(text.getText());
+                searchByNameForPlant();
             }
         });
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
+    public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings)
-        {
+        // noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    public void createPlantGrid(ArrayList<Plant> plantsList)
-    {
+    public void createPlantGrid(ArrayList<Plant> plantsList, Integer currentPage, Integer numberOfPages) {
         currentDisplayedPlants = plantsList;
         TextView text = findViewById(R.id.errorText);
         RecyclerView plantGrid = findViewById(R.id.plantGridView);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
         plantGrid.setLayoutManager(gridLayoutManager);
+        pageNumber = currentPage;
+        maxPageNumber = numberOfPages;
+        TextView searchText = (TextView) findViewById(R.id.pageNum);
+        searchText.setText(pageNumber + "/" + maxPageNumber);
 
-        if(plantsList.size() > 0)
-        {
-            for (int i = 0; i < plantsList.size(); i++)
-            {
+        if (plantsList.size() > 0) {
+            for (int i = 0; i < plantsList.size(); i++) {
                 Plant thisPlant = plantsList.get(i);
                 api.queryImageAPI(queue, thisPlant);
             }
             text.setText("");
 
-            //uh wait 3 seconds first, temporary work around
+            // uh wait 3 seconds first, temporary work around
             new Handler().postDelayed(new Runnable() {
-                public void run()
-                {
+                public void run() {
                     PlantCreatorAdapter plantAdapter = new PlantCreatorAdapter(plantsList, PlantSearcher.this);
                     plantGrid.setAdapter(plantAdapter);
                 }
             }, 3000); // 3 seconds
 
-            //PlantCreatorAdapter plantAdapter = new PlantCreatorAdapter(plantsList);
-            //plantGrid.setAdapter(plantAdapter);
-        }
-        else//don't bother setting up grid as no valid plants
+            // PlantCreatorAdapter plantAdapter = new PlantCreatorAdapter(plantsList);
+            // plantGrid.setAdapter(plantAdapter);
+        } else// don't bother setting up grid as no valid plants
         {
             text.setText("Plant(s) not found");
         }
     }
 
-    private void searchByNameForPlant(String plantName)
-    {
-        //apply filters later
-        if (!plantName.equals(""))
-        {
-            errorText.setText("Loading...");//this is just some UI stuff
-            api.queryAPI(queue, plantName);
-        }
-        else
-        {
-            errorText.setText("Error no name");//UI message to user saying empty query, do not processes
+    private void searchByNameForPlant() {
+        // apply filters later
+        if (!plantName.equals("")) {
+            errorText.setText("Loading...");// this is just some UI stuff
+            api.queryAPI(queue, plantName, pageNumber);
+        } else {
+            errorText.setText("Error no name");// UI message to user saying empty query, do not processes
         }
     }
 
-    private void filterSearchResult()
-    {
-        //this will filter data
+    private void previousArrow(TextView searchPage) {
+        if (pageNumber > 1)
+            pageNumber--;
+
+        searchByNameForPlant();
+    }
+
+    private void nextArrow(TextView searchPage) {
+        if (pageNumber < maxPageNumber)
+            pageNumber++;
+
+        searchByNameForPlant();
+    }
+
+    private void filterSearchResult() {
+        // this will filter data
     }
 }
