@@ -13,32 +13,30 @@ import com.android.volley.toolbox.StringRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-
 public class Perenual extends com.example.plantparenthood.AbstractAPI
 {
     private String APIUrl;
     private String APIPage;
     private String APIKey;
     private String APIParams;
-    private Integer pageNumber;
     private JSONObject queryReceived;
 
     public Perenual()
     {
-        pageNumber = 1; //unused for now but add more pages and modify URL later
         APIUrl = "https://perenual.com/api/species-list?";
-        APIPage = "page=" + pageNumber;
+        APIPage = "page=";
         APIKey = "&key=" + "sk-d6w863e859a77e76936";
         APIParams = "&q=";
         queryReceived = null;
     }
 
     @Override
-    public void queryAPI(RequestQueue queue, String queryParams)
+    public void queryAPI(RequestQueue queue, String queryParams, Integer page)
     {
-        APIParams = "&q=" + queryParams;
-        String APIQuery = APIUrl + APIPage + APIKey + APIParams;
+        String localParams = APIParams + queryParams;
+        String localPage = APIPage + page;
+
+        String APIQuery = APIUrl + localPage + APIKey + localParams;
         System.out.println("User query is: " + APIQuery);
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, APIQuery,
@@ -62,7 +60,7 @@ public class Perenual extends com.example.plantparenthood.AbstractAPI
                     @Override
                     public void onErrorResponse(VolleyError error)
                     {
-                        System.out.println("Error");
+                        System.out.println("Error failed connecting to API");
                     }
                 });
         queue.add(stringRequest);

@@ -1,4 +1,5 @@
 package com.example.plantparenthood;
+import android.app.Activity;
 import android.os.Bundle;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -28,6 +29,8 @@ public class PlantSearcher extends AppCompatActivity
     private RequestQueue queue;
     private TextView errorText;
     private ArrayList<Plant> currentDisplayedPlants;
+    private Integer pageNumber, maxPageNumber;
+    private String plantName, previousPlantName;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -45,6 +48,33 @@ public class PlantSearcher extends AppCompatActivity
         api = new Perenual(); //new obj of Perenual API class
         api.plantsearchref = this; //debug remove this later... passes this class as a reference for testing/debug
         queue = Volley.newRequestQueue(getApplicationContext());
+
+        pageNumber = 1;
+        maxPageNumber = 1;
+        plantName = "";
+        previousPlantName = "";
+
+        TextView searchPage = findViewById(R.id.pageNum);
+        Button leftButton = findViewById(R.id.leftButton);
+        Button rightButton = findViewById(R.id.rightButton);
+
+        leftButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                previousArrow(searchPage);
+            }
+        });
+
+        rightButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                nextArrow(searchPage);
+            }
+        });
     }
 
     @Override
@@ -55,11 +85,12 @@ public class PlantSearcher extends AppCompatActivity
         Button searchButton = findViewById(R.id.sendQuery);
         searchButton.setOnClickListener(new View.OnClickListener()
         {
-                @Override
-                public void onClick(View view)
-                {
-                    searchByNameForPlant(String.valueOf(text.getText()));
-                }
+            @Override
+            public void onClick(View view)
+            {
+                plantName = String.valueOf(text.getText());
+                searchByNameForPlant();
+            }
         });
         return true;
     }
@@ -80,13 +111,17 @@ public class PlantSearcher extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    public void createPlantGrid(ArrayList<Plant> plantsList)
+    public void createPlantGrid(ArrayList<Plant> plantsList, Integer currentPage, Integer numberOfPages)
     {
         currentDisplayedPlants = plantsList;
         TextView text = findViewById(R.id.errorText);
         RecyclerView plantGrid = findViewById(R.id.plantGridView);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
         plantGrid.setLayoutManager(gridLayoutManager);
+        pageNumber = currentPage;
+        maxPageNumber = numberOfPages;
+        TextView searchText = (TextView) findViewById(R.id.pageNum);
+        searchText.setText(pageNumber + "/" + maxPageNumber);
 
         if(plantsList.size() > 0)
         {
@@ -115,18 +150,36 @@ public class PlantSearcher extends AppCompatActivity
         }
     }
 
-    private void searchByNameForPlant(String plantName)
+    private void searchByNameForPlant()
     {
         //apply filters later
         if (!plantName.equals(""))
         {
             errorText.setText("Loading...");//this is just some UI stuff
-            api.queryAPI(queue, plantName);
+            api.queryAPI(queue, plantName, pageNumber);
         }
         else
         {
             errorText.setText("Error no name");//UI message to user saying empty query, do not processes
         }
+    }
+
+    private void previousArrow(TextView searchPage)
+    {
+        if(pageNumber > 1)
+            pageNumber--;
+
+        //searchPage.setText(pageNumber + "/" + maxPageNumber);
+        searchByNameForPlant();
+    }
+
+    private void nextArrow(TextView searchPage)
+    {
+        if(pageNumber < maxPageNumber)
+            pageNumber++;
+
+        //searchPage.setText(pageNumber + "/" + maxPageNumber);
+        searchByNameForPlant();
     }
 
     private void filterSearchResult()

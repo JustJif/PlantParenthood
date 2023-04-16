@@ -68,12 +68,57 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/plantGridView"
             android:layout_width="409dp"
-            android:layout_height="500dp"
+            android:layout_height="450dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintVertical_bias="0.393" />
+
+        <Button
+            android:id="@+id/rightButton"
+            android:layout_width="33dp"
+            android:layout_height="38dp"
+            android:layout_marginBottom="4dp"
+            android:background="#00FFFFFF"
+            android:text="Button"
+            app:icon="@drawable/baseline_arrow_forward_24"
+            app:iconGravity="top"
+            app:iconTint="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.7"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/plantGridView" />
+
+        <Button
+            android:id="@+id/leftButton"
+            android:layout_width="33dp"
+            android:layout_height="38dp"
+            android:layout_marginBottom="4dp"
+            android:background="#00FFFFFF"
+            android:text="Button"
+            app:icon="@drawable/baseline_arrow_back_24"
+            app:iconGravity="top"
+            app:iconTint="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.304"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/plantGridView" />
+
+        <TextView
+            android:id="@+id/pageNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0/0"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/rightButton"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toEndOf="@+id/leftButton"
+            app:layout_constraintTop_toBottomOf="@+id/plantGridView"
+            app:layout_constraintVertical_bias="0.45" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

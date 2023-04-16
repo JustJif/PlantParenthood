@@ -2,11 +2,17 @@ package com.example.plantparenthood;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,11 +22,11 @@ import java.util.ArrayList;
 public class PlantCreatorAdapter extends RecyclerView.Adapter
 {
     private ArrayList<Plant> plantsList;
-    private Context whatContext;
+    private Context openActivity;
     public PlantCreatorAdapter(ArrayList<Plant> newPlantsList, Context newContext)
     {
         plantsList = newPlantsList;
-        whatContext = newContext;
+        openActivity = newContext;
     }
 
     @NonNull
@@ -49,9 +55,7 @@ public class PlantCreatorAdapter extends RecyclerView.Adapter
             @Override
             public void onClick(View view)
             {
-                Intent currentActivity = new Intent(whatContext, PlantPopup.class);
-                currentActivity.putExtra("image", thisPlant.default_image);
-                whatContext.startActivity(currentActivity);
+                setupPopup(view, thisPlant);
             }
         });
     }
@@ -62,4 +66,40 @@ public class PlantCreatorAdapter extends RecyclerView.Adapter
         return plantsList.size();
     }
 
+    private void setupPopup(View view, Plant thisPlant)
+    {
+        LayoutInflater layoutInflater = (LayoutInflater) view.getContext().getSystemService(view.getContext().LAYOUT_INFLATER_SERVICE);
+        View newPopup = layoutInflater.inflate(R.layout.activity_plant_popup,null);
+
+        PopupWindow newPopupWindow = new PopupWindow(newPopup, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, true);
+        newPopupWindow.showAtLocation(view, Gravity.CENTER, 0,0);
+
+        TextView plantCommonName = newPopup.findViewById(R.id.plantCommonName);
+        plantCommonName.setText(thisPlant.common_name);
+
+        TextView plantScientificName = newPopup.findViewById(R.id.plantScientificName);
+        plantScientificName.setText(thisPlant.scientific_name[0]);
+
+        ImageView plantImage = newPopup.findViewById(R.id.plantImage);
+        plantImage.setImageBitmap(thisPlant.default_image);
+
+        Button closeButton = newPopup.findViewById(R.id.closeButton);
+        closeButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                newPopupWindow.dismiss();
+            }
+        });
+
+        Button addPlant = newPopup.findViewById(R.id.addPlant);
+        addPlant.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View view)
+            {
+                Toast.makeText(view.getContext(), "Plant successfully added", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }

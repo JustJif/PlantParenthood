@@ -49,14 +49,15 @@ public class PlantCreator
             newPlant.cycle = cycle;
             newPlant.watering = watering;
             //newPlant.sunlight = sunlight;
-            newPlant.plantImageURL = default_image.getString("original_url");;
+            newPlant.plantImageURL = default_image.getString("original_url");
 
             createdPlantObjects.add(newPlant);
         }
 
-        removethis.createPlantGrid(createdPlantObjects);
+        Integer currentPage = nonparsedPlants.getInt("current_page");
+        Integer lastPage = nonparsedPlants.getInt("last_page");
+        removethis.createPlantGrid(createdPlantObjects,currentPage,lastPage);
     }
-
 
     public static void addCustomPlant()
     {
