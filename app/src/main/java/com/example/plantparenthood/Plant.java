@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey;
 
 import org.json.JSONObject;
 
-@Entity
+@Entity(tableName = "Plant")
 public class Plant
 {
     @PrimaryKey

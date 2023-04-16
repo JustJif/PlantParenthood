@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Single;
@@ -14,11 +15,11 @@ import io.reactivex.rxjava3.core.Single;
 public interface DataAccessObject
 {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public Completable addPlant(Plant plant);
+    public void addPlant(Plant plant);
 
-    @Query("SELECT * FROM plant WHERE id = :id")
-    public Single<Plant> loadPlantByID(int id);
+    @Query("SELECT * FROM Plant WHERE id = :id")
+    public Plant loadPlantByID(int id);
 
-    @Query("SELECT * FROM plant")
-    public Single<ArrayList<Plant>> loadAllPlants();
+    @Query("SELECT * FROM Plant")
+    public List<Plant> loadAllPlants();
 }

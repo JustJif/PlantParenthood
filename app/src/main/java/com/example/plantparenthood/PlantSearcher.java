@@ -1,5 +1,6 @@
 package com.example.plantparenthood;
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -10,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import android.os.Handler;
 import android.view.Menu;
@@ -21,6 +23,7 @@ import android.widget.TextView;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class PlantSearcher extends AppCompatActivity
 {
@@ -75,6 +78,8 @@ public class PlantSearcher extends AppCompatActivity
                 nextArrow(searchPage);
             }
         });
+
+        testDATABASE();
     }
 
     @Override
@@ -183,5 +188,23 @@ public class PlantSearcher extends AppCompatActivity
     private void filterSearchResult()
     {
         //this will filter data
+    }
+    @Deprecated
+    private void testDATABASE()
+    {
+        PlantCreator.plantDatabase = Room.databaseBuilder(getApplicationContext(), PlantDatabase.class, "PlantDatabase").build();
+        AsyncTask.execute(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                List<Plant> allPlants = PlantCreator.plantDatabase.dataAccessObject().loadAllPlants();
+                System.out.println("Within Run plant size is: " + allPlants.size());
+                for (int i = 0; i < allPlants.size(); i++)
+                {
+                    System.out.println("Loaded " + allPlants.get(i).common_name);
+                }
+            }
+        });
     }
 }

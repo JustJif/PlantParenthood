@@ -10,9 +10,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class PlantCreator
 {
+    public static PlantDatabase plantDatabase;
     public static void addPlant(JSONObject nonparsedPlants, PlantSearcher removethis) throws JSONException
     {
         ArrayList<Plant> createdPlantObjects = new ArrayList<>();
@@ -67,9 +69,10 @@ public class PlantCreator
 
     }
 
-    public static void addPlantToDatabase(Plant plant, Context context)
+    public static void addPlantToDatabase(Plant plant)
     {
-        PlantDatabase plantDatabase = Room.databaseBuilder(context, PlantDatabase.class, "PlantDatabase").build();
         plantDatabase.dataAccessObject().addPlant(plant);
+        List<Plant> newList =  plantDatabase.dataAccessObject().loadAllPlants();
+        System.out.println("Plant list is now: " + newList.size());
     }
 }

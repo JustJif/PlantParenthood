@@ -2,6 +2,7 @@ package com.example.plantparenthood;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -99,7 +100,15 @@ public class PlantCreatorAdapter extends RecyclerView.Adapter
         {
             public void onClick(View view)
             {
-                PlantCreator.addPlantToDatabase(thisPlant,view.getContext());
+                AsyncTask.execute(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        PlantCreator.addPlantToDatabase(thisPlant);
+                        //System.out.println(thisPlant.common_name + " Added to save data");
+                    }
+                });
                 Toast.makeText(view.getContext(), "Plant successfully added", Toast.LENGTH_SHORT).show();
             }
         });
