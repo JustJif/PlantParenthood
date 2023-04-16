@@ -15,10 +15,10 @@ import io.reactivex.rxjava3.core.Single;
 public interface DataAccessObject
 {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public Completable addPlant(Plant plant);
+    public void addPlant(Plant plant);
 
     @Query("SELECT * FROM Plant WHERE id = :id")
-    public Single<Plant> loadPlantByID(int id);
+    public Plant loadPlantByID(int id);
 
     @Query("SELECT * FROM Plant")
     public List<Plant> loadAllPlants();
