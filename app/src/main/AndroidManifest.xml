@@ -12,13 +12,16 @@
         android:theme="@style/Theme.PlantParenthood.NoActionBar"
         tools:targetApi="31">
         <activity
+            android:name=".PlantSearcher"
+            android:exported="false"/>
+        <activity
             android:name=".Calendar"
             android:exported="false" />
         <activity
-            android:name=".Plants"
+            android:name=".Plant_Activity"
             android:exported="false" />
         <activity
-            android:name=".Spaces"
+            android:name=".Space_Activity"
             android:exported="false" />
         <activity
             android:name=".Settings"

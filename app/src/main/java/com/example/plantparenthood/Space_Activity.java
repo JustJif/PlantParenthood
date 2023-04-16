@@ -9,18 +9,18 @@ import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class Plants extends AppCompatActivity {
+public class Space_Activity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_plants);
+        setContentView(R.layout.activity_spaces);
 
         // Initialize and assign variable
         BottomNavigationView bottomNavigationView=findViewById(R.id.bottom_navigation);
 
         // Set Home selected
-        bottomNavigationView.setSelectedItemId(R.id.plants);
+        bottomNavigationView.setSelectedItemId(R.id.spaces);
 
         // Perform item selected listener
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -29,23 +29,22 @@ public class Plants extends AppCompatActivity {
 
                 switch(item.getItemId())
                 {
-
                     case R.id.spaces:
-                        startActivity(new Intent(getApplicationContext(),Spaces.class));
-                        overridePendingTransition(0,0);
                         return true;
                     case R.id.plants:
+                        startActivity(new Intent(getApplicationContext(), Plant_Activity.class));
+                        overridePendingTransition(0,0);
                         return true;
                     case R.id.home:
                         startActivity(new Intent(getApplicationContext(),MainActivity.class));
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.calendar:
-                        startActivity(new Intent(getApplicationContext(),Calendar.class));
+                        startActivity(new Intent(getApplicationContext(),Settings.class));
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.settings:
-                        startActivity(new Intent(getApplicationContext(),Settings.class));
+                        startActivity(new Intent(getApplicationContext(), Space_Activity.class));
                         overridePendingTransition(0,0);
                         return true;
                 }
