@@ -8,4 +8,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="plantparenthood_green">#097969</color>
+
+    <color name="plantparenthood_green">#097969</color>
+	<color name="green">#32CD32</color>
+    <color name="green_variant">#81B622</color>
 </resources>
