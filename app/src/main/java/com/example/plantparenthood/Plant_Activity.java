@@ -8,21 +8,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.textfield.TextInputEditText;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import io.reactivex.rxjava3.core.Single;
 
 public class Plant_Activity extends AppCompatActivity {
     CardView addPlant;
@@ -30,7 +23,13 @@ public class Plant_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plants);
-        createPlantGrid();
+        PlantDatabase plantDB = Room.databaseBuilder(getApplicationContext(),PlantDatabase.class, "PlantDatabase").build();
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                getPlantsFromDB(plantDB.dataAccessObject());
+            }
+        });
         addPlant = (CardView) findViewById(R.id.addplant);
         addPlant.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,21 +77,17 @@ public class Plant_Activity extends AppCompatActivity {
         });
     }
 
-    private List<Plant> getPlantsFromDB() {
-        PlantDatabase plantDB = Room.databaseBuilder(getApplicationContext(),PlantDatabase.class, "PlantDatabase").allowMainThreadQueries().build();
-        List<Plant> plantList = plantDB.dataAccessObject().loadAllPlants();
-
-        return plantList;
+    private void getPlantsFromDB(DataAccessObject dataAccessObject) {
+        List<Plant> plantList = dataAccessObject.loadAllPlants();
+        createPlantGrid(plantList);
     }
 
-    public void createPlantGrid()
+    public void createPlantGrid(List<Plant> plantList)
     {
-        List<Plant> dataBasePlants =  getPlantsFromDB();
-
         RecyclerView plantGrid = findViewById(R.id.plant_recycler_view);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 1);
         plantGrid.setLayoutManager(gridLayoutManager);
-        PlantActivityCreatorAdapter plantAdapter = new PlantActivityCreatorAdapter( dataBasePlants,Plant_Activity.this);
+        PlantActivityCreatorAdapter plantAdapter = new PlantActivityCreatorAdapter( plantList,Plant_Activity.this);
         plantGrid.setAdapter(plantAdapter);
 
     }

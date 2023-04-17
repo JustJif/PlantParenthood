@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.EditText;
 
-public class AddSpace extends AppCompatActivity {
+public class SpacePopup extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -13,6 +13,7 @@ public class AddSpace extends AppCompatActivity {
         setContentView(R.layout.activity_add_space);
         EditText nameEditText = (EditText) findViewById(R.id.names);
         String fullName = nameEditText.getText().toString();
+
 
     }
 }

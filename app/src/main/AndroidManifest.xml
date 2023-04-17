@@ -15,7 +15,7 @@
         tools:targetApi="31">
 
         <activity
-            android:name=".AddSpace"
+            android:name=".SpacePopup"
             android:exported="false" />
         <activity
             android:name=".PlantSearcher"

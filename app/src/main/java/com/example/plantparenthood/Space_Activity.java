@@ -22,7 +22,7 @@ public class Space_Activity extends AppCompatActivity {
         addSpace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), AddSpace.class));
+                startActivity(new Intent(getApplicationContext(), SpacePopup.class));
             }
         });
         // Initialize and assign variable

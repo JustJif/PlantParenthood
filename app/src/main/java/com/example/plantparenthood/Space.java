@@ -1,12 +1,20 @@
 package com.example.plantparenthood;
 
-import java.util.ArrayList;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
 
+import java.util.ArrayList;
+@Entity(tableName = "Space")
 public class Space {
+    @PrimaryKey
     private int spaceID;
     private String spaceName;
     private int spaceLightLevel;
+    @Ignore
     private ArrayList<Plant> plantList;
+
+    private String plantID;
 
     // Constructor
     public Space(int spaceID, String spaceName, int spaceLightLevel) {
@@ -14,6 +22,34 @@ public class Space {
         this.spaceName = spaceName;
         this.spaceLightLevel = spaceLightLevel;
         this.plantList = new ArrayList<Plant>();
+    }
+
+    public int getSpaceID() {
+        return spaceID;
+    }
+
+    public void setSpaceID(int spaceID) {
+        this.spaceID = spaceID;
+    }
+
+    public int getSpaceLightLevel() {
+        return spaceLightLevel;
+    }
+
+    public void setSpaceLightLevel(int spaceLightLevel) {
+        this.spaceLightLevel=spaceLightLevel;
+    }
+
+    public String getPlantID() {
+        return plantID;
+    }
+
+    public void setPlantID(String plantID) {
+        this.plantID = plantID;
+    }
+
+    public void parseStrings() {
+        //later
     }
 
     // Getters and Setters
