@@ -14,14 +14,17 @@ public class Space {
     @Ignore
     private ArrayList<Plant> plantList;
 
+    private static int numSpaces;
+
     private String plantID;
 
     // Constructor
-    public Space(int spaceID, String spaceName, int spaceLightLevel) {
-        this.spaceID = spaceID;
+    public Space(String spaceName) {
+        this.spaceID = numSpaces;
         this.spaceName = spaceName;
-        this.spaceLightLevel = spaceLightLevel;
+        this.spaceLightLevel = 0;
         this.plantList = new ArrayList<Plant>();
+        numSpaces++;
     }
 
     public int getSpaceID() {

@@ -3,6 +3,7 @@ package com.example.plantparenthood;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.room.Room;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,10 +14,16 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class Space_Activity extends AppCompatActivity {
     CardView addSpace;
+    public static SpaceDataAccessObject dataBase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_spaces);
+
+        PlantDatabase plantDatabase = Room.databaseBuilder(getApplicationContext(), PlantDatabase.class, "PlantDatabase").build();
+        dataBase = plantDatabase.spaceDataAccessObject();
+
+        dataBase.loadAllSpaces();
 
         addSpace = (CardView) findViewById(R.id.addspace);
         addSpace.setOnClickListener(new View.OnClickListener() {
