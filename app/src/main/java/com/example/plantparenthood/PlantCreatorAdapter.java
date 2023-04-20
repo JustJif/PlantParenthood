@@ -21,28 +21,26 @@ import androidx.room.Room;
 
 import java.util.ArrayList;
 
-public class PlantCreatorAdapter extends RecyclerView.Adapter
-{
+public class PlantCreatorAdapter extends RecyclerView.Adapter {
     private ArrayList<Plant> plantsList;
     private Context openActivity;
-    public PlantCreatorAdapter(ArrayList<Plant> newPlantsList, Context newContext)
-    {
+
+    public PlantCreatorAdapter(ArrayList<Plant> newPlantsList, Context newContext) {
         plantsList = newPlantsList;
         openActivity = newContext;
     }
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
-    {
-        View currentView = LayoutInflater.from(parent.getContext()).inflate(R.layout.plantsquare,parent,false);
-        RecyclerView.ViewHolder viewHolder = new RecyclerView.ViewHolder(currentView) {};
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View currentView = LayoutInflater.from(parent.getContext()).inflate(R.layout.plantsquare, parent, false);
+        RecyclerView.ViewHolder viewHolder = new RecyclerView.ViewHolder(currentView) {
+        };
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position)
-    {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Plant thisPlant = plantsList.get(position);
         TextView plantCommonName = (TextView) holder.itemView.findViewById(R.id.plantCommonName);
         ImageView plantImage = (ImageView) holder.itemView.findViewById(R.id.plantImage);
@@ -52,29 +50,27 @@ public class PlantCreatorAdapter extends RecyclerView.Adapter
         plantImage.setImageBitmap(thisPlant.getDefault_image());
         plantOtherNames.setText(thisPlant.getScientific_name());
 
-        holder.itemView.setOnClickListener(new View.OnClickListener()
-        {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 setupPopup(view, thisPlant);
             }
         });
     }
 
     @Override
-    public int getItemCount()
-    {
+    public int getItemCount() {
         return plantsList.size();
     }
 
-    private void setupPopup(View view, Plant thisPlant)
-    {
-        LayoutInflater layoutInflater = (LayoutInflater) view.getContext().getSystemService(view.getContext().LAYOUT_INFLATER_SERVICE);
-        View newPopup = layoutInflater.inflate(R.layout.activity_plant_popup,null);
+    private void setupPopup(View view, Plant thisPlant) {
+        LayoutInflater layoutInflater = (LayoutInflater) view.getContext()
+                .getSystemService(view.getContext().LAYOUT_INFLATER_SERVICE);
+        View newPopup = layoutInflater.inflate(R.layout.activity_plant_popup, null);
 
-        PopupWindow newPopupWindow = new PopupWindow(newPopup, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, true);
-        newPopupWindow.showAtLocation(view, Gravity.CENTER, 0,0);
+        PopupWindow newPopupWindow = new PopupWindow(newPopup, LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT, true);
+        newPopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
 
         TextView plantCommonName = newPopup.findViewById(R.id.plantCommonName);
         plantCommonName.setText(thisPlant.getCommon_name());
@@ -86,27 +82,21 @@ public class PlantCreatorAdapter extends RecyclerView.Adapter
         plantImage.setImageBitmap(thisPlant.getDefault_image());
 
         Button closeButton = newPopup.findViewById(R.id.closeButton);
-        closeButton.setOnClickListener(new View.OnClickListener()
-        {
+        closeButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 newPopupWindow.dismiss();
             }
         });
 
         Button addPlant = newPopup.findViewById(R.id.addPlant);
-        addPlant.setOnClickListener(new View.OnClickListener()
-        {
-            public void onClick(View view)
-            {
-                AsyncTask.execute(new Runnable()
-                {
+        addPlant.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                AsyncTask.execute(new Runnable() {
                     @Override
-                    public void run()
-                    {
+                    public void run() {
                         PlantCreator.addPlantToDatabase(thisPlant);
-                        //System.out.println(thisPlant.common_name + " Added to save data");
+                        // System.out.println(thisPlant.common_name + " Added to save data");
                     }
                 });
                 Toast.makeText(view.getContext(), "Plant successfully added", Toast.LENGTH_SHORT).show();

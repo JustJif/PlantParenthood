@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/plantparenthood_green"
-    tools:context=".MainActivity"
+    tools:context=".Space_Activity"
     android:layout_alignParentTop="true"
     android:layout_centerInParent="true">
 
@@ -28,9 +28,23 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <androidx.cardview.widget.CardView
+            android:id="@+id/addspace"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_gravity="top|center"
+            android:layout_margin="5dp">
+
+            <ImageView
+                android:layout_width="93dp"
+                android:layout_height="98dp"
+                android:layout_gravity="center"
+                android:src="@drawable/baseline_add_24" />
+        </androidx.cardview.widget.CardView>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/main_recycler_view"
+            android:layout_marginTop="130dp"
+            android:id="@+id/spaces_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="vertical"
@@ -38,18 +52,4 @@
 
         </androidx.recyclerview.widget.RecyclerView>
     </FrameLayout>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="Main"
-        android:textSize="50sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

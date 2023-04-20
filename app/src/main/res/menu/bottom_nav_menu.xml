@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="Spaces"
+        android:icon="@drawable/baseline_border_all_24"
+        android:id="@+id/spaces"/>
+
+    <item android:title="Plants"
+        android:icon="@drawable/plant"
+        android:id="@+id/plants"/>
+
+    <item android:title="Home"
+        android:icon="@drawable/baseline_home_24"
+        android:id="@+id/home"/>
+
+    <item android:title="Calendar"
+        android:icon="@drawable/baseline_calendar_month_24"
+        android:id="@+id/calendar"/>
+
+    <item android:title="Settings"
+        android:icon="@drawable/baseline_settings_24"
+        android:id="@+id/settings"/>
+</menu>

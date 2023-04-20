@@ -11,14 +11,31 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.PlantParenthood"
+        android:theme="@style/Theme.PlantParenthood.NoActionBar"
         tools:targetApi="31">
 
         <activity
+            android:name=".SpacePopup"
+            android:exported="false" />
+        <activity
             android:name=".PlantSearcher"
+            android:exported="false" />
+        <activity
+            android:name=".Calendar"
+            android:exported="false" />
+        <activity
+            android:name=".Plant_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".Space_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".Settings"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.PlantParenthood.NoActionBar">
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
