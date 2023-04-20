@@ -1,5 +1,6 @@
 package com.example.plantparenthood;
 import android.app.Activity;
+import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import com.android.volley.RequestQueue;
@@ -48,8 +49,7 @@ public class PlantSearcher extends AppCompatActivity
         toolBarLayout.setTitle(getTitle());
         errorText = findViewById(R.id.errorText);
 
-        api = new Perenual(); //new obj of Perenual API class
-        api.plantsearchref = this; //debug remove this later... passes this class as a reference for testing/debug
+        api = new Perenual(this); //new obj of Perenual API class
         queue = Volley.newRequestQueue(getApplicationContext());
 
         pageNumber = 1;
@@ -78,8 +78,6 @@ public class PlantSearcher extends AppCompatActivity
                 nextArrow(searchPage);
             }
         });
-
-        testDATABASE();
     }
 
     @Override
@@ -130,24 +128,15 @@ public class PlantSearcher extends AppCompatActivity
 
         if(plantsList.size() > 0)
         {
+            PlantCreatorAdapter plantAdapter = new PlantCreatorAdapter(plantsList, PlantSearcher.this);
+
             for (int i = 0; i < plantsList.size(); i++)
             {
                 Plant thisPlant = plantsList.get(i);
-                api.queryImageAPI(queue, thisPlant);
+                api.queryImageAPI(queue, thisPlant, plantAdapter, i);
             }
             text.setText("");
-
-            //uh wait 3 seconds first, temporary work around
-            new Handler().postDelayed(new Runnable() {
-                public void run()
-                {
-                    PlantCreatorAdapter plantAdapter = new PlantCreatorAdapter(plantsList, PlantSearcher.this);
-                    plantGrid.setAdapter(plantAdapter);
-                }
-            }, 3000); // 3 seconds
-
-            //PlantCreatorAdapter plantAdapter = new PlantCreatorAdapter(plantsList);
-            //plantGrid.setAdapter(plantAdapter);
+            plantGrid.setAdapter(plantAdapter);
         }
         else//don't bother setting up grid as no valid plants
         {
@@ -172,39 +161,30 @@ public class PlantSearcher extends AppCompatActivity
     private void previousArrow(TextView searchPage)
     {
         if(pageNumber > 1)
+        {
             pageNumber--;
-
-        searchByNameForPlant();
+            queue.cancelAll(this); //stops spamming the api with queries, really helps with performance
+            RecyclerView plantGrid = findViewById(R.id.plantGridView);
+            plantGrid.setAdapter(null);
+            searchByNameForPlant();
+        }
     }
 
     private void nextArrow(TextView searchPage)
     {
         if(pageNumber < maxPageNumber)
+        {
             pageNumber++;
-
-        searchByNameForPlant();
+            queue.cancelAll(this);
+            RecyclerView plantGrid = findViewById(R.id.plantGridView);
+            plantGrid.setAdapter(null);
+            searchByNameForPlant();
+        }
     }
 
     private void filterSearchResult()
     {
         //this will filter data
     }
-    @Deprecated
-    private void testDATABASE()
-    {
-        PlantCreator.plantDatabase = Room.databaseBuilder(getApplicationContext(), PlantDatabase.class, "PlantDatabase").build();
-        AsyncTask.execute(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                List<Plant> allPlants = PlantCreator.plantDatabase.dataAccessObject().loadAllPlants();
-                System.out.println("Within Run plant size is: " + allPlants.size());
-                for (int i = 0; i < allPlants.size(); i++)
-                {
-                    System.out.println("Loaded " + allPlants.get(i).common_name);
-                }
-            }
-        });
-    }
+
 }

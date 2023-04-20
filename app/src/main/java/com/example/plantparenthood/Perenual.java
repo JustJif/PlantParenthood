@@ -20,14 +20,19 @@ public class Perenual extends com.example.plantparenthood.AbstractAPI
     private String APIKey;
     private String APIParams;
     private JSONObject queryReceived;
+    private String defaultImageURL;
 
-    public Perenual()
+    private PlantSearcher plantSearcherRef;
+
+    public Perenual(PlantSearcher plantRef)
     {
         APIUrl = "https://perenual.com/api/species-list?";
         APIPage = "page=";
         APIKey = "&key=" + "sk-d6w863e859a77e76936";
         APIParams = "&q=";
         queryReceived = null;
+        defaultImageURL = "https://perenual.com/storage/species_image/2_abies_alba_pyramidalis/og/49255769768_df55596553_b.jpg";
+        plantSearcherRef = plantRef;
     }
 
     @Override
@@ -48,7 +53,7 @@ public class Perenual extends com.example.plantparenthood.AbstractAPI
                         try
                         {
                             queryReceived = new JSONObject(response);
-                            com.example.plantparenthood.PlantCreator.addPlant(queryReceived, plantsearchref);
+                            PlantCreator.addPlant(queryReceived, plantSearcherRef);
                         } catch (JSONException e)
                         {
                             throw new RuntimeException(e);
@@ -67,15 +72,19 @@ public class Perenual extends com.example.plantparenthood.AbstractAPI
     }
 
     @Override
-    public void queryImageAPI(RequestQueue queue, Plant plant)
+    public void queryImageAPI(RequestQueue queue, Plant plant, PlantCreatorAdapter plantAdapter, int plantLocation)
     {
-        ImageRequest imageRequest = new ImageRequest(plant.plantImageURL, new Response.Listener<Bitmap>()
+        //this is the default image URL
+        if(plant.getPlantImageURL().equals(defaultImageURL))
+            return;
+        ImageRequest imageRequest = new ImageRequest(plant.getPlantImageURL(), new Response.Listener<Bitmap>()
         {
             @Override
             public void onResponse(Bitmap response)
             {
-                System.out.println("Found image for: " + plant.common_name);
-                plant.default_image = response;
+                System.out.println("Found image for: " + plant.getCommon_name());
+                plant.setDefault_image(response);
+                plantAdapter.notifyItemChanged(plantLocation);
             }
         }, 0, 0, ImageView.ScaleType.FIT_XY, Bitmap.Config.ARGB_8888, new Response.ErrorListener()
         {
@@ -85,6 +94,7 @@ public class Perenual extends com.example.plantparenthood.AbstractAPI
                 System.out.println("Error finding image");
             }
         });
+        imageRequest.setTag(plantSearcherRef);
         queue.add(imageRequest);
     }
 }

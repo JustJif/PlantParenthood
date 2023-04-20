@@ -48,9 +48,9 @@ public class PlantCreatorAdapter extends RecyclerView.Adapter
         ImageView plantImage = (ImageView) holder.itemView.findViewById(R.id.plantImage);
         TextView plantOtherNames = (TextView) holder.itemView.findViewById(R.id.plantScientificNames);
 
-        plantCommonName.setText(thisPlant.common_name);
-        plantImage.setImageBitmap(thisPlant.default_image);
-        plantOtherNames.setText(thisPlant.scientific_name);
+        plantCommonName.setText(thisPlant.getCommon_name());
+        plantImage.setImageBitmap(thisPlant.getDefault_image());
+        plantOtherNames.setText(thisPlant.getScientific_name());
 
         holder.itemView.setOnClickListener(new View.OnClickListener()
         {
@@ -77,13 +77,13 @@ public class PlantCreatorAdapter extends RecyclerView.Adapter
         newPopupWindow.showAtLocation(view, Gravity.CENTER, 0,0);
 
         TextView plantCommonName = newPopup.findViewById(R.id.plantCommonName);
-        plantCommonName.setText(thisPlant.common_name);
+        plantCommonName.setText(thisPlant.getCommon_name());
 
         TextView plantScientificName = newPopup.findViewById(R.id.plantScientificName);
-        plantScientificName.setText(thisPlant.scientific_name);
+        plantScientificName.setText(thisPlant.getScientific_name());
 
         ImageView plantImage = newPopup.findViewById(R.id.plantImage);
-        plantImage.setImageBitmap(thisPlant.default_image);
+        plantImage.setImageBitmap(thisPlant.getDefault_image());
 
         Button closeButton = newPopup.findViewById(R.id.closeButton);
         closeButton.setOnClickListener(new View.OnClickListener()

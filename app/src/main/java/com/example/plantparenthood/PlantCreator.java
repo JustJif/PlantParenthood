@@ -1,6 +1,8 @@
 package com.example.plantparenthood;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.widget.ImageView;
 
 import androidx.room.Room;
@@ -32,7 +34,6 @@ public class PlantCreator
             JSONArray sunlight = currentPlant.getJSONArray("sunlight");
             JSONObject default_image = currentPlant.getJSONObject("default_image");
 
-
             String[] plantScientificNames = new String[scientific_name.length()];
             for (int j = 0; j < scientific_name.length(); j++)
             {
@@ -45,16 +46,16 @@ public class PlantCreator
                 plantOtherNames[k] = other_name.getString(k);
             }*/
 
-            //string builder stuff here...
-            Plant newPlant = new Plant();
-            newPlant.id = id;
-            newPlant.common_name = common_name;
-            newPlant.scientific_name = plantScientificNames[0];
-            //newPlant.other_name = other_name;
-            newPlant.cycle = cycle;
-            newPlant.watering = watering;
-            //newPlant.sunlight = sunlight;
-            newPlant.plantImageURL = default_image.getString("original_url");
+            Plant newPlant = new Plant.PlantBuilder()
+            .setId(id).setCommon_name(common_name)
+            .setScientific_name(plantScientificNames[0])
+            .setCycle(cycle)
+            .setWatering(watering)
+            .setPlantImageURL(default_image.getString("original_url"))
+            .setDefault_image(BitmapFactory.decodeResource(removethis.getApplicationContext().getResources(), R.drawable.defaultimage))
+            .buildPlant();
+
+            System.out.println(default_image.getString("original_url"));
 
             createdPlantObjects.add(newPlant);
         }
