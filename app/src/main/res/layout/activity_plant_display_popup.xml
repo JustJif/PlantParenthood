@@ -52,7 +52,7 @@
                 android:layout_height="80dp"
                 android:layout_gravity="center"
                 android:foreground="@drawable/baseline_qr_code_2_24"
-                android:foregroundTint="#FFFFFF">
+                android:foregroundTint="#F1E9E9">
 
                 <Button
                     android:id="@+id/qrButton"
@@ -82,10 +82,10 @@
                 app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MaterialComponents.MaterialCalendar.Day"/>
 
             <Button
-                android:id="@+id/addPlant"
+                android:id="@+id/updatePlant"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Upate Plant" />
+                android:text="Update Plant" />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

@@ -73,6 +73,15 @@ public class PlantActivityCreatorAdapter extends RecyclerView.Adapter
         ImageView plantImage = newPopup.findViewById(R.id.plantImage);
         plantImage.setImageBitmap(thisPlant.getDefault_image());
 
+        Button qrButton = newPopup.findViewById(R.id.qrButton);
+        qrButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(view.getContext(), "You pressed the QR Button", Toast.LENGTH_SHORT).show();//remove this
+                //do qr stuff here
+            }
+        });
+
         Button closeButton = newPopup.findViewById(R.id.closeButton);
         closeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,8 +90,8 @@ public class PlantActivityCreatorAdapter extends RecyclerView.Adapter
             }
         });
 
-        Button addPlant = newPopup.findViewById(R.id.addPlant);
-        addPlant.setOnClickListener(new View.OnClickListener() {
+        Button updatePlant = newPopup.findViewById(R.id.updatePlant);
+        updatePlant.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Toast.makeText(view.getContext(), "Plant successfully updated", Toast.LENGTH_SHORT).show();
             }
