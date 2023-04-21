@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -17,25 +16,26 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
 
 import java.util.ArrayList;
 
 public class PlantCreatorAdapter extends RecyclerView.Adapter {
     private ArrayList<Plant> plantsList;
     private Context openActivity;
+    private PlantCreator plantCreator;
 
-    public PlantCreatorAdapter(ArrayList<Plant> newPlantsList, Context newContext) {
+    public PlantCreatorAdapter(ArrayList<Plant> newPlantsList, Context newContext, PlantCreator newPlantCreator)
+    {
         plantsList = newPlantsList;
         openActivity = newContext;
+        plantCreator = newPlantCreator;
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View currentView = LayoutInflater.from(parent.getContext()).inflate(R.layout.plantsquare, parent, false);
-        RecyclerView.ViewHolder viewHolder = new RecyclerView.ViewHolder(currentView) {
-        };
+        RecyclerView.ViewHolder viewHolder = new RecyclerView.ViewHolder(currentView) {};
         return viewHolder;
     }
 
@@ -94,9 +94,9 @@ public class PlantCreatorAdapter extends RecyclerView.Adapter {
             public void onClick(View view) {
                 AsyncTask.execute(new Runnable() {
                     @Override
-                    public void run() {
-                        PlantCreator.addPlantToDatabase(thisPlant);
-                        // System.out.println(thisPlant.common_name + " Added to save data");
+                    public void run()
+                    {
+                        plantCreator.addPlantToDatabase(thisPlant);
                     }
                 });
                 Toast.makeText(view.getContext(), "Plant successfully added", Toast.LENGTH_SHORT).show();

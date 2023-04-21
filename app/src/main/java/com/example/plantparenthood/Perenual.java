@@ -53,7 +53,8 @@ public class Perenual extends com.example.plantparenthood.AbstractAPI
                         try
                         {
                             queryReceived = new JSONObject(response);
-                            PlantCreator.addPlant(queryReceived, plantSearcherRef);
+                            plantSearcherRef.passDataToCreator(queryReceived);
+                            //PlantCreator.addPlant(queryReceived, plantSearcherRef);
                         } catch (JSONException e)
                         {
                             throw new RuntimeException(e);

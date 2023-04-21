@@ -42,9 +42,9 @@ public class PlantActivityCreatorAdapter extends RecyclerView.Adapter
         ImageView plantImage = (ImageView) holder.itemView.findViewById(R.id.plantImage);
         TextView plantOtherNames = (TextView) holder.itemView.findViewById(R.id.plantScientificNames);
 
-        plantCommonName.setText(thisPlant.common_name);
-        plantImage.setImageBitmap(thisPlant.default_image);
-        plantOtherNames.setText(thisPlant.scientific_name);
+        plantCommonName.setText(thisPlant.getCommon_name());
+        plantImage.setImageBitmap(thisPlant.getDefault_image());
+        plantOtherNames.setText(thisPlant.getScientific_name());
 
         holder.itemView.setOnClickListener(new View.OnClickListener()
         {

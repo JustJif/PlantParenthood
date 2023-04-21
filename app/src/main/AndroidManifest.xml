@@ -19,6 +19,7 @@
             android:exported="false" />
         <activity
             android:name=".PlantSearcher"
+            android:windowSoftInputMode="adjustNothing"
             android:exported="false" />
         <activity
             android:name=".Calendar"

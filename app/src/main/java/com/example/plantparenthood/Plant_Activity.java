@@ -10,28 +10,54 @@ import androidx.room.Room;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.ArrayList;
+import java.util.EventListener;
 import java.util.List;
 
 public class Plant_Activity extends AppCompatActivity {
     CardView addPlant;
+    List<Plant> plantList;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plants);
-        PlantDatabase plantDB = Room.databaseBuilder(getApplicationContext(),PlantDatabase.class, "PlantDatabase").build();
-        AsyncTask.execute(new Runnable() {
+        plantList = new ArrayList<>();
+        PlantDatabase plantDB = Room.databaseBuilder(getApplicationContext(),PlantDatabase.class,"PlantDatabase").build();
+
+        RecyclerView plantGrid = findViewById(R.id.plant_recycler_view);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 1);
+        plantGrid.setLayoutManager(gridLayoutManager);
+
+        AsyncTask.execute(new Runnable()
+        {
             @Override
-            public void run() {
+            public void run()
+            {
                 getPlantsFromDB(plantDB.dataAccessObject());
+                Handler handler = new Handler(Looper.getMainLooper());
+
+                handler.post(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        createPlantGrid(plantGrid);
+                    }
+                });
             }
         });
         addPlant = (CardView) findViewById(R.id.addplant);
-        addPlant.setOnClickListener(new View.OnClickListener() {
+        addPlant.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), PlantSearcher.class));
@@ -40,19 +66,16 @@ public class Plant_Activity extends AppCompatActivity {
 
         // Initialize and assign variable
         BottomNavigationView bottomNavigationView=findViewById(R.id.bottom_navigation);
-
-
         // Set Home selected
         bottomNavigationView.setSelectedItemId(R.id.plants);
 
         // Perform item selected listener
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
+            public boolean onNavigationItemSelected(@NonNull MenuItem item)
+            {
                 switch(item.getItemId())
                 {
-
                     case R.id.spaces:
                         startActivity(new Intent(getApplicationContext(), Space_Activity.class));
                         overridePendingTransition(0,0);
@@ -77,18 +100,14 @@ public class Plant_Activity extends AppCompatActivity {
         });
     }
 
-    private void getPlantsFromDB(DataAccessObject dataAccessObject) {
-        List<Plant> plantList = dataAccessObject.loadAllPlants();
-        createPlantGrid(plantList);
+    private void getPlantsFromDB(DataAccessObject dataAccessObject)
+    {
+        plantList = dataAccessObject.loadAllPlants();
     }
 
-    public void createPlantGrid(List<Plant> plantList)
+    public void createPlantGrid(RecyclerView plantGrid)
     {
-        RecyclerView plantGrid = findViewById(R.id.plant_recycler_view);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 1);
-        plantGrid.setLayoutManager(gridLayoutManager);
-        PlantActivityCreatorAdapter plantAdapter = new PlantActivityCreatorAdapter( plantList,Plant_Activity.this);
+        PlantActivityCreatorAdapter plantAdapter = new PlantActivityCreatorAdapter(plantList,Plant_Activity.this);
         plantGrid.setAdapter(plantAdapter);
-
     }
 }

@@ -16,8 +16,14 @@ import java.util.List;
 
 public class PlantCreator
 {
-    public static PlantDatabase plantDatabase;
-    public static void addPlant(JSONObject nonparsedPlants, PlantSearcher removethis) throws JSONException
+    public DataAccessObject database;
+
+    PlantCreator(DataAccessObject newDatabase)
+    {
+        database = newDatabase;
+    }
+
+    public void addPlant(JSONObject nonparsedPlants, PlantSearcher makethisplantUI) throws JSONException
     {
         ArrayList<Plant> createdPlantObjects = new ArrayList<>();
         JSONArray plantsList = nonparsedPlants.getJSONArray("data");
@@ -52,7 +58,7 @@ public class PlantCreator
             .setCycle(cycle)
             .setWatering(watering)
             .setPlantImageURL(default_image.getString("original_url"))
-            .setDefault_image(BitmapFactory.decodeResource(removethis.getApplicationContext().getResources(), R.drawable.defaultimage))
+            .setDefault_image(BitmapFactory.decodeResource(makethisplantUI.getApplicationContext().getResources(), R.drawable.defaultimage))
             .buildPlant();
 
             System.out.println(default_image.getString("original_url"));
@@ -62,18 +68,18 @@ public class PlantCreator
 
         Integer currentPage = nonparsedPlants.getInt("current_page");
         Integer lastPage = nonparsedPlants.getInt("last_page");
-        removethis.createPlantGrid(createdPlantObjects,currentPage,lastPage);
+        makethisplantUI.createPlantGrid(createdPlantObjects,currentPage,lastPage);
     }
 
-    public static void addCustomPlant()
+    public void addCustomPlant()
     {
 
     }
 
-    public static void addPlantToDatabase(Plant plant)
+    public void addPlantToDatabase(Plant plant)
     {
-        plantDatabase.dataAccessObject().addPlant(plant);
-        List<Plant> newList =  plantDatabase.dataAccessObject().loadAllPlants();
+        database.addPlant(plant);
+        List<Plant> newList = database.loadAllPlants();
         System.out.println("Plant list is now: " + newList.size());
     }
 }

@@ -1,5 +1,6 @@
 package com.example.plantparenthood;
 import android.app.Activity;
+import android.content.Context;
 import android.nfc.Tag;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,16 +13,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Database;
 import androidx.room.Room;
 
 import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputEditText;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +41,8 @@ public class PlantSearcher extends AppCompatActivity
     private ArrayList<Plant> currentDisplayedPlants;
     private Integer pageNumber, maxPageNumber;
     private String plantName, previousPlantName;
+    private PlantCreator plantCreator;
+    private PlantDatabase database;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -49,7 +57,7 @@ public class PlantSearcher extends AppCompatActivity
         toolBarLayout.setTitle(getTitle());
         errorText = findViewById(R.id.errorText);
 
-        api = new Perenual(this); //new obj of Perenual API class
+        api = new Perenual(this);
         queue = Volley.newRequestQueue(getApplicationContext());
 
         pageNumber = 1;
@@ -57,6 +65,8 @@ public class PlantSearcher extends AppCompatActivity
         plantName = "";
         previousPlantName = "";
 
+        database = Room.databaseBuilder(getApplicationContext(),PlantDatabase.class, "PlantDatabase").build();
+        plantCreator = new PlantCreator(database.dataAccessObject());
         TextView searchPage = findViewById(R.id.pageNum);
         Button leftButton = findViewById(R.id.leftButton);
         Button rightButton = findViewById(R.id.rightButton);
@@ -91,6 +101,8 @@ public class PlantSearcher extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
+                InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 plantName = String.valueOf(text.getText());
                 searchByNameForPlant();
             }
@@ -128,7 +140,7 @@ public class PlantSearcher extends AppCompatActivity
 
         if(plantsList.size() > 0)
         {
-            PlantCreatorAdapter plantAdapter = new PlantCreatorAdapter(plantsList, PlantSearcher.this);
+            PlantCreatorAdapter plantAdapter = new PlantCreatorAdapter(plantsList, PlantSearcher.this, plantCreator);
 
             for (int i = 0; i < plantsList.size(); i++)
             {
@@ -182,9 +194,13 @@ public class PlantSearcher extends AppCompatActivity
         }
     }
 
+    public void passDataToCreator(JSONObject unparsedFile) throws JSONException
+    {
+        plantCreator.addPlant(unparsedFile, this);
+    }
+
     private void filterSearchResult()
     {
         //this will filter data
     }
-
 }
