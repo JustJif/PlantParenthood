@@ -1,11 +1,9 @@
 package com.example.plantparenthood;
 ///FIX THIS SHIT
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -17,7 +15,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
 
 import java.util.ArrayList;
 
@@ -33,7 +30,7 @@ public class SpaceManager extends RecyclerView.Adapter {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View currentView = LayoutInflater.from(parent.getContext()).inflate(R.layout.plantsquare, parent, false);
+        View currentView = LayoutInflater.from(parent.getContext()).inflate(R.layout.plant_square, parent, false);
         RecyclerView.ViewHolder viewHolder = new RecyclerView.ViewHolder(currentView) {
         };
         return viewHolder;

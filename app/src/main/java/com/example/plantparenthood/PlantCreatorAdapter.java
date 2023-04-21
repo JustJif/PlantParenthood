@@ -1,7 +1,6 @@
 package com.example.plantparenthood;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -34,7 +33,7 @@ public class PlantCreatorAdapter extends RecyclerView.Adapter {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View currentView = LayoutInflater.from(parent.getContext()).inflate(R.layout.plantsquare, parent, false);
+        View currentView = LayoutInflater.from(parent.getContext()).inflate(R.layout.plant_square, parent, false);
         RecyclerView.ViewHolder viewHolder = new RecyclerView.ViewHolder(currentView) {};
         return viewHolder;
     }
@@ -50,12 +49,7 @@ public class PlantCreatorAdapter extends RecyclerView.Adapter {
         plantImage.setImageBitmap(thisPlant.getDefault_image());
         plantOtherNames.setText(thisPlant.getScientific_name());
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setupPopup(view, thisPlant);
-            }
-        });
+        holder.itemView.setOnClickListener(view -> setupPopup(view, thisPlant));
     }
 
     @Override
@@ -92,13 +86,7 @@ public class PlantCreatorAdapter extends RecyclerView.Adapter {
         Button addPlant = newPopup.findViewById(R.id.addPlant);
         addPlant.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                AsyncTask.execute(new Runnable() {
-                    @Override
-                    public void run()
-                    {
-                        plantCreator.addPlantToDatabase(thisPlant);
-                    }
-                });
+                AsyncTask.execute(() -> plantCreator.addPlantToDatabase(thisPlant));
                 Toast.makeText(view.getContext(), "Plant successfully added", Toast.LENGTH_SHORT).show();
             }
         });
