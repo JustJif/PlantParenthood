@@ -78,6 +78,7 @@ public class PlantActivityCreatorAdapter extends RecyclerView.Adapter
             @Override
             public void onClick(View view) {
                 Toast.makeText(view.getContext(), "You pressed the QR Button", Toast.LENGTH_SHORT).show();//remove this
+                thisPlant.getId();//use this for your id
                 //do qr stuff here
             }
         });
