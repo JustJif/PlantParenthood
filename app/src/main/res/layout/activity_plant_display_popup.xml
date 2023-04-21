@@ -29,22 +29,58 @@
                 android:padding="0dp"
                 android:text="X" />
 
-            <TextView
-                android:id="@+id/plantCommonName"
-                android:layout_gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:padding="10dp"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/plantScientificName"
-                android:layout_gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="15sp"
-                android:padding="10dp"/>
+                <EditText
+                    android:id="@+id/plantCommonName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="0dp"
+                    android:padding="10dp"
+                    android:textAlignment="center"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/editCommon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="10dp"
+                    android:forceHasOverlappingRendering="true"
+                    app:srcCompat="@drawable/baseline_edit_24" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <EditText
+                    android:id="@+id/plantScientificName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="0dp"
+                    android:padding="10dp"
+                    android:textAlignment="center"
+                    android:textSize="15sp" />
+
+                <ImageView
+                    android:id="@+id/editScientific"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="10dp"
+                    android:forceHasOverlappingRendering="true"
+                    app:srcCompat="@drawable/baseline_edit_24" />
+            </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/tint"
@@ -52,7 +88,7 @@
                 android:layout_height="80dp"
                 android:layout_gravity="center"
                 android:foreground="@drawable/baseline_qr_code_2_24"
-                android:foregroundTint="#FFFFFF">
+                android:foregroundTint="#F1E9E9">
 
                 <Button
                     android:id="@+id/qrButton"
@@ -66,26 +102,43 @@
 
             </RelativeLayout>
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/plantImage"
-                android:layout_width="320dp"
-                android:layout_height="180dp"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentBottom="true"
-                android:layout_gravity="center"
-                android:layout_marginStart="0dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="0dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/ic_launcher_background"
-                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MaterialComponents.MaterialCalendar.Day"/>
+            <RelativeLayout
+                android:layout_width="350dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center">
 
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/plantImage"
+                    android:layout_width="320dp"
+                    android:layout_height="180dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="0dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_launcher_background"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MaterialComponents.MaterialCalendar.Day"/>
+
+                <ImageView
+                    android:id="@+id/editCamera"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginEnd="0dp"
+                    android:layout_alignParentRight="true"
+                    android:forceHasOverlappingRendering="true"
+                    app:srcCompat="@drawable/baseline_photo_camera_back_24" />
+
+            </RelativeLayout>
             <Button
-                android:id="@+id/addPlant"
+                android:id="@+id/updatePlant"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Upate Plant" />
+                android:text="Update Plant" />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

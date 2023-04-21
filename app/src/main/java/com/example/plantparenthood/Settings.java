@@ -47,7 +47,6 @@ public class Settings extends AppCompatActivity {
                         return true;
                     case R.id.settings:
                         return true;
-
                 }
                 return false;
             }

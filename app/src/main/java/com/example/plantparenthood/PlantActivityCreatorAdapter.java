@@ -66,12 +66,30 @@ public class PlantActivityCreatorAdapter extends RecyclerView.Adapter
 
         TextView plantCommonName = newPopup.findViewById(R.id.plantCommonName);
         plantCommonName.setText(thisPlant.getCommon_name());
+        plantCommonName.setFocusableInTouchMode(false);
+        plantCommonName.setFocusable(false);
+        plantCommonName.setEnabled(false);
+        plantCommonName.setInputType(0);
 
         TextView plantScientificName = newPopup.findViewById(R.id.plantScientificName);
         plantScientificName.setText(thisPlant.getScientific_name());
+        plantScientificName.setFocusableInTouchMode(false);
+        plantScientificName.setFocusable(false);
+        plantScientificName.setEnabled(false);
+        plantScientificName.setInputType(0);
 
         ImageView plantImage = newPopup.findViewById(R.id.plantImage);
         plantImage.setImageBitmap(thisPlant.getDefault_image());
+
+        Button qrButton = newPopup.findViewById(R.id.qrButton);
+        qrButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(view.getContext(), "You pressed the QR Button", Toast.LENGTH_SHORT).show();//remove this
+                thisPlant.getId();//use this for your id
+                //do qr stuff here
+            }
+        });
 
         Button closeButton = newPopup.findViewById(R.id.closeButton);
         closeButton.setOnClickListener(new View.OnClickListener() {
@@ -81,8 +99,35 @@ public class PlantActivityCreatorAdapter extends RecyclerView.Adapter
             }
         });
 
-        Button addPlant = newPopup.findViewById(R.id.addPlant);
-        addPlant.setOnClickListener(new View.OnClickListener() {
+        ImageView editCommonName = newPopup.findViewById(R.id.editCommon);
+        editCommonName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Toast.makeText(view.getContext(), "Pressed edit", Toast.LENGTH_SHORT).show();
+                plantCommonName.setFocusableInTouchMode(true);
+                plantCommonName.setFocusable(true);
+                plantCommonName.setEnabled(true);
+            }
+        });
+
+        ImageView editScientificName = newPopup.findViewById(R.id.editScientific);
+        editScientificName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(view.getContext(), "Pressed edit", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        ImageView editCamera = newPopup.findViewById(R.id.editCamera);
+        editCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(view.getContext(), "Pressed edit", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        Button updatePlant = newPopup.findViewById(R.id.updatePlant);
+        updatePlant.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Toast.makeText(view.getContext(), "Plant successfully updated", Toast.LENGTH_SHORT).show();
             }
