@@ -66,9 +66,17 @@ public class PlantActivityCreatorAdapter extends RecyclerView.Adapter
 
         TextView plantCommonName = newPopup.findViewById(R.id.plantCommonName);
         plantCommonName.setText(thisPlant.getCommon_name());
+        plantCommonName.setFocusableInTouchMode(false);
+        plantCommonName.setFocusable(false);
+        plantCommonName.setEnabled(false);
+        plantCommonName.setInputType(0);
 
         TextView plantScientificName = newPopup.findViewById(R.id.plantScientificName);
         plantScientificName.setText(thisPlant.getScientific_name());
+        plantScientificName.setFocusableInTouchMode(false);
+        plantScientificName.setFocusable(false);
+        plantScientificName.setEnabled(false);
+        plantScientificName.setInputType(0);
 
         ImageView plantImage = newPopup.findViewById(R.id.plantImage);
         plantImage.setImageBitmap(thisPlant.getDefault_image());
@@ -88,6 +96,33 @@ public class PlantActivityCreatorAdapter extends RecyclerView.Adapter
             @Override
             public void onClick(View view) {
                 newPopupWindow.dismiss();
+            }
+        });
+
+        ImageView editCommonName = newPopup.findViewById(R.id.editCommon);
+        editCommonName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Toast.makeText(view.getContext(), "Pressed edit", Toast.LENGTH_SHORT).show();
+                plantCommonName.setFocusableInTouchMode(true);
+                plantCommonName.setFocusable(true);
+                plantCommonName.setEnabled(true);
+            }
+        });
+
+        ImageView editScientificName = newPopup.findViewById(R.id.editScientific);
+        editScientificName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(view.getContext(), "Pressed edit", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        ImageView editCamera = newPopup.findViewById(R.id.editCamera);
+        editCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(view.getContext(), "Pressed edit", Toast.LENGTH_SHORT).show();
             }
         });
 
