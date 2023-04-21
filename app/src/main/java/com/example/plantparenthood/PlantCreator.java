@@ -1,6 +1,8 @@
 package com.example.plantparenthood;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.widget.ImageView;
 
 import androidx.room.Room;
@@ -14,8 +16,14 @@ import java.util.List;
 
 public class PlantCreator
 {
-    public static PlantDatabase plantDatabase;
-    public static void addPlant(JSONObject nonparsedPlants, PlantSearcher removethis) throws JSONException
+    public DataAccessObject database;
+
+    PlantCreator(DataAccessObject newDatabase)
+    {
+        database = newDatabase;
+    }
+
+    public void addPlant(JSONObject nonparsedPlants, PlantSearcher makethisplantUI) throws JSONException
     {
         ArrayList<Plant> createdPlantObjects = new ArrayList<>();
         JSONArray plantsList = nonparsedPlants.getJSONArray("data");
@@ -32,7 +40,6 @@ public class PlantCreator
             JSONArray sunlight = currentPlant.getJSONArray("sunlight");
             JSONObject default_image = currentPlant.getJSONObject("default_image");
 
-
             String[] plantScientificNames = new String[scientific_name.length()];
             for (int j = 0; j < scientific_name.length(); j++)
             {
@@ -45,34 +52,34 @@ public class PlantCreator
                 plantOtherNames[k] = other_name.getString(k);
             }*/
 
-            //string builder stuff here...
-            Plant newPlant = new Plant();
-            newPlant.id = id;
-            newPlant.common_name = common_name;
-            newPlant.scientific_name = plantScientificNames[0];
-            //newPlant.other_name = other_name;
-            newPlant.cycle = cycle;
-            newPlant.watering = watering;
-            //newPlant.sunlight = sunlight;
-            newPlant.plantImageURL = default_image.getString("original_url");
+            Plant newPlant = new Plant.PlantBuilder()
+            .setId(id).setCommon_name(common_name)
+            .setScientific_name(plantScientificNames[0])
+            .setCycle(cycle)
+            .setWatering(watering)
+            .setPlantImageURL(default_image.getString("original_url"))
+            .setDefault_image(BitmapFactory.decodeResource(makethisplantUI.getApplicationContext().getResources(), R.drawable.defaultimage))
+            .buildPlant();
+
+            System.out.println(default_image.getString("original_url"));
 
             createdPlantObjects.add(newPlant);
         }
 
         Integer currentPage = nonparsedPlants.getInt("current_page");
         Integer lastPage = nonparsedPlants.getInt("last_page");
-        removethis.createPlantGrid(createdPlantObjects,currentPage,lastPage);
+        makethisplantUI.createPlantGrid(createdPlantObjects,currentPage,lastPage);
     }
 
-    public static void addCustomPlant()
+    public void addCustomPlant()
     {
 
     }
 
-    public static void addPlantToDatabase(Plant plant)
+    public void addPlantToDatabase(Plant plant)
     {
-        plantDatabase.dataAccessObject().addPlant(plant);
-        List<Plant> newList =  plantDatabase.dataAccessObject().loadAllPlants();
+        database.addPlant(plant);
+        List<Plant> newList = database.loadAllPlants();
         System.out.println("Plant list is now: " + newList.size());
     }
 }

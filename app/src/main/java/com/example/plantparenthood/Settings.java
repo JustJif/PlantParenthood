@@ -30,11 +30,11 @@ public class Settings extends AppCompatActivity {
                 switch(item.getItemId())
                 {
                     case R.id.spaces:
-                        startActivity(new Intent(getApplicationContext(),Spaces.class));
+                        startActivity(new Intent(getApplicationContext(), Space_Activity.class));
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.plants:
-                        startActivity(new Intent(getApplicationContext(),Plants.class));
+                        startActivity(new Intent(getApplicationContext(), Plant_Activity.class));
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.home:
@@ -42,12 +42,11 @@ public class Settings extends AppCompatActivity {
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.calendar:
-                        startActivity(new Intent(getApplicationContext(),Settings.class));
+                        startActivity(new Intent(getApplicationContext(),Calendar.class));
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.settings:
                         return true;
-
                 }
                 return false;
             }
