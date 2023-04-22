@@ -8,18 +8,17 @@
     android:background="@color/plantparenthood_green"
     tools:context=".Calendar">
 
-
     <CalendarView
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <Button
-        android:id="@+id/addWateringScheduleButton"
+        android:id="@+id/addScheduleButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="onAddScheduleButtonClick"
-        android:text="Add Watering Schedule" />
+        android:text="Add Schedule"
+        android:onClick="onAddScheduleButtonClick" />
 
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
