@@ -29,6 +29,7 @@ public class PlantActivityCreatorAdapter extends RecyclerView.Adapter
     private Plant_Activity plant_activity;
     private Context whatContext;
     private ImageView plantImage;
+    private ImageView qrImage;
     public PlantActivityCreatorAdapter(List<Plant> newPlantsList, Plant_Activity plant_activity)
     {
         plantsList = newPlantsList;
@@ -84,15 +85,21 @@ public class PlantActivityCreatorAdapter extends RecyclerView.Adapter
         plantImage = newPopup.findViewById(R.id.plantImage);
         plantImage.setImageBitmap(thisPlant.getDefault_image());
 
-        Button qrButton = newPopup.findViewById(R.id.qrButton);
-        qrButton.setOnClickListener(new View.OnClickListener() {
+        qrImage = newPopup.findViewById(R.id.qr_image);
+        qrImage.post(new Runnable(){//wait until qrImage has been drawn to execute
             @Override
-            public void onClick(View view) {
-                Toast.makeText(view.getContext(), "You pressed the QR Button", Toast.LENGTH_SHORT).show();//remove this
-                thisPlant.getId();//use this for your id
-                //do qr stuff here
+            public void run(){
+                qrImage.setImageBitmap(QRCodeManager.generateQRCodeBitmap(Integer.toString(thisPlant.getId()), qrImage.getWidth()));
+                qrImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        QRCodeManager.printQRCode(qrImage, Integer.toString(thisPlant.getId()), qrImage.getContext());
+                    }
+                });
             }
         });
+
+
 
         Button closeButton = newPopup.findViewById(R.id.closeButton);
         closeButton.setOnClickListener(new View.OnClickListener() {

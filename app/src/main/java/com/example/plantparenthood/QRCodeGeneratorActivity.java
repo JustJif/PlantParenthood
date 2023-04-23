@@ -1,3 +1,6 @@
+//QRCodeGenerator UI class
+//Not really needed anymore however keeping it for now just in case.
+
 package com.example.plantparenthood;
 
 import androidx.appcompat.app.AppCompatActivity;

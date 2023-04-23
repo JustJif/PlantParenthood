@@ -1,6 +1,11 @@
 package com.example.plantparenthood;
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.widget.ImageView;
+
+import androidx.print.PrintHelper;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
@@ -36,5 +41,19 @@ public class QRCodeManager {
             e.printStackTrace();
         }
         return qrCodeBitmap;
+    }
+
+    /**
+     * Begin print job of a QR code.
+     * @param imageView the view containing the image to print.
+     * @param plantID ID of plant for naming the print job.
+     * @param context
+     */
+    public static void printQRCode(ImageView imageView, String plantID, Context context){
+
+        PrintHelper printer = new PrintHelper(context);
+        printer.setScaleMode(PrintHelper.SCALE_MODE_FIT);
+        Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+        printer.printBitmap("qrcode " + plantID, bitmap);
     }
 }

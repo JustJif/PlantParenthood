@@ -16,7 +16,7 @@
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@color/ic_launcher_background" />
+        app:srcCompat="@color/plantparenthood_green" />
 
     <EditText
         android:id="@+id/debug_plantIDEntry"
