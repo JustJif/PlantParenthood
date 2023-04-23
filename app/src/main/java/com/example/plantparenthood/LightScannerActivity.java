@@ -49,25 +49,15 @@ public class LightScannerActivity extends AppCompatActivity implements View.OnCl
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
     private ImageCapture imageCapture= null;
     private ExecutorService cameraExecutor;
-    private ImageAnalysis imageAnalysis;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_light_level);
         Button takePhoto = findViewById(R.id.image_capture_button);
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-                == PackageManager.PERMISSION_DENIED ||
-            (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                == PackageManager.PERMISSION_DENIED) ||
-                (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        == PackageManager.PERMISSION_DENIED)){
-            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE}, 100);
-        }
-
         takePhoto.setOnClickListener(this);
+
+        requestPermissions();
         previewView = findViewById(R.id.viewFinder);
 
         cameraProviderFuture = ProcessCameraProvider.getInstance(this);
@@ -81,6 +71,7 @@ public class LightScannerActivity extends AppCompatActivity implements View.OnCl
 
         }, getExecutor());
 
+        //Bottom Navigation View
         BottomNavigationView bottomNavigationView=findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.spaces);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -140,6 +131,7 @@ public class LightScannerActivity extends AppCompatActivity implements View.OnCl
 
     private void startCameraX(ProcessCameraProvider cameraProvider){
         cameraProvider.unbindAll();
+
         CameraSelector cameraSelector = new CameraSelector.Builder()
                 .requireLensFacing(CameraSelector.LENS_FACING_BACK)
                 .build();
@@ -151,11 +143,10 @@ public class LightScannerActivity extends AppCompatActivity implements View.OnCl
                 .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
                 .build();
 
-        imageAnalysis = new ImageAnalysis.Builder()
-                .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-                .build();
-
-        cameraProvider.bindToLifecycle((LifecycleOwner) this, cameraSelector, preview, imageCapture, imageAnalysis);
+        cameraProvider.bindToLifecycle((LifecycleOwner) this
+                , cameraSelector
+                , preview
+                , imageCapture);
     }
 
     @Override
@@ -184,7 +175,21 @@ public class LightScannerActivity extends AppCompatActivity implements View.OnCl
                 totalBrightness += pixelBrightness;
             }
         }
-        double brightness = 100*(totalBrightness/(bitmapImage.getHeight()*bitmapImage.getWidth()));
-        Toast.makeText(LightScannerActivity.this,"Brightness: " + String.format("%.1f",brightness) + "%", Toast.LENGTH_SHORT).show();
+        double brightness = 200*(totalBrightness/(bitmapImage.getHeight()*bitmapImage.getWidth()));
+        Toast.makeText(LightScannerActivity.this
+                ,"Brightness: " + String.format("%.1f",brightness) + "%"
+                , Toast.LENGTH_SHORT).show();
+    }
+
+    public void requestPermissions() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_DENIED ||
+                (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                        == PackageManager.PERMISSION_DENIED) ||
+                (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        == PackageManager.PERMISSION_DENIED)){
+            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE}, 100);
+        }
+
     }
 }
