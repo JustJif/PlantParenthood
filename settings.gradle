@@ -10,6 +10,9 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+
+        //austen repo's
+        maven { url 'https://jitpack.io' }
     }
 }
 rootProject.name = "PlantParenthood"

@@ -3,20 +3,27 @@ package com.example.plantparenthood;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
+import com.example.plantparenthood.databinding.ActivityMainBinding;
+
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import com.example.plantparenthood.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         // Initialize and assign variable
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -31,11 +38,11 @@ public class MainActivity extends AppCompatActivity {
 
                 switch (item.getItemId()) {
                     case R.id.spaces:
-                        startActivity(new Intent(getApplicationContext(), LightScannerActivity.class));
+                        startActivity(new Intent(getApplicationContext(), Space_Activity.class));
                         overridePendingTransition(0, 0);
                         return true;
                     case R.id.plants:
-                        startActivity(new Intent(getApplicationContext(), Plants.class));
+                        startActivity(new Intent(getApplicationContext(), Plant_Activity.class));
                         overridePendingTransition(0, 0);
                         return true;
                     case R.id.home:

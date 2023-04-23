@@ -6,15 +6,32 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.CalendarView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.Date;
+
 public class Calendar extends AppCompatActivity {
+
+    CalendarView simpleCalendarView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
+
+        simpleCalendarView = (CalendarView) findViewById(R.id.calendarView);
+
+        // get the start date for the watering schedule
+        long startDate = new Date().getTime();
+
+        // create a new schedule for the plant with interval of 7 days
+        Schedule plantSchedule = new Schedule(7, startDate, startDate);
+
+        // add the plant watering schedule to the calendar
+
 
         // Initialize and assign variable
         BottomNavigationView bottomNavigationView=findViewById(R.id.bottom_navigation);
@@ -30,11 +47,11 @@ public class Calendar extends AppCompatActivity {
                 switch(item.getItemId())
                 {
                     case R.id.spaces:
-                        startActivity(new Intent(getApplicationContext(),Spaces.class));
+                        startActivity(new Intent(getApplicationContext(), Space_Activity.class));
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.plants:
-                        startActivity(new Intent(getApplicationContext(),Plants.class));
+                        startActivity(new Intent(getApplicationContext(), Plant_Activity.class));
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.home:
@@ -51,5 +68,16 @@ public class Calendar extends AppCompatActivity {
                 return false;
             }
         });
+
+        // highlight the start date on the calendar view
+        simpleCalendarView.setDate(startDate);
     }
+
+
 }
+
+
+
+
+
+

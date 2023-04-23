@@ -6,6 +6,9 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -15,6 +18,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PlantParenthood.NoActionBar"
         tools:targetApi="31">
+
+        <activity
+            android:name=".SpacePopup"
+            android:exported="false" />
+        <activity
+            android:name=".PlantSearcher"
+            android:windowSoftInputMode="adjustNothing"
+            android:exported="false" />
         <activity
             android:name=".LightScannerActivity"
             android:exported="false" />
@@ -22,10 +33,10 @@
             android:name=".Calendar"
             android:exported="false" />
         <activity
-            android:name=".Plants"
+            android:name=".Plant_Activity"
             android:exported="false" />
         <activity
-            android:name=".Spaces"
+            android:name=".Space_Activity"
             android:exported="false" />
         <activity
             android:name=".Settings"
