@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
                 switch (item.getItemId()) {
                     case R.id.spaces:
-                        startActivity(new Intent(getApplicationContext(), Spaces.class));
+                        startActivity(new Intent(getApplicationContext(), LightScannerActivity.class));
                         overridePendingTransition(0, 0);
                         return true;
                     case R.id.plants:
