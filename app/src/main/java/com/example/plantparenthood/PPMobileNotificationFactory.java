@@ -9,7 +9,7 @@ import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
 
-public class PPNotificationManager {
+public class PPMobileNotificationFactory extends AbstractPPNotificationFactory {
 
     private static final String CHANNEL_ID = "PlantParenthoodNotificationChannel";
     private static final int IMPORTANCE_DEFAULT = 0;
@@ -31,7 +31,9 @@ public class PPNotificationManager {
             notificationManager.createNotificationChannel(channel);
 
         }
+
     }
+
 
     /**
      *
@@ -40,15 +42,17 @@ public class PPNotificationManager {
      * @param context
      * @return The NotificationCompat.Builder that has been created.
      */
-    public static Notification getWaterNotification(int plantID, String plantName, Context context){
-        NotificationCompat.Builder waterNoti = new NotificationCompat.Builder(context, CHANNEL_ID);
+    public Notification createWaterNotification(int plantID, String plantName, Context context){
+        NotificationCompat.Builder notiBuilder = new NotificationCompat.Builder(context, CHANNEL_ID);
 
         String title = plantName + " needs to be watered!";
         String content = "Your plant " + plantName + " needs to be watered!";
 
-        waterNoti.setSmallIcon(R.drawable.ic_notification_plant).setContentTitle(title).setContentText(content).setPriority(NotificationCompat.PRIORITY_DEFAULT);
+        notiBuilder.setSmallIcon(R.drawable.ic_notification_plant).setContentTitle(title).setContentText(content).setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
-        return waterNoti.build();
+        return notiBuilder.build();
     }
+
 }
+
 

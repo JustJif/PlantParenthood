@@ -19,6 +19,7 @@ import android.os.Bundle;
 
 public class QRCodeGeneratorActivity extends AppCompatActivity {
     private String qrData = "-1";
+    private PPMobileNotificationFactory notifFactory = new PPMobileNotificationFactory();
 
     public void setData(int qrDataIn){
         this.qrData = Integer.toString(qrDataIn);
@@ -27,7 +28,7 @@ public class QRCodeGeneratorActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //notification testing! remove in final build!
-        PPNotificationManager.createNotificationChannel(this);
+        PPMobileNotificationFactory.createNotificationChannel(this);
 
 
         super.onCreate(savedInstanceState);
@@ -44,7 +45,7 @@ public class QRCodeGeneratorActivity extends AppCompatActivity {
 
             //notification testing! remove in final build!
             NotificationManagerCompat notifMan = NotificationManagerCompat.from(this);
-            Notification waterNotif = PPNotificationManager.getWaterNotification(1, "Alisaie", this);
+            Notification waterNotif = notifFactory.createWaterNotification(1, "Alisaie", this);
             notifMan.notify(1, waterNotif);
 
             //generate a QR code and set it to the image view.
