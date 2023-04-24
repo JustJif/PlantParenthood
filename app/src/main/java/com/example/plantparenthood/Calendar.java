@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.CalendarView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
@@ -62,7 +64,12 @@ public class Calendar extends AppCompatActivity {
 
         // get the start date for the watering schedule
         long startDate = new Date().getTime();
-        int currentDay = (int) ((startDate/86400)%365) - 28;
+
+        int currentDay = 0;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            currentDay = LocalDateTime.now().getDayOfYear();
+        }
+
         System.out.println(currentDay);
         // create a new schedule for the plant with interval of 7 days
         //Schedule plantSchedule = new Schedule(7, startDate, startDate);
