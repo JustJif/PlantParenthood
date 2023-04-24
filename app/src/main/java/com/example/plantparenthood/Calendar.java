@@ -10,6 +10,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.Toast;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.time.LocalDate;
@@ -35,6 +37,14 @@ public class Calendar extends AppCompatActivity {
             @Override
             public void onClick(View view)
             {
+                int interval = 1; // for daily watering
+                Date startDate = new Date(); // current date
+                Date endDate = null; // null for ongoing schedule
+                Schedule schedule = new Schedule(interval, startDate, endDate);
+
+                // Call the addPlantSchedule method to add the schedule to the plant
+                //schedule.addPlantSchedule(Calendar.this, plant);
+                Toast.makeText(Calendar.this, "Watering schedule added", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -88,7 +98,49 @@ public class Calendar extends AppCompatActivity {
 
 
 
+/*
+        updateWateringSchedule.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view) {
+                Schedule schedule = new Schedule(1, new Date(), null);
+                schedule.updatePlantSchedule(CalendarActivity.this, currentPlant);
+                Toast.makeText(CalendarActivity.this, "Watering schedule updated", Toast.LENGTH_SHORT).show();
+            }
+        });
 
+        deleteSchedule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Schedule schedule = new Schedule(1, new Date(), null);
+                schedule.deletePlantSchedule(CalendarActivity.this, currentPlant);
+                Toast.makeText(CalendarActivity.this, "Watering schedule deleted", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        simpleCalendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int day)
+            {
+                // Get the plant that was watered on this day
+                currentPlant = Plant.getPlantByWateringDate(CalendarActivity.this, year, month, day);
+                if (currentPlant != null) {
+                    // Display the plant name on the button
+                    addWateringSchedule.setText("Mark " + currentPlant.getCommon_name() + " as watered");
+                    updateWateringSchedule.setVisibility(View.VISIBLE);
+                    deleteSchedule.setVisibility(View.VISIBLE);
+                } else {
+                    // Hide the buttons
+                    addWateringSchedule.setText("Add watering schedule");
+                    updateWateringSchedule.setVisibility(View.GONE);
+                    deleteSchedule.setVisibility(View.GONE);
+                }
+            }
+        });
+    }
+
+}
+ */
 
 
 
@@ -138,7 +190,11 @@ public class Calendar extends AppCompatActivity {
 
         // highlight the start date on the calendar view
         simpleCalendarView.setDate(startDate);
+
+
     }
+
+
 }
 
 
