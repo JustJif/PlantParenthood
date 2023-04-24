@@ -22,6 +22,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -34,7 +35,6 @@ public class PlantActivityCreatorAdapter extends AbstractCreatorAdapter
     private ImageView qrImage;
     private DatabaseHandler databaseHandler;
     private boolean[] changes;
-    private String[] newValues;
     public PlantActivityCreatorAdapter(List<Plant> newPlantsList, Plant_Activity plant_activity)
     {
         plantsList = newPlantsList;
@@ -43,8 +43,6 @@ public class PlantActivityCreatorAdapter extends AbstractCreatorAdapter
         databaseHandler = DatabaseHandler.getDatabase(whatContext);
         changes = new boolean[9];
         Arrays.fill(changes,false);
-        newValues = new String[9];
-        Arrays.fill(newValues,"");
     }
 
     @NonNull
