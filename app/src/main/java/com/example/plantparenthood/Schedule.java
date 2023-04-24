@@ -17,7 +17,7 @@ public class Schedule {
     private long startDate;
     private long endDate;
 
-    public Schedule(int interval, long startDate, long endDate) {
+    /*public Schedule(int interval, long startDate, long endDate) {
         this.interval = interval;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -67,7 +67,7 @@ public class Schedule {
         // update plant watering schedule in calendar
         deletePlantSchedule(context, plant);
         addPlantSchedule(context, plant);
-    }
+    }*/
 
 
 

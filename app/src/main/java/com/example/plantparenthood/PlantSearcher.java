@@ -140,7 +140,7 @@ public class PlantSearcher extends AppCompatActivity
 
         if(plantsList.size() > 0)
         {
-            PlantCreatorAdapter plantAdapter = new PlantCreatorAdapter(plantsList, PlantSearcher.this, plantCreator);
+            PlantCreatorAdapter plantAdapter = new PlantCreatorAdapter(plantsList, PlantSearcher.this);
 
             for (int i = 0; i < plantsList.size(); i++)
             {

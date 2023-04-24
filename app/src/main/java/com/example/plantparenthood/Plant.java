@@ -5,7 +5,6 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "Plant")
 public class Plant
 {
     public static class PlantBuilder
@@ -17,7 +16,6 @@ public class Plant
         private String cycle;
         private String watering;
         private String sunlight;
-        @Ignore
         private Bitmap default_image;
         private String plantImageURL;
 
@@ -73,7 +71,6 @@ public class Plant
         }
     }
 
-    @PrimaryKey
     private int id;
     private String common_name;
     private String scientific_name;
@@ -81,9 +78,8 @@ public class Plant
     private String cycle;
     private String watering;
     private String sunlight;
-    @Ignore
     private Bitmap default_image;
-    private String plantImageURL;//images are large they will be refetched from api each time
+    private String plantImageURL;//images are large they will be refetched from api whenever required
 
     private Plant(PlantBuilder plantBuilder){
         this.id = plantBuilder.id;
@@ -140,37 +136,4 @@ public class Plant
     public void setPlantImageURL(String newURL) {
         plantImageURL = newURL;
     }
-
-    public Plant() {
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setCommon_name(String common_name) {
-        this.common_name = common_name;
-    }
-
-    public void setScientific_name(String scientific_name) {
-        this.scientific_name = scientific_name;
-    }
-
-    public void setOther_name(String other_name) {
-        this.other_name = other_name;
-    }
-
-    public void setCycle(String cycle) {
-        this.cycle = cycle;
-    }
-
-    public void setWatering(String watering) {
-        this.watering = watering;
-    }
-
-    public void setSunlight(String sunlight) {
-        this.sunlight = sunlight;
-    }
-
-    //I suppose I need constructor/settors
 }

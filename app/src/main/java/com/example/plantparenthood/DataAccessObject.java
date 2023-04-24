@@ -15,11 +15,11 @@ import io.reactivex.rxjava3.core.Single;
 public interface DataAccessObject
 {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public void addPlant(Plant plant);
+    public void addPlant(PlantSaveToDatabase plant);
 
     @Query("SELECT * FROM Plant WHERE id = :id")
-    public Plant loadPlantByID(int id);
+    public PlantSaveToDatabase loadPlantByID(int id);
 
     @Query("SELECT * FROM Plant")
-    public List<Plant> loadAllPlants();
+    public List<PlantSaveToDatabase> loadAllPlants();
 }

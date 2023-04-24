@@ -21,20 +21,30 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.List;
 
-public class PlantActivityCreatorAdapter extends RecyclerView.Adapter
+public class PlantActivityCreatorAdapter extends AbstractCreatorAdapter
 {
     private List<Plant> plantsList;
     private Plant_Activity plant_activity;
     private Context whatContext;
     private ImageView plantImage;
     private ImageView qrImage;
+    private DatabaseHandler databaseHandler;
+    private boolean[] changes;
+    private String[] newValues;
     public PlantActivityCreatorAdapter(List<Plant> newPlantsList, Plant_Activity plant_activity)
     {
         plantsList = newPlantsList;
         this.plant_activity = plant_activity;
         whatContext = plant_activity;
+        databaseHandler = DatabaseHandler.getDatabase(whatContext);
+        changes = new boolean[9];
+        Arrays.fill(changes,false);
+        newValues = new String[9];
+        Arrays.fill(newValues,"");
     }
 
     @NonNull
@@ -112,7 +122,9 @@ public class PlantActivityCreatorAdapter extends RecyclerView.Adapter
         ImageView editCommonName = newPopup.findViewById(R.id.editCommon);
         editCommonName.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View click) {
+            public void onClick(View click)
+            {
+                changes[1] = true;
                 modifyText(plantCommonName, view);
             }
         });
@@ -121,6 +133,7 @@ public class PlantActivityCreatorAdapter extends RecyclerView.Adapter
         editScientificName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View click) {
+                changes[2] = true;
                 modifyText(plantScientificName, view);
             }
         });
@@ -129,6 +142,7 @@ public class PlantActivityCreatorAdapter extends RecyclerView.Adapter
         editCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                changes[7] = true;
                 plant_activity.openCamera();
             }
         });
@@ -141,7 +155,13 @@ public class PlantActivityCreatorAdapter extends RecyclerView.Adapter
                 .setMessage("Changes will override previous information, this cannot be undone.")
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int id) {
+                    public void onClick(DialogInterface dialogInterface, int id)
+                    {
+                        UpdatePlant updatedPlant = new UpdatePlant();
+                        setChanges(updatedPlant);
+                        PlantCreator plantCreator = new PlantCreator(databaseHandler.getDataAccessObject());
+                        //plantCreator.updatePlant(thisPlant,updatedPlant, );
+
                         Toast.makeText(view.getContext(), "Applied changes", Toast.LENGTH_SHORT).show();
                         newPopupWindow.dismiss();
                     }
@@ -150,6 +170,8 @@ public class PlantActivityCreatorAdapter extends RecyclerView.Adapter
                     @Override
                     public void onClick(DialogInterface dialogInterface, int id) {
                         Toast.makeText(view.getContext(), "Reverted changes", Toast.LENGTH_SHORT).show();
+                        Arrays.fill(changes, false);
+                        //updatedPlant = new UpdatePlant();
                         newPopupWindow.dismiss();
                     }
                 })
@@ -176,5 +198,37 @@ public class PlantActivityCreatorAdapter extends RecyclerView.Adapter
     public void setCameraPreview(Bitmap image)
     {
         plantImage.setImageBitmap(image);
+    }
+
+    private void setChanges(UpdatePlant plant)
+    {
+        if(changes[1])
+        {
+            //plant.setCommon_name();
+        }
+        if(changes[2])
+        {
+
+        }
+        if(changes[3])
+        {
+
+        }
+        if(changes[4])
+        {
+
+        }
+        if(changes[5])
+        {
+
+        }
+        if(changes[6])
+        {
+
+        }
+        if(changes[7])
+        {
+
+        }
     }
 }
