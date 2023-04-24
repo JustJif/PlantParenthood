@@ -42,11 +42,11 @@ public class PlantCreator {
                 plantScientificNames[j] = scientific_name.getString(j);
             }
 
-            String[] plantOtherNames = new String[other_name.length()];
+            /*String[] plantOtherNames = new String[other_name.length()];
             for (int k = 0; k < scientific_name.length(); k++)
             {
                 plantOtherNames[k] = other_name.getString(k);
-            }
+            }*/
 
             String[] sunlightArray = new String[sunlight.length()];
             for (int j = 0; j < sunlight.length(); j++) {
@@ -56,7 +56,7 @@ public class PlantCreator {
             Plant newPlant = new Plant.PlantBuilder()
                     .setId(id).setCommon_name(common_name)
                     .setScientific_name(plantScientificNames[0])
-                    .setOther_name(plantOtherNames[0])
+                    //.setOther_name(plantOtherNames[0])
                     .setCycle(cycle)
                     .setWatering(watering)
                     .setSunlight(sunlightArray[0])
