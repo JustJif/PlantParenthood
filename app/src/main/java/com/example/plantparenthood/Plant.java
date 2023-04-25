@@ -125,15 +125,35 @@ public class Plant
         return default_image;
     }
 
-    public void setDefault_image(Bitmap newImage) {
-        default_image = newImage;
-    }
-
     public String getPlantImageURL() {
         return plantImageURL;
     }
 
-    public void setPlantImageURL(String newURL) {
-        plantImageURL = newURL;
+    public void setCommon_name(String common_name) {
+        this.common_name = common_name;
+    }
+
+    public void setScientific_name(String scientific_name) {
+        this.scientific_name = scientific_name;
+    }
+
+    public void setOther_name(String other_name) {
+        this.other_name = other_name;
+    }
+
+    public void setCycle(String cycle) {
+        this.cycle = cycle;
+    }
+
+    public void setWatering(String watering) {
+        this.watering = watering;
+    }
+
+    public void setSunlight(String sunlight) {
+        this.sunlight = sunlight;
+    }
+
+    public void setDefault_image(Bitmap newImage) {
+        default_image = newImage;
     }
 }
