@@ -10,24 +10,18 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.camera.core.CameraSelector;
-import androidx.camera.core.ImageAnalysis;
 import androidx.camera.core.ImageCapture;
 import androidx.camera.core.ImageCaptureException;
-import androidx.camera.core.ImageProxy;
 import androidx.camera.core.Preview;
 import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.camera.view.PreviewView;
@@ -42,7 +36,6 @@ import java.io.File;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class LightScannerActivity extends AppCompatActivity implements View.OnClickListener{
     PreviewView previewView;
@@ -80,11 +73,11 @@ public class LightScannerActivity extends AppCompatActivity implements View.OnCl
                 switch(item.getItemId())
                 {
                     case R.id.spaces:
-                        startActivity(new Intent(getApplicationContext(),Spaces.class));
+                        startActivity(new Intent(getApplicationContext(),Space_Activity.class));
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.plants:
-                        startActivity(new Intent(getApplicationContext(),Plants.class));
+                        startActivity(new Intent(getApplicationContext(),Plant_Activity.class));
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.home:
@@ -92,7 +85,7 @@ public class LightScannerActivity extends AppCompatActivity implements View.OnCl
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.calendar:
-                        startActivity(new Intent(getApplicationContext(),Calendar.class));
+                        startActivity(new Intent(getApplicationContext(), Calendar_Activity.class));
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.settings:

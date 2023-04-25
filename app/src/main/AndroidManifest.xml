@@ -30,7 +30,7 @@
             android:name=".LightScannerActivity"
             android:exported="false" />
         <activity
-            android:name=".Calendar"
+            android:name=".Calendar_Activity"
             android:exported="false" />
         <activity
             android:name=".Plant_Activity"

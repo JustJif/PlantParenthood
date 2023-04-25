@@ -2,10 +2,15 @@ package com.example.plantparenthood;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -14,47 +19,111 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.List;
 
-public class Calendar extends AppCompatActivity {
+public class Calendar_Activity extends AppCompatActivity {
 
-    CalendarView simpleCalendarView;
+    private CalendarView simpleCalendarView;
+    private DatabaseHandler plantDatabase;
+    private RecyclerView plantGrid;
+    private CalendarCreatorAdapter plantAdapter;
+
+    private boolean showSchedule = true;
+
+    private List<Plant> plantList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
+        plantDatabase = DatabaseHandler.getDatabase(getApplicationContext());
+
+
+
+        plantGrid = findViewById(R.id.plantGrid);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 1);
+        plantGrid.setLayoutManager(gridLayoutManager);
+
+        if (showSchedule){
+            AsyncTask.execute(new Runnable() {
+            @Override
+                public void run() {
+                    plantList = plantDatabase.getPlantsFromDB();
+                    Handler handler = new Handler(Looper.getMainLooper());
+                    handler.post(() -> createPlantGrid(plantGrid));
+                }
+            });
+        }
+        else {
+            AsyncTask.execute(new Runnable() {
+                @Override
+                //check for all the plants that need to be watered today
+                //remove all other plants
+                //TODO
+                public void run() {
+                    plantList = plantDatabase.getPlantsFromDB();
+                    Handler handler = new Handler(Looper.getMainLooper());
+                    handler.post(() -> createPlantGrid(plantGrid));
+                }
+            });
+        }
+
+
 
         simpleCalendarView = (CalendarView) findViewById(R.id.calendarView);
 
         Button addWateringSchedule = findViewById(R.id.addWateringScheduleButton);
-        Button updateWateringSchedule = findViewById(R.id.updateSchedule);
+        //Button updateWateringSchedule = findViewById(R.id.updateSchedule);
         Button deleteSchedule = findViewById(R.id.deleteSchedule);
         addWateringSchedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
             {
-                int interval = 1; // for daily watering
+                showSchedule = !showSchedule;
+                if (showSchedule){
+                    addWateringSchedule.setText("add watering schedule");
+                    AsyncTask.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            plantList = plantDatabase.getPlantsFromDB();
+                            Handler handler = new Handler(Looper.getMainLooper());
+                            handler.post(() -> createPlantGrid(plantGrid));
+                        }
+                    });
+                }
+                else {
+                    addWateringSchedule.setText("show watering schedules");
+                    AsyncTask.execute(new Runnable() {
+                        @Override
+                        //check for all the plants that need to be watered today
+                        //remove all other plants
+                        //TODO
+                        public void run() {
+                            plantList = plantDatabase.getPlantsFromDB();
+                            Handler handler = new Handler(Looper.getMainLooper());
+                            handler.post(() -> createPlantGrid(plantGrid));
+                        }
+                    });
+                }
+
+
+
+                /*int interval = 1; // for daily watering
                 Date startDate = new Date(); // current date
                 Date endDate = null; // null for ongoing schedule
                 Schedule schedule = new Schedule(interval, startDate, endDate);
 
                 // Call the addPlantSchedule method to add the schedule to the plant
-                //schedule.addPlantSchedule(Calendar.this, plant);
-                Toast.makeText(Calendar.this, "Watering schedule added", Toast.LENGTH_SHORT).show();
+                //schedule.addPlantSchedule(Calendar.this, );
+                Toast.makeText(Calendar_Activity.this, "Watering schedule added", Toast.LENGTH_SHORT).show();*/
             }
+
+
         });
 
-        updateWateringSchedule.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view) {
 
-            }
-        });
 
         deleteSchedule.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,14 +154,6 @@ public class Calendar extends AppCompatActivity {
         //Schedule plantSchedule = new Schedule(7, startDate, startDate);
 
         // add the plant watering schedule to the calendar
-
-
-
-
-
-
-
-
 
 
 
@@ -192,8 +253,13 @@ public class Calendar extends AppCompatActivity {
         simpleCalendarView.setDate(startDate);
 
 
-    }
 
+
+    }
+    public void createPlantGrid(RecyclerView plantGrid) {
+        plantAdapter = new CalendarCreatorAdapter(plantList, this);
+        plantGrid.setAdapter(plantAdapter);
+    }
 
 }
 

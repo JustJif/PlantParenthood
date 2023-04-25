@@ -42,7 +42,7 @@ public class Settings extends AppCompatActivity {
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.calendar:
-                        startActivity(new Intent(getApplicationContext(),Calendar.class));
+                        startActivity(new Intent(getApplicationContext(), Calendar_Activity.class));
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.settings:
