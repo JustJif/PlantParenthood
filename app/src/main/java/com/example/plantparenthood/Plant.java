@@ -5,7 +5,6 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "Plant")
 public class Plant
 {
     public static class PlantBuilder
@@ -17,7 +16,6 @@ public class Plant
         private String cycle;
         private String watering;
         private String sunlight;
-        @Ignore
         private Bitmap default_image;
         private String plantImageURL;
 
@@ -73,7 +71,6 @@ public class Plant
         }
     }
 
-    @PrimaryKey
     private int id;
     private String common_name;
     private String scientific_name;
@@ -81,9 +78,8 @@ public class Plant
     private String cycle;
     private String watering;
     private String sunlight;
-    @Ignore
     private Bitmap default_image;
-    private String plantImageURL;//images are large they will be refetched from api each time
+    private String plantImageURL;//images are large they will be refetched from api whenever required
 
     private Plant(PlantBuilder plantBuilder){
         this.id = plantBuilder.id;
@@ -129,23 +125,8 @@ public class Plant
         return default_image;
     }
 
-    public void setDefault_image(Bitmap newImage) {
-        default_image = newImage;
-    }
-
     public String getPlantImageURL() {
         return plantImageURL;
-    }
-
-    public void setPlantImageURL(String newURL) {
-        plantImageURL = newURL;
-    }
-
-    public Plant() {
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public void setCommon_name(String common_name) {
@@ -172,5 +153,7 @@ public class Plant
         this.sunlight = sunlight;
     }
 
-    //I suppose I need constructor/settors
+    public void setDefault_image(Bitmap newImage) {
+        default_image = newImage;
+    }
 }

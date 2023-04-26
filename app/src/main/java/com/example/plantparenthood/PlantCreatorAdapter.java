@@ -18,16 +18,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class PlantCreatorAdapter extends RecyclerView.Adapter {
+public class PlantCreatorAdapter extends AbstractCreatorAdapter
+{
     private ArrayList<Plant> plantsList;
     private Context openActivity;
-    private PlantCreator plantCreator;
 
-    public PlantCreatorAdapter(ArrayList<Plant> newPlantsList, Context newContext, PlantCreator newPlantCreator)
+    private DatabaseHandler databaseHandler;
+
+    public PlantCreatorAdapter(ArrayList<Plant> newPlantsList, Context newContext)
     {
         plantsList = newPlantsList;
         openActivity = newContext;
-        plantCreator = newPlantCreator;
+        databaseHandler = DatabaseHandler.getDatabase(newContext);
     }
 
     @NonNull
@@ -86,7 +88,7 @@ public class PlantCreatorAdapter extends RecyclerView.Adapter {
         Button addPlant = newPopup.findViewById(R.id.addPlant);
         addPlant.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                AsyncTask.execute(() -> plantCreator.addPlantToDatabase(thisPlant));
+                AsyncTask.execute(() -> databaseHandler.addPlantToDatabase(thisPlant));
                 Toast.makeText(view.getContext(), "Plant successfully added", Toast.LENGTH_SHORT).show();
             }
         });

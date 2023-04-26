@@ -73,7 +73,7 @@ public class Perenual extends com.example.plantparenthood.AbstractAPI
     }
 
     @Override
-    public void queryImageAPI(RequestQueue queue, Plant plant, PlantCreatorAdapter plantAdapter, int plantLocation)
+    public void queryImageAPI(RequestQueue queue, Plant plant, AbstractCreatorAdapter plantAdapter, int plantLocation)
     {
         //this is the default image URL
         if(plant.getPlantImageURL().equals(defaultImageURL))
