@@ -38,7 +38,7 @@ public class PPMobileNotificationFactory extends AbstractPPNotificationFactory {
     /**
      *
      * @param plantID The ID of the plant which needs to be watered.
-     * @param plantName The name of the plant which needs to be watered.s
+     * @param plantName The name of the plant which needs to be watered.
      * @param context
      * @return The NotificationCompat.Builder that has been created.
      */

@@ -1,6 +1,7 @@
 package com.example.plantparenthood;
 
 import android.app.AlertDialog;
+import android.app.Notification;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -90,6 +92,10 @@ public class PlantActivityCreatorAdapter extends RecyclerView.Adapter
             @Override
             public void run(){
                 qrImage.setImageBitmap(QRCodeManager.generateQRCodeBitmap(Integer.toString(thisPlant.getId()), qrImage.getWidth()));
+                PPMobileNotificationFactory.createNotificationChannel(qrImage.getContext()); //(DEBUG) notifications
+                NotificationManagerCompat notifMan = NotificationManagerCompat.from(qrImage.getContext());
+                Notification waterNoti = new PPMobileNotificationFactory().createWaterNotification(thisPlant.getId(), thisPlant.getCommon_name(), qrImage.getContext());
+                notifMan.notify(thisPlant.getId(),waterNoti);
                 qrImage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
