@@ -37,18 +37,15 @@ public class SpaceDataBaseHandler {
 
     public Space getSpaceFromDBbyID(int spaceID)
     {
-         loadedSpace = spaceDB.spaceDataAccessObject().loadSpaceByID(spaceID);
+        Space loadedSpace = spaceDB.spaceDataAccessObject().loadSpaceByID(spaceID);
         return loadedSpace;
     }
 
-    public List<Plant> getPlantsFromDB()
+    public List<Space> getSpacesFromDB()
     {
-        List<PlantSaveToDatabase> loadedPlants = plantDB.dataAccessObject().loadAllPlants();
-        List<Plant> formattedPlantOutput = new ArrayList<>();
-        for (int i = 0; i < loadedPlants.size(); i++)
-            formattedPlantOutput.add(plantCreator.createPlantFromDatabase(loadedPlants.get(i)));
-
-        return formattedPlantOutput;
+        List<Space> loadedSpaces = spaceDB.spaceDataAccessObject().loadAllSpaces();
+        List<Space> formattedSpaceOutput = new ArrayList<>();
+        return formattedSpaceOutput;
     }
 
     public void addSpaceToDatabase(Space space)
