@@ -75,7 +75,7 @@ public class SpaceAdapter extends AbstractCreatorAdapter
         Button addPlant = newPopup.findViewById(R.id.addPlant);
         addPlant.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                AsyncTask.execute(() -> databaseHandler.addPlantToDatabase(thisPlant));
+                AsyncTask.execute(() -> databaseHandler.addPlantToDatabase(thisSpace));
                 Toast.makeText(view.getContext(), "Plant successfully added", Toast.LENGTH_SHORT).show();
             }
         });
