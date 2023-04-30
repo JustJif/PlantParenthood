@@ -3,6 +3,7 @@ package com.example.plantparenthood;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
@@ -16,6 +17,7 @@ import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Space_Activity extends AppCompatActivity {
@@ -23,26 +25,30 @@ public class Space_Activity extends AppCompatActivity {
     private SpaceDataBaseHandler spaceHandler;
     public List<Space> spaceList;
 
+    private RecyclerView spaceGrid;
+
+    private SpaceActivityCreatorAdapter spaceAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_spaces);
-
+        spaceList = new ArrayList<>();
         spaceHandler = SpaceDataBaseHandler.getDatabase(getApplicationContext());
+
+        spaceGrid = findViewById(R.id.spaces_recycler_view);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(),1);
+        spaceGrid.setLayoutManager(gridLayoutManager);
 
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
                 spaceList = spaceHandler.getSpacesFromDB();
                 Handler handler = new Handler(Looper.getMainLooper());
-                handler.post(() -> createPlantGrid(plantGrid));
+                handler.post(() -> createSpaceGrid(spaceGrid));
             }
         });
 
-        public void createSpaceGrid(RecyclerView spaceGrid) {
-            plantAdapter = new PlantActivityCreatorAdapter(plantList, this);
-            plantGrid.setAdapter(plantAdapter);
-        }
 
         addSpace = (CardView) findViewById(R.id.addspace);
         addSpace.setOnClickListener(new View.OnClickListener() {
@@ -86,5 +92,9 @@ public class Space_Activity extends AppCompatActivity {
                 return false;
             }
         });
+    }
+    public void createSpaceGrid(RecyclerView spaceGrid) {
+        spaceAdapter = new SpaceActivityCreatorAdapter(spaceList, this);
+        spaceGrid.setAdapter(spaceAdapter);
     }
 }

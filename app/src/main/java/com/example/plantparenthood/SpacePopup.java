@@ -19,14 +19,5 @@ public class SpacePopup extends AppCompatActivity {
         EditText nameEditText = (EditText) findViewById(R.id.names);
         String fullName = nameEditText.getText().toString();
         Space newSpace = new Space(fullName);
-
-
-        AsyncTask.execute(new Runnable() {
-            @Override
-            public void run() {
-                Space_Activity.dataBase.addSpace(newSpace);
-
-            }
-        });
     }
 }
