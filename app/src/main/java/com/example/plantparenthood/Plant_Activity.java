@@ -153,4 +153,9 @@ public class Plant_Activity extends AppCompatActivity {
             camera.launch(cameraInt);
         }
     }
+
+    public void notifyGridOfUpdate(int position)
+    {
+        plantAdapter.notifyItemChanged(position);
+    }
 }
