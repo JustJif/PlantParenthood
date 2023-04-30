@@ -120,7 +120,7 @@ public class CalendarCreatorAdapter extends AbstractCreatorAdapter
                                 Calendar calendar = Calendar.getInstance();
                                 int wateringNumber = Integer.parseInt(userInput.getText().toString());
                                 calendar.add(Calendar.DATE, wateringNumber);
-                                Intent intent = new Intent(Intent.ACTION_INSERT_OR_EDIT);
+                                Intent intent = new Intent(Intent.ACTION_INSERT);
                                 intent.setType("vnd.android.cursor.item/event");
                                 intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, calendar.getTimeInMillis());
                                 intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, calendar.getTimeInMillis() + 60 * 60 * 1000);
