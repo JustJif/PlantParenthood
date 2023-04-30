@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.TimeZone;
 
 public class Schedule {
+    private int plantID;
     private int interval;
     private Date startDate;
     private Date endDate;

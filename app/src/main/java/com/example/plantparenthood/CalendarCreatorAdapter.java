@@ -1,14 +1,11 @@
 package com.example.plantparenthood;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.icu.util.TimeZone;
 import android.net.Uri;
 import android.provider.CalendarContract;
@@ -16,23 +13,18 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import android.provider.CalendarContract.Events;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
@@ -41,16 +33,11 @@ public class CalendarCreatorAdapter extends AbstractCreatorAdapter
     private List<Plant> plantsList;
     private Calendar_Activity calendar_activity;
     private Context whatContext;
-    private DatabaseHandler databaseHandler;
-    private boolean[] changes;
     public CalendarCreatorAdapter(List<Plant> newPlantsList, Calendar_Activity calendar_activity)
     {
         plantsList = newPlantsList;
         this.calendar_activity = calendar_activity;
         whatContext = calendar_activity;
-        databaseHandler = DatabaseHandler.getDatabase(whatContext);
-        changes = new boolean[9];
-        Arrays.fill(changes,false);
     }
 
     @NonNull
@@ -92,19 +79,31 @@ public class CalendarCreatorAdapter extends AbstractCreatorAdapter
                     Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
             // Permission already granted, no need to request again
-            Toast.makeText(whatContext, "Calendar permission already granted.", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(whatContext, "Calendar permission already granted.", Toast.LENGTH_SHORT).show();
         }
     }
 
+    private void setupPopup(View view, Plant thisPlant)
+    {
+        if(calendar_activity.getShowSchedule())
+        {
+            addExistingSchedulePopup(view,thisPlant);
+        }
+        else
+        {
+            addNewSchedulePopup(view,thisPlant);
+        }
+    }
 
-
-    private void setupPopup(View view, Plant thisPlant) {
+    private void addNewSchedulePopup(View view, Plant thisPlant)
+    {
         LayoutInflater layoutInflater = (LayoutInflater) view.getContext()
                 .getSystemService(view.getContext().LAYOUT_INFLATER_SERVICE);
-        View newPopup = layoutInflater.inflate(R.layout.activity_calendar_popup, null);
+        View newPopup = layoutInflater.inflate(R.layout.activity_calendar_popup_new_plant, null);
         //valid user input using user plant
-
         // Request the calendar permission
+
+
         requestCalendarPermission();
 
 
@@ -163,26 +162,24 @@ public class CalendarCreatorAdapter extends AbstractCreatorAdapter
                 newPopupWindow.dismiss();
             }
         });
-
-
-
-
-
-/*
-        private void modifyText(TextView editableText, View view) {
-        InputMethodManager inputMethodManager = (InputMethodManager) whatContext.getSystemService(Context.INPUT_METHOD_SERVICE);
-        if(!editableText.isEnabled())
-        {
-            editableText.setEnabled(true);
-            editableText.requestFocus();
-            inputMethodManager.showSoftInput(editableText, 1);
-        }
-        else
-        {
-            editableText.setEnabled(false);
-            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }*/
     }
 
+    private void addExistingSchedulePopup(View view, Plant thisPlant)
+    {
+        LayoutInflater layoutInflater = (LayoutInflater) view.getContext()
+                .getSystemService(view.getContext().LAYOUT_INFLATER_SERVICE);
+        View newPopup = layoutInflater.inflate(R.layout.activity_calendar_popup_existing_plant, null);
 
+        PopupWindow newPopupWindow = new PopupWindow(newPopup, LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT, true);
+        newPopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+
+        Button closeButton = newPopup.findViewById(R.id.closeButton);
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                newPopupWindow.dismiss();
+            }
+        });
+    }
 }

@@ -16,9 +16,5 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="3dp"
         android:text="Default Name"
-        android:maxLength="26"
         android:textColor="@android:color/black" />
-
-
-
 </androidx.cardview.widget.CardView>
