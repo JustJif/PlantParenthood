@@ -51,13 +51,6 @@
                         android:layout_marginTop="-40dp"
                         android:text="Add Watering Schedule" />
 
-                    <Button
-                        android:id="@+id/updateSchedule"
-                        android:layout_width="200dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="Update Watering Schedule" />
-
                     <TextView
                         android:id="@+id/textView2"
                         android:layout_width="200dp"
@@ -66,6 +59,11 @@
                         android:text="Scheduled plants for today"
                         android:textAlignment="center"
                         android:textSize="15dp" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/plantGrid"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
 
 
                 </LinearLayout>
