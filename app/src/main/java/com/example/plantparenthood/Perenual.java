@@ -76,14 +76,14 @@ public class Perenual extends com.example.plantparenthood.AbstractAPI
     public void queryImageAPI(RequestQueue queue, Plant plant, AbstractCreatorAdapter plantAdapter, int plantLocation)
     {
         //this is the default image URL
-        if(plant.getPlantImageURL().equals(defaultImageURL))
+        if(plant.getPlantImageURL().equals(defaultImageURL) || plant.getPlantImageURL().equals(""))
             return;
         ImageRequest imageRequest = new ImageRequest(plant.getPlantImageURL(), new Response.Listener<Bitmap>()
         {
             @Override
             public void onResponse(Bitmap response)
             {
-                System.out.println("Found image for: " + plant.getCommon_name());
+                //System.out.println("Found image for: " + plant.getCommon_name());
                 plant.setDefault_image(response);
                 plantAdapter.notifyItemChanged(plantLocation);
             }

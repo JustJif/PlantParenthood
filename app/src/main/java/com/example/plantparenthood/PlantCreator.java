@@ -35,7 +35,13 @@ public class PlantCreator {
             String cycle = currentPlant.getString("cycle");
             String watering = currentPlant.getString("watering");
             JSONArray sunlight = currentPlant.getJSONArray("sunlight");
-            JSONObject default_image = currentPlant.getJSONObject("default_image");
+
+            JSONObject default_image = null;
+            String imageURL = "";
+            if(currentPlant.has("default_image") && !currentPlant.isNull("default_image")) {
+                default_image = currentPlant.getJSONObject("default_image");
+                imageURL = default_image.getString("original_url");
+            }
 
             String[] plantScientificNames = new String[scientific_name.length()];
             for (int j = 0; j < scientific_name.length(); j++) {
@@ -60,11 +66,9 @@ public class PlantCreator {
                     .setCycle(cycle)
                     .setWatering(watering)
                     .setSunlight(sunlightArray[0])
-                    .setPlantImageURL(default_image.getString("original_url"))
+                    .setPlantImageURL(imageURL)
                     .setDefault_image(BitmapFactory.decodeResource(makethisplantUI.getApplicationContext().getResources(), R.drawable.defaultimage))
                     .buildPlant();
-
-            System.out.println(default_image.getString("original_url"));
 
             createdPlantObjects.add(newPlant);
         }

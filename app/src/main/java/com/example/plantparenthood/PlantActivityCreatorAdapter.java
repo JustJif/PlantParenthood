@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -35,13 +37,17 @@ public class PlantActivityCreatorAdapter extends AbstractCreatorAdapter
     private ImageView qrImage;
     private DatabaseHandler databaseHandler;
     private boolean[] changes;
+    private EditText[] textBoxes;
+    private Bitmap newImage;
+    private RecyclerView.ViewHolder holder;
     public PlantActivityCreatorAdapter(List<Plant> newPlantsList, Plant_Activity plant_activity)
     {
         plantsList = newPlantsList;
         this.plant_activity = plant_activity;
         whatContext = plant_activity;
         databaseHandler = DatabaseHandler.getDatabase(whatContext);
-        changes = new boolean[9];
+        changes = new boolean[3];
+        textBoxes = new EditText[2];
         Arrays.fill(changes,false);
     }
 
@@ -64,6 +70,8 @@ public class PlantActivityCreatorAdapter extends AbstractCreatorAdapter
         plantCommonName.setText(thisPlant.getCommon_name());
         plantImage.setImageBitmap(thisPlant.getDefault_image());
 
+        this.holder = holder;
+
         holder.itemView.setOnClickListener(view -> setupPopup(view, thisPlant));
     }
 
@@ -82,11 +90,13 @@ public class PlantActivityCreatorAdapter extends AbstractCreatorAdapter
                 LinearLayout.LayoutParams.MATCH_PARENT, true);
         newPopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
 
-        TextView plantCommonName = newPopup.findViewById(R.id.plantCommonName);
+        EditText plantCommonName = newPopup.findViewById(R.id.plantCommonName);
+        textBoxes[0] = plantCommonName;
         plantCommonName.setText(thisPlant.getCommon_name());
         plantCommonName.setEnabled(false);
 
-        TextView plantScientificName = newPopup.findViewById(R.id.plantScientificName);
+        EditText plantScientificName = newPopup.findViewById(R.id.plantScientificName);
+        textBoxes[1] = plantScientificName;
         plantScientificName.setText(thisPlant.getScientific_name());
         plantScientificName.setEnabled(false);
 
@@ -122,7 +132,7 @@ public class PlantActivityCreatorAdapter extends AbstractCreatorAdapter
             @Override
             public void onClick(View click)
             {
-                changes[1] = true;
+                changes[0] = true;
                 modifyText(plantCommonName, view);
             }
         });
@@ -131,7 +141,7 @@ public class PlantActivityCreatorAdapter extends AbstractCreatorAdapter
         editScientificName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View click) {
-                changes[2] = true;
+                changes[1] = true;
                 modifyText(plantScientificName, view);
             }
         });
@@ -140,7 +150,7 @@ public class PlantActivityCreatorAdapter extends AbstractCreatorAdapter
         editCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                changes[7] = true;
+                changes[2] = true;
                 plant_activity.openCamera();
             }
         });
@@ -155,11 +165,7 @@ public class PlantActivityCreatorAdapter extends AbstractCreatorAdapter
                     @Override
                     public void onClick(DialogInterface dialogInterface, int id)
                     {
-                        UpdatePlant updatedPlant = new UpdatePlant();
-                        setChanges(updatedPlant);
-                        PlantCreator plantCreator = new PlantCreator(databaseHandler.getDataAccessObject());
-                        //plantCreator.updatePlant(thisPlant,updatedPlant, );
-
+                        setChanges(thisPlant);
                         Toast.makeText(view.getContext(), "Applied changes", Toast.LENGTH_SHORT).show();
                         newPopupWindow.dismiss();
                     }
@@ -169,7 +175,6 @@ public class PlantActivityCreatorAdapter extends AbstractCreatorAdapter
                     public void onClick(DialogInterface dialogInterface, int id) {
                         Toast.makeText(view.getContext(), "Reverted changes", Toast.LENGTH_SHORT).show();
                         Arrays.fill(changes, false);
-                        //updatedPlant = new UpdatePlant();
                         newPopupWindow.dismiss();
                     }
                 })
@@ -196,37 +201,19 @@ public class PlantActivityCreatorAdapter extends AbstractCreatorAdapter
     public void setCameraPreview(Bitmap image)
     {
         plantImage.setImageBitmap(image);
+        newImage = image;
     }
 
-    private void setChanges(UpdatePlant plant)
+    private void setChanges(Plant plant)
     {
+        if(changes[0])
+            plant.setCommon_name(textBoxes[0].getText().toString());
         if(changes[1])
-        {
-            //plant.setCommon_name();
-        }
+            plant.setScientific_name(textBoxes[1].getText().toString());
         if(changes[2])
-        {
+            plant.setDefault_image(newImage);
 
-        }
-        if(changes[3])
-        {
-
-        }
-        if(changes[4])
-        {
-
-        }
-        if(changes[5])
-        {
-
-        }
-        if(changes[6])
-        {
-
-        }
-        if(changes[7])
-        {
-
-        }
+        AsyncTask.execute(() -> databaseHandler.addPlantToDatabase(plant));
+        this.notifyItemChanged(holder.getAdapterPosition());
     }
 }
