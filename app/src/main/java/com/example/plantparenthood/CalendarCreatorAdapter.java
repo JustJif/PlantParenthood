@@ -1,10 +1,16 @@
 package com.example.plantparenthood;
 
+import android.Manifest;
 import android.app.AlertDialog;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.icu.util.TimeZone;
+import android.net.Uri;
 import android.provider.CalendarContract;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -22,6 +28,8 @@ import android.widget.Toast;
 import android.provider.CalendarContract.Events;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.Arrays;
@@ -72,11 +80,32 @@ public class CalendarCreatorAdapter extends AbstractCreatorAdapter
         return plantsList.size();
     }
 
+
+    private void requestCalendarPermission() {
+        if (ContextCompat.checkSelfPermission(whatContext, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+            // Request WRITE_CALENDAR permission
+            ActivityCompat.requestPermissions((Calendar_Activity) whatContext, new String[]{Manifest.permission.WRITE_CALENDAR}, 100);
+        } else {
+            // Grant the app the grantUriPermission for CalendarProvider2
+            whatContext.grantUriPermission("com.android.providers.calendar.CalendarProvider2",
+                    Uri.parse("content://com.android.calendar/events"),
+                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+            // Permission already granted, no need to request again
+            Toast.makeText(whatContext, "Calendar permission already granted.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+
     private void setupPopup(View view, Plant thisPlant) {
         LayoutInflater layoutInflater = (LayoutInflater) view.getContext()
                 .getSystemService(view.getContext().LAYOUT_INFLATER_SERVICE);
         View newPopup = layoutInflater.inflate(R.layout.activity_calendar_popup, null);
         //valid user input using user plant
+
+        // Request the calendar permission
+        requestCalendarPermission();
 
 
         PopupWindow newPopupWindow = new PopupWindow(newPopup, LinearLayout.LayoutParams.MATCH_PARENT,
@@ -106,42 +135,36 @@ public class CalendarCreatorAdapter extends AbstractCreatorAdapter
 
                 // use the wateringNumber variable here
 
+                Calendar calendar = Calendar.getInstance();
+                calendar.add(Calendar.DATE, wateringNumber);
+                long startTime = calendar.getTimeInMillis();
+                long endTime = startTime + 60 * 60 * 1000;
 
+                ContentValues values = new ContentValues();
+                values.put(CalendarContract.Events.TITLE, thisPlant.getCommon_name() + " needs to be watered");
+                values.put(CalendarContract.Events.DESCRIPTION, "This plant needs to be watered.");
+                values.put(CalendarContract.Events.EVENT_LOCATION, "Home");
+                values.put(CalendarContract.Events.CALENDAR_ID, 1); // 1 is the default calendar ID
+                values.put(CalendarContract.Events.DTSTART, startTime);
+                values.put(CalendarContract.Events.DTEND, endTime);
+                values.put(CalendarContract.Events.ALL_DAY, false);
+                values.put(CalendarContract.Events.EVENT_TIMEZONE, TimeZone.getDefault().getID());
 
+                ContentResolver contentResolver = view.getContext().getContentResolver();
+                Uri uri = contentResolver.insert(CalendarContract.Events.CONTENT_URI, values);
 
-        new AlertDialog.Builder(whatContext)
-                        .setTitle("Confirm changes")
-                        .setMessage("Changes will override previous information, this cannot be undone.")
-                        .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int id) {
-                                // TODO: Use the wateringNumber to set the watering frequency for the plant
+                // Display a toast message
+                if (uri != null) {
+                    Toast.makeText(view.getContext(), "Event added to calendar", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(view.getContext(), "Failed to add event to calendar", Toast.LENGTH_SHORT).show();
+                }
 
-                                Calendar calendar = Calendar.getInstance();
-                                int wateringNumber = Integer.parseInt(userInput.getText().toString());
-                                calendar.add(Calendar.DATE, wateringNumber);
-                                Intent intent = new Intent(Intent.ACTION_INSERT);
-                                intent.setType("vnd.android.cursor.item/event");
-                                intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, calendar.getTimeInMillis());
-                                intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, calendar.getTimeInMillis() + 60 * 60 * 1000);
-                                intent.putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, false);
-                                intent.putExtra(Events.TITLE, thisPlant.getCommon_name() + " needs to be watered");
-                                intent.putExtra(Events.DESCRIPTION, "This plant needs to be watered.");
-                                whatContext.startActivity(intent);
-                                Toast.makeText(view.getContext(), "Applied changes", Toast.LENGTH_SHORT).show();
-                                newPopupWindow.dismiss();
-                            }
-                        })
-                        .setNegativeButton("Revert", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int id) {
-                                Toast.makeText(view.getContext(), "Reverted changes", Toast.LENGTH_SHORT).show();
-                                newPopupWindow.dismiss();
-                            }
-                        })
-                        .show();
+                newPopupWindow.dismiss();
             }
         });
+
+
 
 
 

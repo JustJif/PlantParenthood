@@ -43,7 +43,7 @@ public class Schedule {
         //plant.setEventId(eventId);
 
         // set the watering interval for the plant
-        //plant.setWateringInterval(interval);
+        // plant.setWateringInterval(interval);
     }
 
    /* public void deletePlantSchedule(Context context, Plant plant) {
