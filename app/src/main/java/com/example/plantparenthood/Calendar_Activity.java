@@ -15,11 +15,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.GridView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -34,11 +37,18 @@ public class Calendar_Activity extends AppCompatActivity {
 
     private List<Plant> plantList;
 
+
+    private TextView monthYearText;
+    private GridView calendarGridView;
+    private CalendarCreatorAdapter calendarAdapter;
+    private Button addPlantButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
         plantDatabase = DatabaseHandler.getDatabase(getApplicationContext());
+
 
 
 
@@ -72,6 +82,7 @@ public class Calendar_Activity extends AppCompatActivity {
 
 
 
+
         simpleCalendarView = (CalendarView) findViewById(R.id.calendarView);
 
         Button addWateringSchedule = findViewById(R.id.addWateringScheduleButton);
@@ -100,6 +111,10 @@ public class Calendar_Activity extends AppCompatActivity {
                         //check for all the plants that need to be watered today
                         //remove all other plants
                         //TODO
+                        // basically make an if else statement checking if a plant needs to be wwatered
+                        //maybe a for loop cheking through ever plant if it is in the thing if so it is displayed
+                        //the other one needs to take the amount of water and post an event for the plant to be watered
+                        //this one also needs to take the event and take it off of the event and marked as 'watered'
                         public void run() {
                             plantList = plantDatabase.getPlantsFromDB();
                             Handler handler = new Handler(Looper.getMainLooper());
@@ -202,16 +217,6 @@ public class Calendar_Activity extends AppCompatActivity {
 
 }
  */
-
-
-
-
-
-
-
-
-
-
 
         // Initialize and assign variable
         BottomNavigationView bottomNavigationView=findViewById(R.id.bottom_navigation);
