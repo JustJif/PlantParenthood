@@ -6,6 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -21,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.lang.reflect.Array;
@@ -38,6 +41,8 @@ public class SpaceActivityCreatorAdapter extends AbstractCreatorAdapter
     private EditText[] textBoxes;
     private Bitmap newImage;
     private RecyclerView.ViewHolder holder;
+
+    private List<Plant> plantList;
     public SpaceActivityCreatorAdapter(List<Space> newSpaceList, Space_Activity space_activity)
     {
         spaceList = newSpaceList;
@@ -47,6 +52,7 @@ public class SpaceActivityCreatorAdapter extends AbstractCreatorAdapter
         changes = new boolean[3];
         textBoxes = new EditText[2];
         Arrays.fill(changes,false);
+
     }
 
     @NonNull
@@ -63,8 +69,7 @@ public class SpaceActivityCreatorAdapter extends AbstractCreatorAdapter
     {
         Space thisSpace = spaceList.get(position);
         TextView spaceName = (TextView) holder.itemView.findViewById(R.id.spaceName);
-
-
+        spaceName.setText(thisSpace.getSpaceName());
         this.holder = holder;
 
         holder.itemView.setOnClickListener(view -> setupPopup(view, thisSpace));
@@ -86,12 +91,27 @@ public class SpaceActivityCreatorAdapter extends AbstractCreatorAdapter
         newPopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
 
 
-
         Button closeButton = newPopup.findViewById(R.id.closeButton);
         closeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 newPopupWindow.dismiss();
+            }
+        });
+
+        RecyclerView displayAllPlants = newPopup.findViewById(R.id.plant_recycler_view);
+
+        CardView addPlant = newPopup.findViewById(R.id.addplant);
+        addPlant.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AsyncTask.execute(() -> {
+                    plantList = DatabaseHandler.getDatabase(whatContext).getPlantsFromDB();
+                    InnerPlantRecyclerAdapter adapter = new InnerPlantRecyclerAdapter(plantList, whatContext);
+                    displayAllPlants.setAdapter(adapter);
+
+                });
             }
         });
     }

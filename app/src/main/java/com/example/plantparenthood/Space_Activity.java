@@ -44,6 +44,7 @@ public class Space_Activity extends AppCompatActivity {
             @Override
             public void run() {
                 spaceList = spaceHandler.getSpacesFromDB();
+                System.out.println(spaceList.size());
                 Handler handler = new Handler(Looper.getMainLooper());
                 handler.post(() -> createSpaceGrid(spaceGrid));
             }

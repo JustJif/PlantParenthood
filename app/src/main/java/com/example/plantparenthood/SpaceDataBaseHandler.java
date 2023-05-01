@@ -17,7 +17,7 @@ public class SpaceDataBaseHandler {
 
     private SpaceDataBaseHandler(Context context)
     {
-        spaceDB = Room.databaseBuilder(context, PlantDatabase.class, "SpaceDatabase").build();
+        spaceDB = Room.databaseBuilder(context, PlantDatabase.class, "PlantDatabase").build();
     }
 
     public static SpaceDataBaseHandler getDatabase(Context applicationContext)
@@ -44,12 +44,12 @@ public class SpaceDataBaseHandler {
     public List<Space> getSpacesFromDB()
     {
         List<Space> loadedSpaces = spaceDB.spaceDataAccessObject().loadAllSpaces();
-        List<Space> formattedSpaceOutput = new ArrayList<>();
-        return formattedSpaceOutput;
+        return loadedSpaces;
     }
 
     public void addSpaceToDatabase(Space space)
     {
         spaceDB.spaceDataAccessObject().addSpace(space);
+        System.out.println(getSpacesFromDB().size());
     }
 }
