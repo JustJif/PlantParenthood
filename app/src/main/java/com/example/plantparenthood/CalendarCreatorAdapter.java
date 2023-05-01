@@ -58,6 +58,26 @@ public class CalendarCreatorAdapter extends AbstractCreatorAdapter
         TextView plantCommonName = (TextView) holder.itemView.findViewById(R.id.plantCommonName);
         plantCommonName.setText(thisPlant.getCommon_name());
         holder.itemView.setOnClickListener(view -> setupPopup(view, thisPlant));
+        TextView scheduled = (TextView) holder.itemView.findViewById(R.id.isScheduled);
+        Watering water = thisPlant.getWateringCycle();
+        if(water != null)
+        {
+            int nextDayToWater = computeNextWatering(water);
+            String text = "Next watering in " + nextDayToWater;
+
+            if(nextDayToWater != 1)
+                text+= " days";
+            else
+                text+= " day";
+
+            scheduled.setText(text);
+            scheduled.setTextColor(0x995C5CFF);
+        }
+        else
+        {
+            scheduled.setText("No watering scheduled");
+            scheduled.setTextColor(0x99AA4A44);
+        }
     }
 
     @Override
@@ -65,7 +85,6 @@ public class CalendarCreatorAdapter extends AbstractCreatorAdapter
     {
         return plantsList.size();
     }
-
 
     private void requestCalendarPermission() {
         if (ContextCompat.checkSelfPermission(whatContext, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
@@ -126,33 +145,7 @@ public class CalendarCreatorAdapter extends AbstractCreatorAdapter
                     return;
                 }
 
-                System.out.println("New watering number is: " + wateringNumber);
                 schedule.addPlantSchedule(thisPlant,wateringNumber);
-                /*Calendar calendar = Calendar.getInstance();
-                calendar.add(Calendar.DATE, wateringNumber);
-                long startTime = calendar.getTimeInMillis();
-                long endTime = startTime + 60 * 60 * 1000;
-
-                ContentValues values = new ContentValues();
-                values.put(CalendarContract.Events.TITLE, thisPlant.getCommon_name() + " needs to be watered");
-                values.put(CalendarContract.Events.DESCRIPTION, "This plant needs to be watered.");
-                values.put(CalendarContract.Events.EVENT_LOCATION, "Home");
-                values.put(CalendarContract.Events.CALENDAR_ID, 1); // 1 is the default calendar ID
-                values.put(CalendarContract.Events.DTSTART, startTime);
-                values.put(CalendarContract.Events.DTEND, endTime);
-                values.put(CalendarContract.Events.ALL_DAY, false);
-                values.put(CalendarContract.Events.EVENT_TIMEZONE, TimeZone.getDefault().getID());
-
-                ContentResolver contentResolver = view.getContext().getContentResolver();
-                Uri uri = contentResolver.insert(CalendarContract.Events.CONTENT_URI, values);
-
-                // Display a toast message
-                if (uri != null) {
-                    Toast.makeText(view.getContext(), "Event added to calendar", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(view.getContext(), "Failed to add event to calendar", Toast.LENGTH_SHORT).show();
-                }*/
-
                 newPopupWindow.dismiss();
             }
         });
@@ -162,6 +155,8 @@ public class CalendarCreatorAdapter extends AbstractCreatorAdapter
     {
         LayoutInflater layoutInflater = (LayoutInflater) view.getContext().getSystemService(view.getContext().LAYOUT_INFLATER_SERVICE);
         View newPopup = layoutInflater.inflate(R.layout.activity_calendar_popup_existing_plant, null);
+
+        Watering water = thisPlant.getWateringCycle();
 
         PopupWindow newPopupWindow = new PopupWindow(newPopup, LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT, true);
@@ -174,5 +169,21 @@ public class CalendarCreatorAdapter extends AbstractCreatorAdapter
                 newPopupWindow.dismiss();
             }
         });
+
+        if(water != null) {
+            TextView lastWatered = newPopup.findViewById(R.id.lastWateringNum);
+            //lastWatered.setText(water.getLastWateredDay());
+
+            TextView nextDayToWater = newPopup.findViewById(R.id.nextWateringNumber);
+            //nextDayToWater.setText(computeNextWatering(water));
+
+            TextView wateringInterval = newPopup.findViewById(R.id.wateringIntervalNumber);
+            //wateringInterval.setText(water.getWateringInterval());
+        }
+    }
+
+    private int computeNextWatering(Watering water)
+    {
+        return (water.getLastWateredDay() - calendar_activity.getDayOfTheYear()) + water.getWateringInterval();
     }
 }

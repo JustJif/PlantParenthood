@@ -186,7 +186,7 @@ public class Calendar_Activity extends AppCompatActivity
         return showSchedule;
     }
 
-    private int getDayOfTheYear()
+    public int getDayOfTheYear()
     {
         int currentDay = 0;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)

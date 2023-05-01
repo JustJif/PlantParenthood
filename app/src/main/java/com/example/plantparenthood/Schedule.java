@@ -50,26 +50,19 @@ public class Schedule
     public List<Plant> findScheduledPlantsForToday(List<Plant> listOfPlants, int dateOnCalender)
     {
         List<Plant> toBeWateredToday = new ArrayList<>();
-        System.out.println("Size of plants list " + listOfPlants.size());
         for (int i = 0; i < listOfPlants.size(); i++)
         {
             Watering water = listOfPlants.get(i).getWateringCycle();
             if(water != null) {
-                System.out.println("Plant visited: " + i);
                 if (dateOnCalender - water.getLastWateredDay() == water.getWateringInterval())
-                {
                     toBeWateredToday.add(listOfPlants.get(i));
-                }
 
-                if (todaysDate - water.getLastWateredDay() == water.getWateringInterval())//if user misses their watering, add it to list
-                {
+                if (todaysDate - water.getLastWateredDay() > water.getWateringInterval())//if user misses their watering, add it to list
                     toBeWateredToday.add(listOfPlants.get(i));
-                }
             }
         }
 
         System.out.println("Number of plants is: " + toBeWateredToday.size());
-
         return toBeWateredToday;
     }
 }
