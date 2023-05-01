@@ -1,22 +1,16 @@
 package com.example.plantparenthood;
-import android.app.Activity;
 import android.content.Context;
-import android.nfc.Tag;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
-import com.example.plantparenthood.R;
 import com.example.plantparenthood.databinding.ActivityPlantSearcherBinding;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Database;
 import androidx.room.Room;
 
-import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,7 +24,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class PlantSearcher extends AppCompatActivity
 {
@@ -196,7 +189,7 @@ public class PlantSearcher extends AppCompatActivity
 
     public void passDataToCreator(JSONObject unparsedFile) throws JSONException
     {
-        plantCreator.addPlant(unparsedFile, this);
+        plantCreator.createPlant(unparsedFile,getApplicationContext(), this);
     }
 
     private void filterSearchResult()

@@ -3,24 +3,19 @@ package com.example.plantparenthood;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.PackageManagerCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -29,12 +24,9 @@ import android.provider.MediaStore;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
-import java.util.EventListener;
 import java.util.List;
 
 public class Plant_Activity extends AppCompatActivity {
@@ -83,7 +75,7 @@ public class Plant_Activity extends AppCompatActivity {
                         {
                             System.out.println("Image found");
                             Bitmap image = (Bitmap) result.getData().getExtras().get("data");
-                            plantAdapter.setCameraPreview(image);
+                            //plantAdapter.setCameraPreview(image);
                         }
                     }
                 }
@@ -110,7 +102,7 @@ public class Plant_Activity extends AppCompatActivity {
                         overridePendingTransition(0, 0);
                         return true;
                     case R.id.calendar:
-                        startActivity(new Intent(getApplicationContext(), Calendar.class));
+                        startActivity(new Intent(getApplicationContext(), Calendar_Activity.class));
                         overridePendingTransition(0, 0);
                         return true;
                     case R.id.settings:

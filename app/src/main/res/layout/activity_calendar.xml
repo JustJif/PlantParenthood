@@ -33,17 +33,6 @@
                         android:layout_height="wrap_content" />
 
                     <Button
-                        android:id="@+id/deleteSchedule"
-                        android:layout_width="40dp"
-                        android:layout_height="45dp"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="160dp"
-                        android:backgroundTint="#FF0000"
-                        app:icon="@drawable/baseline_restore_from_trash_24"
-                        app:iconGravity="top"
-                        app:iconSize="25dp" />
-
-                    <Button
                         android:id="@+id/addWateringScheduleButton"
                         android:layout_width="200dp"
                         android:layout_height="wrap_content"
@@ -51,21 +40,19 @@
                         android:layout_marginTop="-40dp"
                         android:text="Add Watering Schedule" />
 
-                    <Button
-                        android:id="@+id/updateSchedule"
-                        android:layout_width="200dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="Update Watering Schedule" />
-
                     <TextView
-                        android:id="@+id/textView2"
-                        android:layout_width="200dp"
+                        android:id="@+id/scheduleTask"
+                        android:layout_width="275dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="Scheduled plants for today"
+                        android:text="Scheduled plants to be watered on this day"
                         android:textAlignment="center"
-                        android:textSize="15dp" />
+                        android:textSize="14dp" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/plantGrid"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
 
 
                 </LinearLayout>
