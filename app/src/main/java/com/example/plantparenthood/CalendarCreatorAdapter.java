@@ -166,8 +166,7 @@ public class CalendarCreatorAdapter extends AbstractCreatorAdapter
 
     private void addExistingSchedulePopup(View view, Plant thisPlant)
     {
-        LayoutInflater layoutInflater = (LayoutInflater) view.getContext()
-                .getSystemService(view.getContext().LAYOUT_INFLATER_SERVICE);
+        LayoutInflater layoutInflater = (LayoutInflater) view.getContext().getSystemService(view.getContext().LAYOUT_INFLATER_SERVICE);
         View newPopup = layoutInflater.inflate(R.layout.activity_calendar_popup_existing_plant, null);
 
         PopupWindow newPopupWindow = new PopupWindow(newPopup, LinearLayout.LayoutParams.MATCH_PARENT,

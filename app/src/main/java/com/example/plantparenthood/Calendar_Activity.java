@@ -14,7 +14,6 @@ import android.os.Looper;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.CalendarView;
-import android.widget.GridView;
 import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -32,12 +31,39 @@ public class Calendar_Activity extends AppCompatActivity
     private CalendarCreatorAdapter creatorAdapter;
     private boolean showSchedule = true;
     private List<Plant> plantList;
+    private Schedule schedule;
 
+    public enum Month
+    {
+        January,
+        February,
+        March,
+        April,
+        May,
+        June,
+        July,
+        August,
+        September,
+        October,
+        November,
+        December;
 
-    private TextView monthYearText;
-    private GridView calendarGridView;
-    private CalendarCreatorAdapter calendarAdapter;
-    private Button addPlantButton;
+        public static Month getValue(int month)
+        {
+            Month[] months = Month.values();
+            Month currentMonth = null;
+            for (int i = 0; i < months.length; i++)
+            {
+                if(months[i].ordinal() == month)
+                {
+                    currentMonth = months[i];
+                    break;
+                }
+            }
+            return currentMonth;
+        }
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -49,6 +75,8 @@ public class Calendar_Activity extends AppCompatActivity
         plantGrid = findViewById(R.id.plantGrid);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 1);
         plantGrid.setLayoutManager(gridLayoutManager);
+
+        schedule = new Schedule();
 
         if (showSchedule){
             AsyncTask.execute(() ->
@@ -107,88 +135,17 @@ public class Calendar_Activity extends AppCompatActivity
                 });
             }
 
-
-
-            /*int interval = 1; // for daily watering
-            Date startDate = new Date(); // current date
-            Date endDate = null; // null for ongoing schedule
-            Schedule schedule = new Schedule(interval, startDate, endDate);
-
-            // Call the addPlantSchedule method to add the schedule to the plant
-            //schedule.addPlantSchedule(Calendar.this, );
-            Toast.makeText(Calendar_Activity.this, "Watering schedule added", Toast.LENGTH_SHORT).show();*/
         });
 
-        simpleCalendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-            @Override
-            public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int day)
-            {
-                System.out.println("Year is: " + year + " Month is: " + month + " Day is: " + day);
-            }
-        });
-
-
-        // get the start date for the watering schedule
-        long startDate = new Date().getTime();
-
-        int currentDay = 0;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            currentDay = LocalDateTime.now().getDayOfYear();
-        }
-
-        System.out.println(currentDay);
-        // create a new schedule for the plant with interval of 7 days
-        //Schedule plantSchedule = new Schedule(7, startDate, startDate);
-
-        // add the plant watering schedule to the calendar
-
-
-
-
-
-/*
-        updateWateringSchedule.setOnClickListener(new View.OnClickListener()
+        simpleCalendarView.setOnDateChangeListener((calendarView, year, month, day) ->
         {
-            @Override
-            public void onClick(View view) {
-                Schedule schedule = new Schedule(1, new Date(), null);
-                schedule.updatePlantSchedule(CalendarActivity.this, currentPlant);
-                Toast.makeText(CalendarActivity.this, "Watering schedule updated", Toast.LENGTH_SHORT).show();
-            }
+            System.out.println("Year is: " + year + " Month is: " + month + " Day is: " + day);
+            boolean isLeapYear = false;
+            if((year % 4) == 0)
+                isLeapYear = true;
+            System.out.println("Computed day is: " + computeDayOfYear(isLeapYear,Month.getValue(month-1),day));
+            System.out.println("Today is : " + getDayOfTheYear());
         });
-
-        deleteSchedule.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Schedule schedule = new Schedule(1, new Date(), null);
-                schedule.deletePlantSchedule(CalendarActivity.this, currentPlant);
-                Toast.makeText(CalendarActivity.this, "Watering schedule deleted", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        simpleCalendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-            @Override
-            public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int day)
-            {
-                // Get the plant that was watered on this day
-                currentPlant = Plant.getPlantByWateringDate(CalendarActivity.this, year, month, day);
-                if (currentPlant != null) {
-                    // Display the plant name on the button
-                    addWateringSchedule.setText("Mark " + currentPlant.getCommon_name() + " as watered");
-                    updateWateringSchedule.setVisibility(View.VISIBLE);
-                    deleteSchedule.setVisibility(View.VISIBLE);
-                } else {
-                    // Hide the buttons
-                    addWateringSchedule.setText("Add watering schedule");
-                    updateWateringSchedule.setVisibility(View.GONE);
-                    deleteSchedule.setVisibility(View.GONE);
-                }
-            }
-        });
-    }
-
-}
- */
 
         // Initialize and assign variable
         BottomNavigationView bottomNavigationView=findViewById(R.id.bottom_navigation);
@@ -227,7 +184,7 @@ public class Calendar_Activity extends AppCompatActivity
         });
 
         // highlight the start date on the calendar view
-        simpleCalendarView.setDate(startDate);
+        simpleCalendarView.setDate(new Date().getTime());
     }
     private void createPlantGrid(RecyclerView plantGrid, List<Plant> whatPlantsToDisply) {
         creatorAdapter = new CalendarCreatorAdapter(whatPlantsToDisply, this);
@@ -243,6 +200,66 @@ public class Calendar_Activity extends AppCompatActivity
     public boolean getShowSchedule()
     {
         return showSchedule;
+    }
+
+    private int getDayOfTheYear()
+    {
+        int currentDay = 0;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+        {
+            currentDay = LocalDateTime.now().getDayOfYear();
+        }
+
+        return  currentDay;
+    }
+
+    private int computeDayOfYear(boolean isLeapYear, Month month, int day)
+    {
+        int dayOfYear = day;
+
+        //december not included as its one month less
+        switch (month) {
+            case January:
+                dayOfYear+=31;
+                break;
+            case February:
+                dayOfYear+=59;
+                break;
+            case March:
+                dayOfYear+=90;
+                break;
+            case April:
+                dayOfYear+=120;
+                break;
+            case May:
+                dayOfYear+=151;
+                break;
+            case June:
+                dayOfYear+=181;
+                break;
+            case July:
+                dayOfYear+=212;
+                break;
+            case August:
+                dayOfYear+=243;
+                break;
+            case September:
+                dayOfYear+=273;
+                break;
+            case October:
+                dayOfYear+=304;
+                break;
+            case November:
+                dayOfYear+=334;
+                break;
+            default://january would be default, its just + 0 days
+                break;
+        }
+
+        if(isLeapYear && month.ordinal()-1 > Month.February.ordinal())
+            dayOfYear++;
+
+        return dayOfYear;
     }
 }
 
