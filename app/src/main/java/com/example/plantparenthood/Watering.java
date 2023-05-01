@@ -1,18 +1,25 @@
 package com.example.plantparenthood;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity
 public class Watering
 {
+    @PrimaryKey
     private int plantID; //used to see which plant this Watering cycle exists to
     private int lastWateredDay;
     private int wateringInterval;
     private int timesWatered;
 
-    public Watering(int plantId, int lastWateredDay, int wateringInterval, int timesWatered) {
-        this.plantID = plantId;
+    public Watering(int plantID, int lastWateredDay, int wateringInterval, int timesWatered)
+    {
+        this.plantID = plantID;
         this.lastWateredDay = lastWateredDay;
         this.wateringInterval = wateringInterval;
         this.timesWatered = timesWatered;
     }
+
     public int getPlantID() {
         return plantID;
     }

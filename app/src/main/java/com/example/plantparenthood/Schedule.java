@@ -7,7 +7,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.CalendarContract;
 
 import java.time.LocalDateTime;
@@ -30,6 +33,8 @@ public class Schedule
     {
         Watering wateringSchedule = new Watering(plant.getId(), todaysDate, wateringInterval, 0);
         plant.setWateringCycle(wateringSchedule);
+        AsyncTask.execute(() -> DatabaseHandler.getDatabase(null).saveWateringSchedule(wateringSchedule));
+
     }
 
     public void removePlantSchedule(Context context, Plant plant)
@@ -51,7 +56,7 @@ public class Schedule
             Watering water = listOfPlants.get(i).getWateringCycle();
             if(water != null) {
                 System.out.println("Plant visited: " + i);
-                if (dateOnCalender - water.getLastWateredDay() == water.getWateringInterval())//>= as a person may miss the watering date
+                if (dateOnCalender - water.getLastWateredDay() == water.getWateringInterval())
                 {
                     toBeWateredToday.add(listOfPlants.get(i));
                 }

@@ -15,9 +15,11 @@ public class DatabaseHandler {
     private static DatabaseHandler activeDatabase = null;
     private PlantCreator plantCreator;
     private PlantDatabase plantDB;
+    //private PlantDatabase wateringDB;
     private DatabaseHandler(Context context)
     {
         plantDB = Room.databaseBuilder(context, PlantDatabase.class, "PlantDatabase").build();
+        //wateringDB = Room.databaseBuilder(context, Water)
         plantCreator = new PlantCreator(plantDB.dataAccessObject());
     }
 
@@ -39,7 +41,7 @@ public class DatabaseHandler {
     public Plant getPlantFromDBbyID(int plantID)
     {
         PlantSaveToDatabase loadedPlant = plantDB.dataAccessObject().loadPlantByID(plantID);
-        Plant plant = plantCreator.createPlantFromDatabase(loadedPlant);
+        Plant plant = plantCreator.createPlantFromDatabase(loadedPlant, attachWateringSchedule(loadedPlant.getId()));
 
         return plant;
     }
@@ -48,8 +50,10 @@ public class DatabaseHandler {
     {
         List<PlantSaveToDatabase> loadedPlants = plantDB.dataAccessObject().loadAllPlants();
         List<Plant> formattedPlantOutput = new ArrayList<>();
-        for (int i = 0; i < loadedPlants.size(); i++)
-            formattedPlantOutput.add(plantCreator.createPlantFromDatabase(loadedPlants.get(i)));
+        for (int i = 0; i < loadedPlants.size(); i++) {
+            PlantSaveToDatabase thisPlant = loadedPlants.get(i);
+            formattedPlantOutput.add(plantCreator.createPlantFromDatabase(thisPlant, attachWateringSchedule(thisPlant.getId())));
+        }
 
         return formattedPlantOutput;
     }
@@ -58,5 +62,19 @@ public class DatabaseHandler {
     {
         PlantSaveToDatabase newPlant = new PlantSaveToDatabase(plant);
         plantDB.dataAccessObject().addPlant(newPlant);
+    }
+
+    /**
+     * As the database cannot save objects, watering schedule is fetched separately
+     * query the id of plantID, it may or may not be valid
+     */
+    private Watering attachWateringSchedule(int plantID)
+    {
+        return plantDB.wateringDao().loadWateringByID(plantID);
+    }
+
+    public void saveWateringSchedule(Watering watering)
+    {
+        plantDB.wateringDao().addWatering(watering);
     }
 }

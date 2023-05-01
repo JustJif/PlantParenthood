@@ -236,7 +236,7 @@ public class Calendar_Activity extends AppCompatActivity
             case November:
                 dayOfYear+=334;
                 break;
-            default://january would be default, its just + 0 days
+            default:
                 break;
         }
 

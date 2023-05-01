@@ -89,7 +89,7 @@ public class PlantCreator {
 
     }
 
-    public Plant createPlantFromDatabase(PlantSaveToDatabase newPlant) {
+    public Plant createPlantFromDatabase(PlantSaveToDatabase newPlant, Watering wateringCycle) {
         Plant.PlantBuilder plantBuilder = new Plant.PlantBuilder();
         plantBuilder.setId(newPlant.getId());
         plantBuilder.setCommon_name(newPlant.getCommon_name());
@@ -111,6 +111,9 @@ public class PlantCreator {
 
         if (!TextUtils.isEmpty(newPlant.getPlantImageURL()))
             plantBuilder.setPlantImageURL(newPlant.getPlantImageURL());
+
+        if(wateringCycle != null)
+            plantBuilder.setWateringCycle(wateringCycle);
 
         Plant plant = plantBuilder.buildPlant();
 
