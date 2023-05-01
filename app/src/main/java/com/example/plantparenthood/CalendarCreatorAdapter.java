@@ -33,11 +33,13 @@ public class CalendarCreatorAdapter extends AbstractCreatorAdapter
     private List<Plant> plantsList;
     private Calendar_Activity calendar_activity;
     private Context whatContext;
+    private Schedule schedule;
     public CalendarCreatorAdapter(List<Plant> newPlantsList, Calendar_Activity calendar_activity)
     {
         plantsList = newPlantsList;
         this.calendar_activity = calendar_activity;
         whatContext = calendar_activity;
+        schedule = new Schedule();
     }
 
     @NonNull
@@ -54,10 +56,7 @@ public class CalendarCreatorAdapter extends AbstractCreatorAdapter
     {
         Plant thisPlant = plantsList.get(position);
         TextView plantCommonName = (TextView) holder.itemView.findViewById(R.id.plantCommonName);
-
-
         plantCommonName.setText(thisPlant.getCommon_name());
-
         holder.itemView.setOnClickListener(view -> setupPopup(view, thisPlant));
     }
 
@@ -100,13 +99,8 @@ public class CalendarCreatorAdapter extends AbstractCreatorAdapter
         LayoutInflater layoutInflater = (LayoutInflater) view.getContext()
                 .getSystemService(view.getContext().LAYOUT_INFLATER_SERVICE);
         View newPopup = layoutInflater.inflate(R.layout.activity_calendar_popup_new_plant, null);
-        //valid user input using user plant
-        // Request the calendar permission
-
 
         requestCalendarPermission();
-
-
         PopupWindow newPopupWindow = new PopupWindow(newPopup, LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT, true);
         newPopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
@@ -132,9 +126,9 @@ public class CalendarCreatorAdapter extends AbstractCreatorAdapter
                     return;
                 }
 
-                // use the wateringNumber variable here
-
-                Calendar calendar = Calendar.getInstance();
+                System.out.println("New watering number is: " + wateringNumber);
+                schedule.addPlantSchedule(thisPlant,wateringNumber);
+                /*Calendar calendar = Calendar.getInstance();
                 calendar.add(Calendar.DATE, wateringNumber);
                 long startTime = calendar.getTimeInMillis();
                 long endTime = startTime + 60 * 60 * 1000;
@@ -157,7 +151,7 @@ public class CalendarCreatorAdapter extends AbstractCreatorAdapter
                     Toast.makeText(view.getContext(), "Event added to calendar", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(view.getContext(), "Failed to add event to calendar", Toast.LENGTH_SHORT).show();
-                }
+                }*/
 
                 newPopupWindow.dismiss();
             }

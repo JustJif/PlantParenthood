@@ -18,6 +18,7 @@ public class Plant
         private String sunlight;
         private Bitmap default_image;
         private String plantImageURL;
+        private Watering wateringCycle;
 
         public PlantBuilder() {}
         public PlantBuilder setId(int id) {
@@ -69,6 +70,9 @@ public class Plant
             Plant plant = new Plant(this);
             return plant;
         }
+        public void setWateringCycle(Watering wateringCycle) {
+            this.wateringCycle = wateringCycle;
+        }
     }
 
     private int id;
@@ -80,6 +84,7 @@ public class Plant
     private String sunlight;
     private Bitmap default_image;
     private String plantImageURL;//images are large they will be refetched from api whenever required
+    private Watering wateringCycle;
 
     private Plant(PlantBuilder plantBuilder){
         this.id = plantBuilder.id;
@@ -91,6 +96,7 @@ public class Plant
         this.sunlight = plantBuilder.sunlight;
         this.default_image = plantBuilder.default_image;
         this.plantImageURL = plantBuilder.plantImageURL;
+        this.wateringCycle = plantBuilder.wateringCycle;
     }
 
     public int getId() {
@@ -156,4 +162,8 @@ public class Plant
     public void setDefault_image(Bitmap newImage) {
         default_image = newImage;
     }
+
+    public Watering getWateringCycle() { return wateringCycle;}
+
+    public void setWateringCycle(Watering wateringCycle) {this.wateringCycle = wateringCycle;}
 }

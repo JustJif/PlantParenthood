@@ -32,7 +32,7 @@ public class Calendar_Activity extends AppCompatActivity
     private boolean showSchedule = true;
     private List<Plant> plantList;
     private Schedule schedule;
-
+    private int selectedDate;
     public enum Month
     {
         January,
@@ -77,16 +77,10 @@ public class Calendar_Activity extends AppCompatActivity
         plantGrid.setLayoutManager(gridLayoutManager);
 
         schedule = new Schedule();
-
-        if (showSchedule){
-            AsyncTask.execute(() ->
-            {
-                plantList = plantDatabase.getPlantsFromDB();
-                Handler handler = new Handler(Looper.getMainLooper());
-                List<Plant> todaysPlants = findScheduledPlants();
-                todaysPlants.add(plantList.get(0));//please remove this
-                handler.post(() -> createPlantGrid(plantGrid,todaysPlants));
-            });
+        selectedDate = getDayOfTheYear();
+        if (showSchedule)
+        {
+            checkListOfValidPlants();
         }
         else {
             //check for all the plants that need to be watered today
@@ -109,24 +103,11 @@ public class Calendar_Activity extends AppCompatActivity
             if (showSchedule){
                 addWateringSchedule.setText("add watering schedule");
                 scheduleTask.setText("Scheduled plants to be watered on this day");
-                AsyncTask.execute(() ->
-                {
-                    plantList = plantDatabase.getPlantsFromDB();
-                    Handler handler = new Handler(Looper.getMainLooper());
-                    List<Plant> todaysPlants = findScheduledPlants();
-                    handler.post(() -> createPlantGrid(plantGrid,todaysPlants));
-                });
+                checkListOfValidPlants();
             }
             else {
                 addWateringSchedule.setText("show watering schedules");
                 scheduleTask.setText("Select a plant to schedule a watering cycle");
-                //check for all the plants that need to be watered today
-                //remove all other plants
-                //TODO
-                // basically make an if else statement checking if a plant needs to be wwatered
-                //maybe a for loop checking through ever plant if it is in the thing if so it is displayed
-                //the other one needs to take the amount of water and post an event for the plant to be watered
-                //this one also needs to take the event and take it off of the event and marked as 'watered'
                 AsyncTask.execute(() ->
                 {
                     plantList = plantDatabase.getPlantsFromDB();
@@ -139,12 +120,15 @@ public class Calendar_Activity extends AppCompatActivity
 
         simpleCalendarView.setOnDateChangeListener((calendarView, year, month, day) ->
         {
-            System.out.println("Year is: " + year + " Month is: " + month + " Day is: " + day);
             boolean isLeapYear = false;
             if((year % 4) == 0)
                 isLeapYear = true;
-            System.out.println("Computed day is: " + computeDayOfYear(isLeapYear,Month.getValue(month-1),day));
-            System.out.println("Today is : " + getDayOfTheYear());
+
+            selectedDate = computeDayOfYear(isLeapYear,Month.getValue(month-1),day);
+            showSchedule = true;
+            addWateringSchedule.setText("add watering schedule");
+            scheduleTask.setText("Scheduled plants to be watered on this day");
+            checkListOfValidPlants();
         });
 
         // Initialize and assign variable
@@ -193,7 +177,7 @@ public class Calendar_Activity extends AppCompatActivity
 
     private List<Plant> findScheduledPlants()
     {
-        ArrayList<Plant> currentPlants = new ArrayList<>();
+        List<Plant> currentPlants = schedule.findScheduledPlantsForToday(plantList,selectedDate);
         return currentPlants;
     }
 
@@ -260,6 +244,17 @@ public class Calendar_Activity extends AppCompatActivity
             dayOfYear++;
 
         return dayOfYear;
+    }
+
+    private void checkListOfValidPlants()
+    {
+        AsyncTask.execute(() ->
+        {
+            plantList = plantDatabase.getPlantsFromDB();
+            Handler handler = new Handler(Looper.getMainLooper());
+            List<Plant> todaysPlants = findScheduledPlants();
+            handler.post(() -> createPlantGrid(plantGrid,todaysPlants));
+        });
     }
 }
 
