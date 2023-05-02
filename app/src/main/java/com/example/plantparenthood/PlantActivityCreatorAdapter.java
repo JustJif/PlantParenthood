@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -23,20 +25,30 @@ import androidx.annotation.NonNull;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Arrays;
 import java.util.List;
 
-public class PlantActivityCreatorAdapter extends RecyclerView.Adapter
+public class PlantActivityCreatorAdapter extends AbstractCreatorAdapter
 {
     private List<Plant> plantsList;
     private Plant_Activity plant_activity;
     private Context whatContext;
     private ImageView plantImage;
     private ImageView qrImage;
+    private DatabaseHandler databaseHandler;
+    private boolean[] changes;
+    private EditText[] textBoxes;
+    private Bitmap newImage;
+    private RecyclerView.ViewHolder holder;
     public PlantActivityCreatorAdapter(List<Plant> newPlantsList, Plant_Activity plant_activity)
     {
         plantsList = newPlantsList;
         this.plant_activity = plant_activity;
         whatContext = plant_activity;
+        databaseHandler = DatabaseHandler.getDatabase(whatContext);
+        changes = new boolean[3];
+        textBoxes = new EditText[2];
+        Arrays.fill(changes,false);
     }
 
     @NonNull
@@ -58,6 +70,8 @@ public class PlantActivityCreatorAdapter extends RecyclerView.Adapter
         plantCommonName.setText(thisPlant.getCommon_name());
         plantImage.setImageBitmap(thisPlant.getDefault_image());
 
+        this.holder = holder;
+
         holder.itemView.setOnClickListener(view -> setupPopup(view, thisPlant));
     }
 
@@ -76,11 +90,13 @@ public class PlantActivityCreatorAdapter extends RecyclerView.Adapter
                 LinearLayout.LayoutParams.MATCH_PARENT, true);
         newPopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
 
-        TextView plantCommonName = newPopup.findViewById(R.id.plantCommonName);
+        EditText plantCommonName = newPopup.findViewById(R.id.plantCommonName);
+        textBoxes[0] = plantCommonName;
         plantCommonName.setText(thisPlant.getCommon_name());
         plantCommonName.setEnabled(false);
 
-        TextView plantScientificName = newPopup.findViewById(R.id.plantScientificName);
+        EditText plantScientificName = newPopup.findViewById(R.id.plantScientificName);
+        textBoxes[1] = plantScientificName;
         plantScientificName.setText(thisPlant.getScientific_name());
         plantScientificName.setEnabled(false);
 
@@ -118,7 +134,9 @@ public class PlantActivityCreatorAdapter extends RecyclerView.Adapter
         ImageView editCommonName = newPopup.findViewById(R.id.editCommon);
         editCommonName.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View click) {
+            public void onClick(View click)
+            {
+                changes[0] = true;
                 modifyText(plantCommonName, view);
             }
         });
@@ -127,6 +145,7 @@ public class PlantActivityCreatorAdapter extends RecyclerView.Adapter
         editScientificName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View click) {
+                changes[1] = true;
                 modifyText(plantScientificName, view);
             }
         });
@@ -135,6 +154,7 @@ public class PlantActivityCreatorAdapter extends RecyclerView.Adapter
         editCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                changes[2] = true;
                 plant_activity.openCamera();
             }
         });
@@ -147,7 +167,9 @@ public class PlantActivityCreatorAdapter extends RecyclerView.Adapter
                 .setMessage("Changes will override previous information, this cannot be undone.")
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int id) {
+                    public void onClick(DialogInterface dialogInterface, int id)
+                    {
+                        setChanges(thisPlant);
                         Toast.makeText(view.getContext(), "Applied changes", Toast.LENGTH_SHORT).show();
                         newPopupWindow.dismiss();
                     }
@@ -156,6 +178,7 @@ public class PlantActivityCreatorAdapter extends RecyclerView.Adapter
                     @Override
                     public void onClick(DialogInterface dialogInterface, int id) {
                         Toast.makeText(view.getContext(), "Reverted changes", Toast.LENGTH_SHORT).show();
+                        Arrays.fill(changes, false);
                         newPopupWindow.dismiss();
                     }
                 })
@@ -182,5 +205,19 @@ public class PlantActivityCreatorAdapter extends RecyclerView.Adapter
     public void setCameraPreview(Bitmap image)
     {
         plantImage.setImageBitmap(image);
+        newImage = image;
+    }
+
+    private void setChanges(Plant plant)
+    {
+        if(changes[0])
+            plant.setCommon_name(textBoxes[0].getText().toString());
+        if(changes[1])
+            plant.setScientific_name(textBoxes[1].getText().toString());
+        if(changes[2])
+            plant.setDefault_image(newImage);
+
+        AsyncTask.execute(() -> databaseHandler.addPlantToDatabase(plant));
+        this.notifyItemChanged(holder.getAdapterPosition());
     }
 }

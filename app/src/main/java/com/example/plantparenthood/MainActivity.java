@@ -3,12 +3,6 @@ package com.example.plantparenthood;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
-import com.example.plantparenthood.databinding.ActivityMainBinding;
-
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -30,33 +24,33 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setSelectedItemId(R.id.home);
 
         // Perform item selected listener
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        bottomNavigationView
+                .setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-                switch (item.getItemId()) {
-                    case R.id.spaces:
-                        startActivity(new Intent(getApplicationContext(), Space_Activity.class));
-                        overridePendingTransition(0, 0);
-                        return true;
-                    case R.id.plants:
-                        startActivity(new Intent(getApplicationContext(), Plant_Activity.class));
-                        overridePendingTransition(0, 0);
-                        return true;
-                    case R.id.home:
-                        return true;
-                    case R.id.calendar:
-                        startActivity(new Intent(getApplicationContext(), Calendar.class));
-                        overridePendingTransition(0, 0);
-                        return true;
-                    case R.id.settings:
-                        startActivity(new Intent(getApplicationContext(), Settings.class));
-                        overridePendingTransition(0, 0);
-                        return true;
-                }
-                return false;
-            }
-        });
+                        switch (item.getItemId()) {
+                            case R.id.spaces:
+                                startActivity(new Intent(getApplicationContext(), Space_Activity.class));
+                                overridePendingTransition(0, 0);
+                                return true;
+                            case R.id.plants:
+                                startActivity(new Intent(getApplicationContext(), Plant_Activity.class));
+                                overridePendingTransition(0, 0);
+                                return true;
+                            case R.id.home:
+                                return true;
+                            case R.id.calendar:
+                                startActivity(new Intent(getApplicationContext(), Calendar_Activity.class));
+                                overridePendingTransition(0, 0);
+                                return true;
+                            case R.id.settings:
+                                startActivity(new Intent(getApplicationContext(), Settings.class));
+                                overridePendingTransition(0, 0);
+                                return true;
+                        }
+                        return false;
+                    }
+                });
     }
 }
-  

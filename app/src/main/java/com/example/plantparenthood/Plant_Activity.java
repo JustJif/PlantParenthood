@@ -3,24 +3,19 @@ package com.example.plantparenthood;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.PackageManagerCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -32,23 +27,22 @@ import android.view.View;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
-import java.util.EventListener;
 import java.util.List;
 
 public class Plant_Activity extends AppCompatActivity {
-    CardView addPlant;
-    List<Plant> plantList;
-    RecyclerView plantGrid;
-    PlantDatabase plantDB;
-    ActivityResultLauncher<Intent> camera;
-    PlantActivityCreatorAdapter plantAdapter;
+    private CardView addPlant;
+    private List<Plant> plantList;
+    private RecyclerView plantGrid;
+    private DatabaseHandler plantDatabase;
+    private ActivityResultLauncher<Intent> camera;
+    private PlantActivityCreatorAdapter plantAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plants);
         plantList = new ArrayList<>();
-        plantDB = Room.databaseBuilder(getApplicationContext(), PlantDatabase.class, "PlantDatabase").build();
+        plantDatabase = DatabaseHandler.getDatabase(getApplicationContext());
 
         plantGrid = findViewById(R.id.plant_recycler_view);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 1);
@@ -57,7 +51,7 @@ public class Plant_Activity extends AppCompatActivity {
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
-                getPlantsFromDB(plantDB.dataAccessObject());
+                plantList = plantDatabase.getPlantsFromDB();
                 Handler handler = new Handler(Looper.getMainLooper());
                 handler.post(() -> createPlantGrid(plantGrid));
             }
@@ -81,7 +75,7 @@ public class Plant_Activity extends AppCompatActivity {
                         {
                             System.out.println("Image found");
                             Bitmap image = (Bitmap) result.getData().getExtras().get("data");
-                            plantAdapter.setCameraPreview(image);
+                            //plantAdapter.setCameraPreview(image);
                         }
                     }
                 }
@@ -108,7 +102,7 @@ public class Plant_Activity extends AppCompatActivity {
                         overridePendingTransition(0, 0);
                         return true;
                     case R.id.calendar:
-                        startActivity(new Intent(getApplicationContext(), Calendar.class));
+                        startActivity(new Intent(getApplicationContext(), Calendar_Activity.class));
                         overridePendingTransition(0, 0);
                         return true;
                     case R.id.settings:
@@ -127,23 +121,14 @@ public class Plant_Activity extends AppCompatActivity {
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
-                getPlantsFromDB(plantDB.dataAccessObject());
+                plantList = plantDatabase.getPlantsFromDB();
                 Handler handler = new Handler(Looper.getMainLooper());
                 handler.post(() -> createPlantGrid(plantGrid));
             }
         });
     }
 
-    private void getPlantsFromDB(DataAccessObject dataAccessObject) {
-        plantList = dataAccessObject.loadAllPlants();
-    }
-
     public void createPlantGrid(RecyclerView plantGrid) {
-        //temp to set default image
-        for (int i = 0; i < plantList.size(); i++) {
-            plantList.get(i).setDefault_image(BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.defaultimage));
-        }
-
         plantAdapter = new PlantActivityCreatorAdapter(plantList, this);
         plantGrid.setAdapter(plantAdapter);
     }
@@ -159,5 +144,10 @@ public class Plant_Activity extends AppCompatActivity {
             Intent cameraInt = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             camera.launch(cameraInt);
         }
+    }
+
+    public void notifyGridOfUpdate(int position)
+    {
+        plantAdapter.notifyItemChanged(position);
     }
 }

@@ -16,8 +16,8 @@
         android:icon="@drawable/baseline_home_24"/>
     <item
         android:id="@+id/calendar"
-        android:title="Calendar"
-        android:icon="@drawable/baseline_calendar_month_24"/>
+        android:icon="@drawable/baseline_calendar_month_24"
+        android:title="Schedule" />
     <item
         android:id="@+id/settings"
         android:title="Settings"

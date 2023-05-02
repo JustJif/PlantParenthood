@@ -5,7 +5,6 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "Plant")
 public class Plant
 {
     public static class PlantBuilder
@@ -17,9 +16,9 @@ public class Plant
         private String cycle;
         private String watering;
         private String sunlight;
-        @Ignore
         private Bitmap default_image;
         private String plantImageURL;
+        private Watering wateringCycle;
 
         public PlantBuilder() {}
         public PlantBuilder setId(int id) {
@@ -71,9 +70,11 @@ public class Plant
             Plant plant = new Plant(this);
             return plant;
         }
+        public void setWateringCycle(Watering wateringCycle) {
+            this.wateringCycle = wateringCycle;
+        }
     }
 
-    @PrimaryKey
     private int id;
     private String common_name;
     private String scientific_name;
@@ -81,9 +82,9 @@ public class Plant
     private String cycle;
     private String watering;
     private String sunlight;
-    @Ignore
     private Bitmap default_image;
-    private String plantImageURL;//images are large they will be refetched from api each time
+    private String plantImageURL;//images are large they will be refetched from api whenever required
+    private Watering wateringCycle;
 
     private Plant(PlantBuilder plantBuilder){
         this.id = plantBuilder.id;
@@ -95,6 +96,7 @@ public class Plant
         this.sunlight = plantBuilder.sunlight;
         this.default_image = plantBuilder.default_image;
         this.plantImageURL = plantBuilder.plantImageURL;
+        this.wateringCycle = plantBuilder.wateringCycle;
     }
 
     public int getId() {
@@ -129,23 +131,8 @@ public class Plant
         return default_image;
     }
 
-    public void setDefault_image(Bitmap newImage) {
-        default_image = newImage;
-    }
-
     public String getPlantImageURL() {
         return plantImageURL;
-    }
-
-    public void setPlantImageURL(String newURL) {
-        plantImageURL = newURL;
-    }
-
-    public Plant() {
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public void setCommon_name(String common_name) {
@@ -172,5 +159,11 @@ public class Plant
         this.sunlight = sunlight;
     }
 
-    //I suppose I need constructor/settors
+    public void setDefault_image(Bitmap newImage) {
+        default_image = newImage;
+    }
+
+    public Watering getWateringCycle() { return wateringCycle;}
+
+    public void setWateringCycle(Watering wateringCycle) {this.wateringCycle = wateringCycle;}
 }
