@@ -6,6 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -153,6 +155,26 @@ public class PlantActivityCreatorAdapter extends AbstractCreatorAdapter
             }
         });
 
+        Button deletePlant = newPopup.findViewById(R.id.deletePlant);
+        deletePlant.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new AlertDialog.Builder(whatContext)
+                        .setTitle("Confirm Deletion")
+                        .setMessage("Are you sure you want to delete this plant?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                deletePlant(thisPlant);
+                                Toast.makeText(view.getContext(), "Plant deleted", Toast.LENGTH_SHORT).show();
+                                newPopupWindow.dismiss();
+                            }
+                        })
+                        .setNegativeButton("No", null)
+                        .show();
+            }
+        });
+
         Button updatePlant = newPopup.findViewById(R.id.updatePlant);
         updatePlant.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -214,4 +236,25 @@ public class PlantActivityCreatorAdapter extends AbstractCreatorAdapter
         AsyncTask.execute(() -> databaseHandler.addPlantToDatabase(plant));
         this.notifyItemChanged(holder.getAdapterPosition());
     }
+
+
+
+    private void deletePlant(Plant plant) {
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                databaseHandler.deletePlant(plant.getId());
+                plantsList.remove(plant);
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.post(() -> notifyItemRemoved(holder.getAdapterPosition()));
+            }
+        });
+    }
+
+
+
+
+
+
+
 }

@@ -115,6 +115,8 @@ public class Plant_Activity extends AppCompatActivity {
         });
     }
 
+
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -150,4 +152,7 @@ public class Plant_Activity extends AppCompatActivity {
     {
         plantAdapter.notifyItemChanged(position);
     }
+
+
+
 }

@@ -77,4 +77,13 @@ public class DatabaseHandler {
     {
         plantDB.wateringDao().addWatering(watering);
     }
+
+
+    public void deletePlant(int plantID) {
+        PlantSaveToDatabase plant = plantDB.dataAccessObject().loadPlantByID(plantID);
+        plantDB.dataAccessObject().deletePlant(plant);
+    }
+
+
 }
+
