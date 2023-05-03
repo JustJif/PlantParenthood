@@ -13,6 +13,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -20,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Group_Activity extends AppCompatActivity {
-    CardView addGroup;
+    Button addGroup;
     private GroupDataBaseHandler GroupHandler;
     public List<Group> groupList;
 
@@ -50,7 +51,7 @@ public class Group_Activity extends AppCompatActivity {
         });
 
 
-        addGroup = (CardView) findViewById(R.id.addGroup);
+        addGroup = (Button) findViewById(R.id.addGroup);
         addGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -28,19 +28,24 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <androidx.cardview.widget.CardView
-            android:id="@+id/addGroup"
             android:layout_width="match_parent"
             android:layout_height="120dp"
             android:layout_gravity="top|center"
-            android:layout_margin="5dp">
+            android:layout_margin="5dp"
+            app:cardBackgroundColor="@color/white">
 
-            <ImageView
-                android:layout_width="93dp"
-                android:layout_height="98dp"
+            <Button
+                android:id="@+id/addGroup"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:src="@drawable/baseline_add_24" />
+                android:backgroundTint="@color/plantparenthood_green"
+                android:text="Add Group"
+                android:textColor="@color/white" />
         </androidx.cardview.widget.CardView>
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_marginTop="130dp"

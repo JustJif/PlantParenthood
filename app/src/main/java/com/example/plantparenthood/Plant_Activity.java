@@ -23,6 +23,7 @@ import android.os.Looper;
 import android.provider.MediaStore;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -30,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Plant_Activity extends AppCompatActivity {
-    private CardView addPlant;
+    private Button addPlant;
     private List<Plant> plantList;
     private RecyclerView plantGrid;
     private DatabaseHandler plantDatabase;
@@ -56,7 +57,7 @@ public class Plant_Activity extends AppCompatActivity {
                 handler.post(() -> createPlantGrid(plantGrid));
             }
         });
-        addPlant = (CardView) findViewById(R.id.addplant);
+        addPlant = (Button) findViewById(R.id.addplant);
         addPlant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
