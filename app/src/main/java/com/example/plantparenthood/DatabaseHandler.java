@@ -40,8 +40,13 @@ public class DatabaseHandler {
 
     public Plant getPlantFromDBbyID(int plantID)
     {
+        Plant plant;
         PlantSaveToDatabase loadedPlant = plantDB.dataAccessObject().loadPlantByID(plantID);
-        Plant plant = plantCreator.createPlantFromDatabase(loadedPlant, attachWateringSchedule(loadedPlant.getId()));
+        if(loadedPlant==null){ //check for null when searching or it will be vulnerable to nullptrexceptions
+            plant = null;
+        }else{
+            plant = plantCreator.createPlantFromDatabase(loadedPlant, attachWateringSchedule(loadedPlant.getId()));
+        }
 
         return plant;
     }

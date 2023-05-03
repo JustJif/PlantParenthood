@@ -56,10 +56,10 @@ public class Space_Activity extends AppCompatActivity {
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.calendar:
-                        startActivity(new Intent(getApplicationContext(),Settings.class));
+                        startActivity(new Intent(getApplicationContext(), QRScannerMenuActivity.class));
                         overridePendingTransition(0,0);
                         return true;
-                    case R.id.settings:
+                    case R.id.scanner:
                         startActivity(new Intent(getApplicationContext(), Space_Activity.class));
                         overridePendingTransition(0,0);
                         return true;

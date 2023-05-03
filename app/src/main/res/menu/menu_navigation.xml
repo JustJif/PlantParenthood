@@ -19,8 +19,8 @@
         android:icon="@drawable/baseline_calendar_month_24"
         android:title="Schedule" />
     <item
-        android:id="@+id/settings"
-        android:title="Settings"
-        android:icon="@drawable/baseline_settings_24"/>
+        android:id="@+id/scanner"
+        android:title="Scanner"
+        android:icon="@drawable/baseline_qr_code_scanner_24"/>
 
 </menu>

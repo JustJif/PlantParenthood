@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -22,8 +21,6 @@ import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -131,8 +128,8 @@ public class Calendar_Activity extends AppCompatActivity
                         return true;
                     case R.id.calendar:
                         return true;
-                    case R.id.settings:
-                        startActivity(new Intent(getApplicationContext(),Settings.class));
+                    case R.id.scanner:
+                        startActivity(new Intent(getApplicationContext(), QRScannerMenuActivity.class));
                         overridePendingTransition(0,0);
                         return true;
                 }

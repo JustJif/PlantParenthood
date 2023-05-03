@@ -22,4 +22,13 @@
     <style name="Theme.PlantParenthood.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.PlantParenthood.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="Theme.PlantParenthood.NoActionBar.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.PlantParenthood.NoActionBar.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.PlantParenthood.NoActionBar.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

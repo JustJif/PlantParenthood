@@ -44,8 +44,8 @@ public class MainActivity extends AppCompatActivity {
                                 startActivity(new Intent(getApplicationContext(), Calendar_Activity.class));
                                 overridePendingTransition(0, 0);
                                 return true;
-                            case R.id.settings:
-                                startActivity(new Intent(getApplicationContext(), Settings.class));
+                            case R.id.scanner:
+                                startActivity(new Intent(getApplicationContext(), QRScannerMenuActivity.class));
                                 overridePendingTransition(0, 0);
                                 return true;
                         }
