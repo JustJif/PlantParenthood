@@ -5,6 +5,8 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.util.ArrayList;
+import java.util.List;
+
 @Entity(tableName = "Space")
 public class Space {
     @PrimaryKey
@@ -16,7 +18,7 @@ public class Space {
 
     private static int numSpaces;
 
-    private String plantID;
+    private String plantIDs;
 
     // Constructor
     public Space(String spaceName) {
@@ -25,6 +27,20 @@ public class Space {
         this.spaceLightLevel = 0;
         this.plantList = new ArrayList<Plant>();
         numSpaces++;
+    }
+    public void setPlantIDs(String plantIDs) {
+        this.plantIDs = plantIDs;
+    }
+
+    public String getPlantIDs() {
+        return plantIDs;
+    }
+    public ArrayList<Plant> getAllPlants() {
+        return plantList;
+    }
+
+    public void setAllPlants(ArrayList<Plant> plantList) {
+        this.plantList = plantList;
     }
 
     public int getSpaceID() {
@@ -43,13 +59,6 @@ public class Space {
         this.spaceLightLevel=spaceLightLevel;
     }
 
-    public String getPlantID() {
-        return plantID;
-    }
-
-    public void setPlantID(String plantID) {
-        this.plantID = plantID;
-    }
 
     public void parseStrings() {
         //later
@@ -66,7 +75,13 @@ public class Space {
 
     // Other Methods
     public void addPlant(Plant plant) {
+
         plantList.add(plant);
+        if(plantList.isEmpty()) {
+            plantIDs += plant.getId();
+        } else {
+            plantIDs += ("," + plant.getId());
+        }
     }
 
     public void removePlant(Plant plant) {

@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
+import android.text.Layout;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.lang.reflect.Array;
@@ -41,17 +43,21 @@ public class SpaceActivityCreatorAdapter extends AbstractCreatorAdapter
     private EditText[] textBoxes;
     private Bitmap newImage;
     private RecyclerView.ViewHolder holder;
-
     private List<Plant> plantList;
+    private boolean showPlantList = true;
+    private RecyclerView displayAllPlants;
+
+    private LayoutInflater layoutInflater;
+
+
     public SpaceActivityCreatorAdapter(List<Space> newSpaceList, Space_Activity space_activity)
     {
+
+        RecyclerView displayAllPlants = null;
         spaceList = newSpaceList;
         this.space_activity = space_activity;
         whatContext = space_activity;
         spaceDatabaseHandler = SpaceDataBaseHandler.getDatabase(whatContext);
-        changes = new boolean[3];
-        textBoxes = new EditText[2];
-        Arrays.fill(changes,false);
 
     }
 
@@ -85,7 +91,7 @@ public class SpaceActivityCreatorAdapter extends AbstractCreatorAdapter
         LayoutInflater layoutInflater = (LayoutInflater) view.getContext()
                 .getSystemService(view.getContext().LAYOUT_INFLATER_SERVICE);
         View newPopup = layoutInflater.inflate(R.layout.activity_space_popup, null);
-
+        displayAllPlants = newPopup.findViewById(R.id.plant_recycler_view);
         PopupWindow newPopupWindow = new PopupWindow(newPopup, LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT, true);
         newPopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
@@ -99,20 +105,61 @@ public class SpaceActivityCreatorAdapter extends AbstractCreatorAdapter
                 newPopupWindow.dismiss();
             }
         });
+        addPlantRecyclerView(newPopup);
 
-        RecyclerView displayAllPlants = newPopup.findViewById(R.id.plant_recycler_view);
 
-        CardView addPlant = newPopup.findViewById(R.id.addplant);
+
+    }
+
+    private void createPlants() {
+        InnerPlantRecyclerAdapter adapter = new InnerPlantRecyclerAdapter(this, spaceList.get(holder.getAdapterPosition()),plantList, whatContext);
+        displayAllPlants.setAdapter(adapter);
+    }
+
+    private void addPlantRecyclerView(View newPopup) {
+
+        showPlants();
+        Button addPlant = newPopup.findViewById(R.id.addPlant);
         addPlant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AsyncTask.execute(() -> {
-                    plantList = DatabaseHandler.getDatabase(whatContext).getPlantsFromDB();
-                    InnerPlantRecyclerAdapter adapter = new InnerPlantRecyclerAdapter(plantList, whatContext);
-                    displayAllPlants.setAdapter(adapter);
-
-                });
+                showPlantList = !showPlantList;
+                if(showPlantList) {
+                    showPlants();
+                } else {
+                    showAllPlants();
+                }
             }
         });
     }
+
+    public void showAllPlants() {
+
+        GridLayoutManager newGridLayoutManager = new GridLayoutManager(whatContext, 1 );
+        displayAllPlants.setLayoutManager(newGridLayoutManager);
+        ArrayList<Plant> notGrabbedPlants = spaceList.get(holder.getAdapterPosition()).getAllPlants();
+        AsyncTask.execute(() -> {
+            plantList = DatabaseHandler.getDatabase(whatContext).getPlantsFromDB();
+            for(int i = 0; i < plantList.size(); i++) {
+                for(int j = 0; j < notGrabbedPlants.size(); j++) {
+                    if(plantList.get(i).getId() == notGrabbedPlants.get(j).getId()) {
+                        plantList.remove(i);
+                        break;
+                    }
+                }
+            }
+            Handler plantDisplayHandler = new Handler(Looper.getMainLooper());
+            plantDisplayHandler.post(() -> createPlants());
+        });
+    }
+    public void showPlants() {
+
+        plantList = spaceList.get(holder.getAdapterPosition()).getAllPlants();
+        GridLayoutManager newGridLayoutManager = new GridLayoutManager(whatContext, 1 );
+        displayAllPlants.setLayoutManager(newGridLayoutManager);
+        InnerPlantRecyclerAdapter adapter = new InnerPlantRecyclerAdapter(this,spaceList.get(holder.getAdapterPosition()),plantList, whatContext);
+        displayAllPlants.setAdapter(adapter);
+    }
+
+
 }

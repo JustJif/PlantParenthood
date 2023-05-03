@@ -38,7 +38,17 @@ public class SpaceDataBaseHandler {
     public Space getSpaceFromDBbyID(int spaceID)
     {
         Space loadedSpace = spaceDB.spaceDataAccessObject().loadSpaceByID(spaceID);
+        ArrayList<Plant> plantArrayList = new ArrayList<Plant>();
+        loadPlantsIntoSpace(loadedSpace.getPlantIDs(),plantArrayList);
+        loadedSpace.setAllPlants(plantArrayList);
         return loadedSpace;
+    }
+
+    private void loadPlantsIntoSpace(String unparsed, ArrayList<Plant> plantArrayList) {
+        String[] parsed = unparsed.split(",");
+        for(int i = 0; i < parsed.length; i++) {
+            plantArrayList.add(DatabaseHandler.getDatabase(null).getPlantFromDBbyID(Integer.parseInt(parsed[i])));
+        }
     }
 
     public List<Space> getSpacesFromDB()

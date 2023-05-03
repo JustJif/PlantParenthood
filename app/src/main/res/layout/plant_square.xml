@@ -33,15 +33,5 @@
         android:maxLength="26"
         android:textColor="@android:color/black" />
 
-    <TextView
-        android:id="@+id/plantScientificNames"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="250dp"
-        android:layout_marginTop="3dp"
-        android:layout_toEndOf="@+id/plantCommonName"
-        android:text="Other names:"
-        android:textColor="@color/black" />
 
 </androidx.cardview.widget.CardView>
