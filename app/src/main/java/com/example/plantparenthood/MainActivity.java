@@ -14,6 +14,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        PPMobileNotificationFactory.createNotificationChannel(this);//need to call this at app start
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
