@@ -1,13 +1,21 @@
 package com.example.plantparenthood;
 
+import static com.example.plantparenthood.ComputeDate.computeDayMonth;
+import static com.example.plantparenthood.ComputeDate.getDayOfTheYear;
+
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.icu.util.TimeZone;
 import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.CalendarContract;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -25,6 +33,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
@@ -170,20 +179,77 @@ public class CalendarCreatorAdapter extends AbstractCreatorAdapter
             }
         });
 
-        if(water != null) {
-            TextView lastWatered = newPopup.findViewById(R.id.lastWateringNum);
-            //lastWatered.setText(water.getLastWateredDay());
+        Button waterPlant = newPopup.findViewById(R.id.waterPlant);
+        waterPlant.setOnClickListener(view1 ->
+        {
+            AsyncTask.execute(() ->
+            {
+                thisPlant.waterPlant(getDayOfTheYear());
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.post(() -> calculateWateringCycle(newPopup,water));
+            });
+        });
 
-            TextView nextDayToWater = newPopup.findViewById(R.id.nextWateringNumber);
-            //nextDayToWater.setText(computeNextWatering(water));
+        Button updateSchedule = newPopup.findViewById(R.id.updateSchedule);
+        updateSchedule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                //water.deleteWateringSchedule();
+            }
+        });
 
-            TextView wateringInterval = newPopup.findViewById(R.id.wateringIntervalNumber);
-            //wateringInterval.setText(water.getWateringInterval());
-        }
+        Button deleteSchedule = newPopup.findViewById(R.id.removeSchedule);
+        deleteSchedule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                new AlertDialog.Builder(whatContext)
+                    .setTitle("Confirm deletion")
+                    .setMessage("This wil remove the watering schedule, this cannot be undone.")
+                    .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int id)
+                        {
+                            AsyncTask.execute(() -> water.deleteWateringSchedule());
+                            Toast.makeText(view.getContext(), "Applied changes", Toast.LENGTH_SHORT).show();
+                            notifyDataSetChanged();
+                            newPopupWindow.dismiss();
+                        }
+                    })
+                    .setNegativeButton("Revert", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int id) {
+                            Toast.makeText(view.getContext(), "Reverted changes", Toast.LENGTH_SHORT).show();
+                            newPopupWindow.dismiss();
+                        }
+                    })
+                    .show();
+            }
+        });
+
+
+        calculateWateringCycle(newPopup, water);
     }
 
     private int computeNextWatering(Watering water)
     {
-        return (water.getLastWateredDay() - calendar_activity.getDayOfTheYear()) + water.getWateringInterval();
+        return (water.getLastWateredDay() - getDayOfTheYear()) + water.getWateringInterval();
+    }
+
+    private void calculateWateringCycle(View newPopup, Watering water)
+    {
+        if(water != null) {
+            TextView lastWatered = newPopup.findViewById(R.id.lastWateringNum);
+            lastWatered.setText(computeDayMonth(false, water.getLastWateredDay()));
+
+            TextView nextDayToWater = newPopup.findViewById(R.id.nextWateringNumber);
+            int nextWateringDay = water.getLastWateredDay() + water.getWateringInterval();
+            nextDayToWater.setText(computeDayMonth(false, nextWateringDay));
+
+            String wateringInt = "Every " + water.getWateringInterval() + (water.getWateringInterval() > 1 ? " days" : " day");
+            TextView wateringInterval = newPopup.findViewById(R.id.wateringIntervalNumber);
+            wateringInterval.setText(wateringInt);
+        }
     }
 }

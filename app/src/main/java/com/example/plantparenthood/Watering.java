@@ -51,4 +51,9 @@ public class Watering
     public void iterateTimesWater() {
         timesWatered++;
     }
+
+    public void deleteWateringSchedule()
+    {
+        DatabaseHandler.getDatabase(null).deleteWateringSchedule(this);
+    }
 }
