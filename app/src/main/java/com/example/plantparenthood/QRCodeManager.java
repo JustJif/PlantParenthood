@@ -35,7 +35,9 @@ public class QRCodeManager {
                     pixels[offset+x] = bitMatrix.get(x, y)? 0xFF000000: 0xFFFFFFFF;
                 }
             }
-            qrCodeBitmap.setPixels(pixels, 0, size, 0, 0, size, size);
+            if(qrCodeBitmap != null){
+                qrCodeBitmap.setPixels(pixels, 0, size, 0, 0, size, size);
+            }
 
         }catch(WriterException e){
             e.printStackTrace();
