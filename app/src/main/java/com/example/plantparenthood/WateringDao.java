@@ -1,6 +1,7 @@
 package com.example.plantparenthood;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -13,4 +14,6 @@ public interface WateringDao
 
     @Query("SELECT * FROM Watering WHERE plantID = :id")
     Watering loadWateringByID(int id);
+    @Delete
+    void deleteSchedule(Watering wateringCycle);
 }

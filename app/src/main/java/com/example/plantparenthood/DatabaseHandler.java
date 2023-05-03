@@ -77,4 +77,9 @@ public class DatabaseHandler {
     {
         plantDB.wateringDao().addWatering(watering);
     }
+
+    public void deleteWateringSchedule(Watering watering)
+    {
+     plantDB.wateringDao().deleteSchedule(watering);
+    }
 }

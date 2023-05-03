@@ -1,5 +1,9 @@
 package com.example.plantparenthood;
 
+import static com.example.plantparenthood.ComputeDate.Month;
+import static com.example.plantparenthood.ComputeDate.computeDayOfYear;
+import static com.example.plantparenthood.ComputeDate.getDayOfTheYear;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -33,37 +37,6 @@ public class Calendar_Activity extends AppCompatActivity
     private List<Plant> plantList;
     private Schedule schedule;
     private int selectedDate;
-    public enum Month
-    {
-        January,
-        February,
-        March,
-        April,
-        May,
-        June,
-        July,
-        August,
-        September,
-        October,
-        November,
-        December;
-
-        public static Month getValue(int month)
-        {
-            Month[] months = Month.values();
-            Month currentMonth = null;
-            for (int i = 0; i < months.length; i++)
-            {
-                if(months[i].ordinal() == month)
-                {
-                    currentMonth = months[i];
-                    break;
-                }
-            }
-            return currentMonth;
-        }
-    }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -170,8 +143,8 @@ public class Calendar_Activity extends AppCompatActivity
         // highlight the start date on the calendar view
         simpleCalendarView.setDate(new Date().getTime());
     }
-    private void createPlantGrid(RecyclerView plantGrid, List<Plant> whatPlantsToDisply) {
-        creatorAdapter = new CalendarCreatorAdapter(whatPlantsToDisply, this);
+    private void createPlantGrid(RecyclerView plantGrid, List<Plant> whatPlantsToDisplay) {
+        creatorAdapter = new CalendarCreatorAdapter(whatPlantsToDisplay, this);
         plantGrid.setAdapter(creatorAdapter);
     }
 
@@ -184,66 +157,6 @@ public class Calendar_Activity extends AppCompatActivity
     public boolean getShowSchedule()
     {
         return showSchedule;
-    }
-
-    public int getDayOfTheYear()
-    {
-        int currentDay = 0;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-        {
-            currentDay = LocalDateTime.now().getDayOfYear();
-        }
-
-        return  currentDay;
-    }
-
-    private int computeDayOfYear(boolean isLeapYear, Month month, int day)
-    {
-        int dayOfYear = day;
-
-        //december not included as its one month less
-        switch (month) {
-            case January:
-                dayOfYear+=31;
-                break;
-            case February:
-                dayOfYear+=59;
-                break;
-            case March:
-                dayOfYear+=90;
-                break;
-            case April:
-                dayOfYear+=120;
-                break;
-            case May:
-                dayOfYear+=151;
-                break;
-            case June:
-                dayOfYear+=181;
-                break;
-            case July:
-                dayOfYear+=212;
-                break;
-            case August:
-                dayOfYear+=243;
-                break;
-            case September:
-                dayOfYear+=273;
-                break;
-            case October:
-                dayOfYear+=304;
-                break;
-            case November:
-                dayOfYear+=334;
-                break;
-            default:
-                break;
-        }
-
-        if(isLeapYear && month.ordinal()-1 > Month.February.ordinal())
-            dayOfYear++;
-
-        return dayOfYear;
     }
 
     private void checkListOfValidPlants()
