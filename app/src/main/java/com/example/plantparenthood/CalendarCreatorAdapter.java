@@ -1,5 +1,8 @@
 package com.example.plantparenthood;
 
+import static com.example.plantparenthood.ComputeDate.computeDayMonth;
+import static com.example.plantparenthood.ComputeDate.getDayOfTheYear;
+
 import android.Manifest;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -8,6 +11,9 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.icu.util.TimeZone;
 import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.CalendarContract;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -170,20 +176,38 @@ public class CalendarCreatorAdapter extends AbstractCreatorAdapter
             }
         });
 
-        if(water != null) {
-            TextView lastWatered = newPopup.findViewById(R.id.lastWateringNum);
-            //lastWatered.setText(water.getLastWateredDay());
+        Button waterPlant = newPopup.findViewById(R.id.waterPlant);
+        waterPlant.setOnClickListener(view1 ->
+        {
+            AsyncTask.execute(() ->
+            {
+                thisPlant.waterPlant(getDayOfTheYear());
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.post(() -> calculateWateringCycle(newPopup,water));
+            });
+        });
 
-            TextView nextDayToWater = newPopup.findViewById(R.id.nextWateringNumber);
-            //nextDayToWater.setText(computeNextWatering(water));
-
-            TextView wateringInterval = newPopup.findViewById(R.id.wateringIntervalNumber);
-            //wateringInterval.setText(water.getWateringInterval());
-        }
+        calculateWateringCycle(newPopup, water);
     }
 
     private int computeNextWatering(Watering water)
     {
-        return (water.getLastWateredDay() - calendar_activity.getDayOfTheYear()) + water.getWateringInterval();
+        return (water.getLastWateredDay() - getDayOfTheYear()) + water.getWateringInterval();
+    }
+
+    private void calculateWateringCycle(View newPopup, Watering water)
+    {
+        if(water != null) {
+            TextView lastWatered = newPopup.findViewById(R.id.lastWateringNum);
+            lastWatered.setText(computeDayMonth(false, water.getLastWateredDay()));
+
+            TextView nextDayToWater = newPopup.findViewById(R.id.nextWateringNumber);
+            int nextWateringDay = water.getLastWateredDay() - water.getWateringInterval();
+            nextDayToWater.setText(computeDayMonth(false, nextWateringDay));
+
+            String wateringInt = "Every " + water.getWateringInterval() + (water.getWateringInterval() > 1 ? " days" : " day");
+            TextView wateringInterval = newPopup.findViewById(R.id.wateringIntervalNumber);
+            wateringInterval.setText(wateringInt);
+        }
     }
 }
