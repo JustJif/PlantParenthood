@@ -18,11 +18,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class SpaceManager extends RecyclerView.Adapter {
+public class GroupManager extends RecyclerView.Adapter {
     private ArrayList<Plant> plantsList;
     private Context openActivity;
 
-    public SpaceManager(ArrayList<Plant> newPlantsList, Context newContext) {
+    public GroupManager(ArrayList<Plant> newPlantsList, Context newContext) {
         plantsList = newPlantsList;
         openActivity = newContext;
     }

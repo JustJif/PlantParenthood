@@ -1,33 +1,30 @@
 package com.example.plantparenthood;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class SpaceAdapter extends AbstractCreatorAdapter
+public class GroupAdapter extends AbstractCreatorAdapter
 {
-    private ArrayList<Space> spaceList;
+    private ArrayList<Group> groupList;
     private Context openActivity;
 
     private DatabaseHandler databaseHandler;
 
-    public SpaceAdapter(ArrayList<Space> newSpaceList, Context newContext)
+    public GroupAdapter(ArrayList<Group> newGroupList, Context newContext)
     {
-        spaceList = newSpaceList;
+        groupList = newGroupList;
         openActivity = newContext;
         databaseHandler = DatabaseHandler.getDatabase(newContext);
     }
@@ -35,34 +32,34 @@ public class SpaceAdapter extends AbstractCreatorAdapter
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View currentView = LayoutInflater.from(parent.getContext()).inflate(R.layout.space_square, parent, false);
+        View currentView = LayoutInflater.from(parent.getContext()).inflate(R.layout.group_square, parent, false);
         RecyclerView.ViewHolder viewHolder = new RecyclerView.ViewHolder(currentView) {};
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        Space thisSpace = spaceList.get(position);
+        Group thisGroup = groupList.get(position);
 
-        holder.itemView.setOnClickListener(view -> setupPopup(view, thisSpace));
+        holder.itemView.setOnClickListener(view -> setupPopup(view, thisGroup));
     }
 
     @Override
     public int getItemCount() {
-        return spaceList.size();
+        return groupList.size();
     }
 
-    private void setupPopup(View view, Space thisSpace) {
+    private void setupPopup(View view, Group thisGroup) {
         LayoutInflater layoutInflater = (LayoutInflater) view.getContext()
                 .getSystemService(view.getContext().LAYOUT_INFLATER_SERVICE);
-        View newPopup = layoutInflater.inflate(R.layout.activity_space_popup, null);
+        View newPopup = layoutInflater.inflate(R.layout.activity_group_popup, null);
 
         PopupWindow newPopupWindow = new PopupWindow(newPopup, LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT, true);
         newPopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
 
-        TextView spaceName = newPopup.findViewById(R.id.spaceName);
-        spaceName.setText(thisSpace.getSpaceName());
+        TextView GroupName = newPopup.findViewById(R.id.GroupName);
+        GroupName.setText(thisGroup.getGroupName());
 
         Button closeButton = newPopup.findViewById(R.id.closeButton);
         closeButton.setOnClickListener(new View.OnClickListener() {

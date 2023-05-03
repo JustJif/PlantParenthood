@@ -91,8 +91,8 @@ public class Plant_Activity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
-                    case R.id.spaces:
-                        startActivity(new Intent(getApplicationContext(), Space_Activity.class));
+                    case R.id.Groups:
+                        startActivity(new Intent(getApplicationContext(), Group_Activity.class));
                         overridePendingTransition(0, 0);
                         return true;
                     case R.id.plants:

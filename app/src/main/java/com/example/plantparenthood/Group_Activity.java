@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -20,49 +19,49 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Space_Activity extends AppCompatActivity {
-    CardView addSpace;
-    private SpaceDataBaseHandler spaceHandler;
-    public List<Space> spaceList;
+public class Group_Activity extends AppCompatActivity {
+    CardView addGroup;
+    private GroupDataBaseHandler GroupHandler;
+    public List<Group> groupList;
 
-    private RecyclerView spaceGrid;
+    private RecyclerView GroupGrid;
 
-    private SpaceActivityCreatorAdapter spaceAdapter;
+    private GroupActivityCreatorAdapter GroupAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_spaces);
-        spaceList = new ArrayList<>();
-        spaceHandler = SpaceDataBaseHandler.getDatabase(getApplicationContext());
+        setContentView(R.layout.activity_group);
+        groupList = new ArrayList<>();
+        GroupHandler = GroupDataBaseHandler.getDatabase(getApplicationContext());
 
-        spaceGrid = findViewById(R.id.spaces_recycler_view);
+        GroupGrid = findViewById(R.id.Groups_recycler_view);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(),1);
-        spaceGrid.setLayoutManager(gridLayoutManager);
+        GroupGrid.setLayoutManager(gridLayoutManager);
 
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
-                spaceList = spaceHandler.getSpacesFromDB();
-                System.out.println(spaceList.size());
+                groupList = GroupHandler.getGroupsFromDB();
+                System.out.println(groupList.size());
                 Handler handler = new Handler(Looper.getMainLooper());
-                handler.post(() -> createSpaceGrid(spaceGrid));
+                handler.post(() -> createGroupGrid(GroupGrid));
             }
         });
 
 
-        addSpace = (CardView) findViewById(R.id.addspace);
-        addSpace.setOnClickListener(new View.OnClickListener() {
+        addGroup = (CardView) findViewById(R.id.addGroup);
+        addGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), SpacePopup.class));
+                startActivity(new Intent(getApplicationContext(), GroupPopup.class));
             }
         });
         // Initialize and assign variable
         BottomNavigationView bottomNavigationView=findViewById(R.id.bottom_navigation);
 
         // Set Home selected
-        bottomNavigationView.setSelectedItemId(R.id.spaces);
+        bottomNavigationView.setSelectedItemId(R.id.Groups);
 
         // Perform item selected listener
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -71,7 +70,7 @@ public class Space_Activity extends AppCompatActivity {
 
                 switch(item.getItemId())
                 {
-                    case R.id.spaces:
+                    case R.id.Groups:
                         return true;
                     case R.id.plants:
                         startActivity(new Intent(getApplicationContext(), Plant_Activity.class));
@@ -86,7 +85,7 @@ public class Space_Activity extends AppCompatActivity {
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.settings:
-                        startActivity(new Intent(getApplicationContext(), Space_Activity.class));
+                        startActivity(new Intent(getApplicationContext(), Group_Activity.class));
                         overridePendingTransition(0,0);
                         return true;
                 }
@@ -94,8 +93,8 @@ public class Space_Activity extends AppCompatActivity {
             }
         });
     }
-    public void createSpaceGrid(RecyclerView spaceGrid) {
-        spaceAdapter = new SpaceActivityCreatorAdapter(spaceList, this);
-        spaceGrid.setAdapter(spaceAdapter);
+    public void createGroupGrid(RecyclerView GroupGrid) {
+        GroupAdapter = new GroupActivityCreatorAdapter(groupList, this);
+        GroupGrid.setAdapter(GroupAdapter);
     }
 }

@@ -1,44 +1,33 @@
 package com.example.plantparenthood;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
-import android.provider.MediaStore;
-import android.text.Layout;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-public class SpaceActivityCreatorAdapter extends AbstractCreatorAdapter
+public class GroupActivityCreatorAdapter extends AbstractCreatorAdapter
 {
-    private List<Space> spaceList;
-    private Space_Activity space_activity;
+    private List<Group> groupList;
+    private Group_Activity group_activity;
     private Context whatContext;
-    private SpaceDataBaseHandler spaceDatabaseHandler;
+    private GroupDataBaseHandler groupDatabaseHandler;
     private boolean[] changes;
     private EditText[] textBoxes;
     private Bitmap newImage;
@@ -50,14 +39,14 @@ public class SpaceActivityCreatorAdapter extends AbstractCreatorAdapter
     private LayoutInflater layoutInflater;
 
 
-    public SpaceActivityCreatorAdapter(List<Space> newSpaceList, Space_Activity space_activity)
+    public GroupActivityCreatorAdapter(List<Group> newGroupList, Group_Activity group_activity)
     {
 
         RecyclerView displayAllPlants = null;
-        spaceList = newSpaceList;
-        this.space_activity = space_activity;
-        whatContext = space_activity;
-        spaceDatabaseHandler = SpaceDataBaseHandler.getDatabase(whatContext);
+        groupList = newGroupList;
+        this.group_activity = group_activity;
+        whatContext = group_activity;
+        groupDatabaseHandler = GroupDataBaseHandler.getDatabase(whatContext);
 
     }
 
@@ -65,7 +54,7 @@ public class SpaceActivityCreatorAdapter extends AbstractCreatorAdapter
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
     {
-        View currentView = LayoutInflater.from(parent.getContext()).inflate(R.layout.space_square,parent,false);
+        View currentView = LayoutInflater.from(parent.getContext()).inflate(R.layout.group_square,parent,false);
         RecyclerView.ViewHolder viewHolder = new RecyclerView.ViewHolder(currentView) {};
         return viewHolder;
     }
@@ -73,24 +62,24 @@ public class SpaceActivityCreatorAdapter extends AbstractCreatorAdapter
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position)
     {
-        Space thisSpace = spaceList.get(position);
-        TextView spaceName = (TextView) holder.itemView.findViewById(R.id.spaceName);
-        spaceName.setText(thisSpace.getSpaceName());
+        Group thisGroup = groupList.get(position);
+        TextView GroupName = (TextView) holder.itemView.findViewById(R.id.GroupName);
+        GroupName.setText(thisGroup.getGroupName());
         this.holder = holder;
 
-        holder.itemView.setOnClickListener(view -> setupPopup(view, thisSpace));
+        holder.itemView.setOnClickListener(view -> setupPopup(view, thisGroup));
     }
 
     @Override
     public int getItemCount()
     {
-        return spaceList.size();
+        return groupList.size();
     }
 
-    private void setupPopup(View view, Space thisSpace) {
+    private void setupPopup(View view, Group thisGroup) {
         LayoutInflater layoutInflater = (LayoutInflater) view.getContext()
                 .getSystemService(view.getContext().LAYOUT_INFLATER_SERVICE);
-        View newPopup = layoutInflater.inflate(R.layout.activity_space_popup, null);
+        View newPopup = layoutInflater.inflate(R.layout.activity_group_popup, null);
         displayAllPlants = newPopup.findViewById(R.id.plant_recycler_view);
         PopupWindow newPopupWindow = new PopupWindow(newPopup, LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT, true);
@@ -112,7 +101,7 @@ public class SpaceActivityCreatorAdapter extends AbstractCreatorAdapter
     }
 
     private void createPlants() {
-        InnerPlantRecyclerAdapter adapter = new InnerPlantRecyclerAdapter(this, spaceList.get(holder.getAdapterPosition()),plantList, whatContext);
+        InnerPlantRecyclerAdapter adapter = new InnerPlantRecyclerAdapter(this, groupList.get(holder.getAdapterPosition()),plantList, whatContext);
         displayAllPlants.setAdapter(adapter);
     }
 
@@ -137,7 +126,7 @@ public class SpaceActivityCreatorAdapter extends AbstractCreatorAdapter
 
         GridLayoutManager newGridLayoutManager = new GridLayoutManager(whatContext, 1 );
         displayAllPlants.setLayoutManager(newGridLayoutManager);
-        ArrayList<Plant> notGrabbedPlants = spaceList.get(holder.getAdapterPosition()).getAllPlants();
+        ArrayList<Plant> notGrabbedPlants = groupList.get(holder.getAdapterPosition()).getAllPlants();
         AsyncTask.execute(() -> {
             plantList = DatabaseHandler.getDatabase(whatContext).getPlantsFromDB();
             for(int i = 0; i < plantList.size(); i++) {
@@ -154,10 +143,10 @@ public class SpaceActivityCreatorAdapter extends AbstractCreatorAdapter
     }
     public void showPlants() {
 
-        plantList = spaceList.get(holder.getAdapterPosition()).getAllPlants();
+        plantList = groupList.get(holder.getAdapterPosition()).getAllPlants();
         GridLayoutManager newGridLayoutManager = new GridLayoutManager(whatContext, 1 );
         displayAllPlants.setLayoutManager(newGridLayoutManager);
-        InnerPlantRecyclerAdapter adapter = new InnerPlantRecyclerAdapter(this,spaceList.get(holder.getAdapterPosition()),plantList, whatContext);
+        InnerPlantRecyclerAdapter adapter = new InnerPlantRecyclerAdapter(this, groupList.get(holder.getAdapterPosition()),plantList, whatContext);
         displayAllPlants.setAdapter(adapter);
     }
 

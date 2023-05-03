@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/plantparenthood_green"
-    tools:context=".Space_Activity"
+    tools:context=".Group_Activity"
     android:layout_alignParentTop="true"
     android:layout_centerInParent="true">
 
@@ -29,7 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <androidx.cardview.widget.CardView
-            android:id="@+id/addspace"
+            android:id="@+id/addGroup"
             android:layout_width="match_parent"
             android:layout_height="120dp"
             android:layout_gravity="top|center"
@@ -44,7 +44,7 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_marginTop="130dp"
-            android:id="@+id/spaces_recycler_view"
+            android:id="@+id/Groups_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="vertical"

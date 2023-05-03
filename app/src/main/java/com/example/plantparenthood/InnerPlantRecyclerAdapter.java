@@ -3,34 +3,16 @@ package com.example.plantparenthood;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
-import android.os.Handler;
-import android.os.Looper;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.plantparenthood.AbstractCreatorAdapter;
-import com.example.plantparenthood.Plant;
-import com.example.plantparenthood.R;
-import com.example.plantparenthood.Space;
-import com.example.plantparenthood.SpaceDataBaseHandler;
-import com.example.plantparenthood.Space_Activity;
-
-import java.util.Arrays;
 import java.util.List;
 
 public class InnerPlantRecyclerAdapter extends AbstractCreatorAdapter
@@ -39,13 +21,13 @@ public class InnerPlantRecyclerAdapter extends AbstractCreatorAdapter
     private Context whatContext;
     private List<Plant> plantList;
 
-    private Space thisSpace;
+    private Group thisGroup;
 
-    private SpaceActivityCreatorAdapter spaceActivity;
-    public InnerPlantRecyclerAdapter(SpaceActivityCreatorAdapter activity, Space newSpace, List<Plant> newPlantList, Context context)
+    private GroupActivityCreatorAdapter GroupActivity;
+    public InnerPlantRecyclerAdapter(GroupActivityCreatorAdapter activity, Group newGroup, List<Plant> newPlantList, Context context)
     {
-        spaceActivity = activity;
-        thisSpace = newSpace;
+        GroupActivity = activity;
+        thisGroup = newGroup;
         plantList = newPlantList;
         whatContext = context;
     }
@@ -81,9 +63,9 @@ public class InnerPlantRecyclerAdapter extends AbstractCreatorAdapter
                     @Override
                     public void onClick(DialogInterface dialogInterface, int id)
                     {
-                        thisSpace.addPlant(thisPlant);
-                        spaceActivity.showAllPlants();
-                        AsyncTask.execute(() -> SpaceDataBaseHandler.getDatabase(whatContext).addSpaceToDatabase(thisSpace));
+                        thisGroup.addPlant(thisPlant);
+                        GroupActivity.showAllPlants();
+                        AsyncTask.execute(() -> GroupDataBaseHandler.getDatabase(whatContext).addGroupToDatabase(thisGroup));
 
 
                     }

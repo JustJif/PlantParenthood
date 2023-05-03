@@ -5,28 +5,27 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.util.ArrayList;
-import java.util.List;
 
-@Entity(tableName = "Space")
-public class Space {
+@Entity(tableName = "Group")
+public class Group {
     @PrimaryKey
-    private int spaceID;
-    private String spaceName;
-    private int spaceLightLevel;
+    private int GroupID;
+    private String GroupName;
+    private int GroupLightLevel;
     @Ignore
     private ArrayList<Plant> plantList;
 
-    private static int numSpaces;
+    private static int numGroups;
 
     private String plantIDs;
 
     // Constructor
-    public Space(String spaceName) {
-        this.spaceID = numSpaces;
-        this.spaceName = spaceName;
-        this.spaceLightLevel = 0;
+    public Group(String GroupName) {
+        this.GroupID = numGroups;
+        this.GroupName = GroupName;
+        this.GroupLightLevel = 0;
         this.plantList = new ArrayList<Plant>();
-        numSpaces++;
+        numGroups++;
     }
     public void setPlantIDs(String plantIDs) {
         this.plantIDs = plantIDs;
@@ -43,20 +42,20 @@ public class Space {
         this.plantList = plantList;
     }
 
-    public int getSpaceID() {
-        return spaceID;
+    public int getGroupID() {
+        return GroupID;
     }
 
-    public void setSpaceID(int spaceID) {
-        this.spaceID = spaceID;
+    public void setGroupID(int GroupID) {
+        this.GroupID = GroupID;
     }
 
-    public int getSpaceLightLevel() {
-        return spaceLightLevel;
+    public int getGroupLightLevel() {
+        return GroupLightLevel;
     }
 
-    public void setSpaceLightLevel(int spaceLightLevel) {
-        this.spaceLightLevel=spaceLightLevel;
+    public void setGroupLightLevel(int GroupLightLevel) {
+        this.GroupLightLevel=GroupLightLevel;
     }
 
 
@@ -65,12 +64,12 @@ public class Space {
     }
 
     // Getters and Setters
-    public String getSpaceName() {
-        return spaceName;
+    public String getGroupName() {
+        return GroupName;
     }
 
-    public void setSpaceName(String spaceName) {
-        this.spaceName = spaceName;
+    public void setGroupName(String GroupName) {
+        this.GroupName = GroupName;
     }
 
     // Other Methods

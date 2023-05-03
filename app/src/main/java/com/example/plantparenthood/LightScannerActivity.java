@@ -66,14 +66,14 @@ public class LightScannerActivity extends AppCompatActivity implements View.OnCl
 
         //Bottom Navigation View
         BottomNavigationView bottomNavigationView=findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setSelectedItemId(R.id.spaces);
+        bottomNavigationView.setSelectedItemId(R.id.Groups);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch(item.getItemId())
                 {
-                    case R.id.spaces:
-                        startActivity(new Intent(getApplicationContext(),Space_Activity.class));
+                    case R.id.Groups:
+                        startActivity(new Intent(getApplicationContext(), Group_Activity.class));
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.plants:
