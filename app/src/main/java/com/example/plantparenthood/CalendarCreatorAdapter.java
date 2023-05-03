@@ -4,9 +4,11 @@ import static com.example.plantparenthood.ComputeDate.computeDayMonth;
 import static com.example.plantparenthood.ComputeDate.getDayOfTheYear;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.icu.util.TimeZone;
@@ -31,6 +33,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
@@ -186,6 +189,45 @@ public class CalendarCreatorAdapter extends AbstractCreatorAdapter
                 handler.post(() -> calculateWateringCycle(newPopup,water));
             });
         });
+
+        Button updateSchedule = newPopup.findViewById(R.id.updateSchedule);
+        updateSchedule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                //water.deleteWateringSchedule();
+            }
+        });
+
+        Button deleteSchedule = newPopup.findViewById(R.id.removeSchedule);
+        deleteSchedule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                new AlertDialog.Builder(whatContext)
+                    .setTitle("Confirm deletion")
+                    .setMessage("This wil remove the watering schedule, this cannot be undone.")
+                    .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int id)
+                        {
+                            AsyncTask.execute(() -> water.deleteWateringSchedule());
+                            Toast.makeText(view.getContext(), "Applied changes", Toast.LENGTH_SHORT).show();
+                            notifyDataSetChanged();
+                            newPopupWindow.dismiss();
+                        }
+                    })
+                    .setNegativeButton("Revert", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int id) {
+                            Toast.makeText(view.getContext(), "Reverted changes", Toast.LENGTH_SHORT).show();
+                            newPopupWindow.dismiss();
+                        }
+                    })
+                    .show();
+            }
+        });
+
 
         calculateWateringCycle(newPopup, water);
     }

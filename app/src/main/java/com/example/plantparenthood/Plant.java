@@ -102,9 +102,9 @@ public class Plant
     public void waterPlant(int todaysDate)
     {
         getWateringCycle().setLastWateredDay(todaysDate);
+        getWateringCycle().iterateTimesWater();
         DatabaseHandler.getDatabase(null).saveWateringSchedule(getWateringCycle());
     }
-
 
     public int getId() {
         return id;

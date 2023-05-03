@@ -119,7 +119,7 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/addSchedule"
+                android:id="@+id/updateSchedule"
                 android:text="Update schedule"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
