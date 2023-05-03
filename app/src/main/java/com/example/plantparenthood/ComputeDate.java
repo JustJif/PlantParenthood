@@ -109,7 +109,7 @@ public class ComputeDate
 
             if(dayOfYear < counter)
             {
-                formattedDate = strMonths[i-1] + " " + ((counter) - dayOfYear);
+                formattedDate = strMonths[i] + " " + (dayOfYear - (counter-months[i]));
                 break;
             }
         }

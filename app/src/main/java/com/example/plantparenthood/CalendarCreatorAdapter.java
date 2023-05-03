@@ -202,7 +202,7 @@ public class CalendarCreatorAdapter extends AbstractCreatorAdapter
             lastWatered.setText(computeDayMonth(false, water.getLastWateredDay()));
 
             TextView nextDayToWater = newPopup.findViewById(R.id.nextWateringNumber);
-            int nextWateringDay = water.getLastWateredDay() - water.getWateringInterval();
+            int nextWateringDay = water.getLastWateredDay() + water.getWateringInterval();
             nextDayToWater.setText(computeDayMonth(false, nextWateringDay));
 
             String wateringInt = "Every " + water.getWateringInterval() + (water.getWateringInterval() > 1 ? " days" : " day");
