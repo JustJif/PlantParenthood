@@ -47,9 +47,10 @@ public class QrCodeScannerFragment extends Fragment implements View.OnClickListe
         protected void onPostExecute(Plant plant) {
             // Use the plant object returned by doInBackground() here
             if (plant != null) {
+                mPlantID = plant.getId();
                 //do stuff with the plant we found
                 //transition to the plant activity using the plant ID...
-                Toast.makeText(getActivity(), mPlantID, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), Integer.toString(mPlantID), Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(getActivity(), "Plant not found", Toast.LENGTH_SHORT).show();
             }
