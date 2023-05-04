@@ -139,6 +139,12 @@
                 android:layout_height="wrap_content"
                 android:text="Update Plant" />
 
+            <Button
+                android:id="@+id/deletePlant"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Delete Plant" />
+
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </LinearLayout>
