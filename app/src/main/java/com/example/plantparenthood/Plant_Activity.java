@@ -1,5 +1,8 @@
 package com.example.plantparenthood;
 
+import static androidx.camera.core.impl.utils.ContextUtil.getApplicationContext;
+import static androidx.core.content.ContextCompat.startActivity;
+
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -21,9 +24,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -66,7 +74,7 @@ public class Plant_Activity extends AppCompatActivity {
         addPlant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), PlantSearcher.class));
+                setupPopup(v);
             }
         });
 
@@ -117,6 +125,35 @@ public class Plant_Activity extends AppCompatActivity {
                         return true;
                 }
                 return false;
+            }
+        });
+    }
+
+    private void setupPopup(View view) {
+        LayoutInflater layoutInflater = (LayoutInflater) view.getContext()
+                .getSystemService(view.getContext().LAYOUT_INFLATER_SERVICE);
+        View newPopup = layoutInflater.inflate(R.layout.custom_plant_popup, null);
+
+        PopupWindow newPopupWindow = new PopupWindow(newPopup, LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT, true);
+        newPopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+
+        EditText plantName = newPopup.findViewById(R.id.plantCommonName);
+
+        Button closeButton = newPopup.findViewById(R.id.closeButton);
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                newPopupWindow.dismiss();
+            }
+        });
+
+        Button addPlantFromDB = newPopup.findViewById(R.id.addPlantFromDB);
+        addPlantFromDB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), PlantSearcher.class));
+
             }
         });
     }

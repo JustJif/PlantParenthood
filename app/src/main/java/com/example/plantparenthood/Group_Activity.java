@@ -81,11 +81,11 @@ public class Group_Activity extends AppCompatActivity {
                                 overridePendingTransition(0, 0);
                                 return true;
                             case R.id.calendar:
-                                startActivity(new Intent(getApplicationContext(), QRScannerMenuActivity.class));
+                                startActivity(new Intent(getApplicationContext(), Calendar_Activity.class));
                                 overridePendingTransition(0, 0);
                                 return true;
                             case R.id.scanner:
-                                startActivity(new Intent(getApplicationContext(), Space_Activity.class));
+                                startActivity(new Intent(getApplicationContext(), QRScannerMenuActivity.class));
                                 overridePendingTransition(0, 0);
                                 return true;
                         }
