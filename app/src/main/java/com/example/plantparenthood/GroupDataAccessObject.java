@@ -1,6 +1,7 @@
 package com.example.plantparenthood;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -18,4 +19,7 @@ public interface GroupDataAccessObject
 
     @Query("SELECT * FROM `Group`")
     public List<Group> loadAllGroups();
+
+    @Delete
+    void deleteGroup(Group group);
 }

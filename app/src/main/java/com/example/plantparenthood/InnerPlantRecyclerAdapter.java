@@ -64,7 +64,8 @@ public class InnerPlantRecyclerAdapter extends AbstractCreatorAdapter
                     public void onClick(DialogInterface dialogInterface, int id)
                     {
                         thisGroup.addPlant(thisPlant);
-                        GroupActivity.showAllPlants();
+                            GroupActivity.showPlants();
+
                         AsyncTask.execute(() -> GroupDataBaseHandler.getDatabase(whatContext).addGroupToDatabase(thisGroup));
 
 

@@ -60,6 +60,13 @@ public class GroupDataBaseHandler {
     public void addGroupToDatabase(Group group)
     {
         GroupDB.GroupDataAccessObject().addGroup(group);
-        System.out.println(getGroupsFromDB().size());
+    }
+    public void removeGroupToDatabase(Group group)
+    {
+        GroupDB.GroupDataAccessObject().deleteGroup(group);
+    }
+
+    public void deletePlantFromGroup(Group group, Plant plant) {
+        group.removePlant(plant);
     }
 }
