@@ -116,7 +116,7 @@ public class PlantCreator {
             plantBuilder.setWateringCycle(wateringCycle);
 
         Plant plant = plantBuilder.buildPlant();
-
+        StatisticsManager.addPlant();
         return plant;
     }
 

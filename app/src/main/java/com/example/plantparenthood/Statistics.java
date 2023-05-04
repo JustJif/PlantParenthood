@@ -98,11 +98,12 @@ public class Statistics {
         this.firstWateringDate=date;
         totalTimesWatered++;
     }
-    public void waterPlant(Date date){
+    public void waterPlant(){
+        Date date = new Date();
         long lastWater = lastWateringDate.getTime();
         this.lastWateringDate=date;
         totalTimesWatered++;
-        long currentWateringDate = lastWateringDate.getTime();
+        long currentWateringDate = date.getTime();
         long timeBetween = currentWateringDate-lastWater;
         double days = (double)timeBetween/86400000;
         daysSinceLastWateringArr.add(days);

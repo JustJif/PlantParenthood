@@ -104,6 +104,7 @@ public class Plant
         getWateringCycle().setLastWateredDay(todaysDate);
         getWateringCycle().iterateTimesWater();
         DatabaseHandler.getDatabase(null).saveWateringSchedule(getWateringCycle());
+        StatisticsManager.waterPlant();
     }
 
     public int getId() {

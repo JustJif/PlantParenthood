@@ -51,7 +51,7 @@ public class LightScannerActivity extends AppCompatActivity implements View.OnCl
         takePhoto.setOnClickListener(this);
 
         requestPermissions();
-        previewView = findViewById(R.id.viewFinder);
+        previewView = findViewById(R.id.viewFinder2);
 
         cameraProviderFuture = ProcessCameraProvider.getInstance(this);
         cameraProviderFuture.addListener(()->{

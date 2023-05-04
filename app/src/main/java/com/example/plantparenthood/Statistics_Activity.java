@@ -15,13 +15,7 @@ import androidx.room.Room;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class Statistics_Activity extends AppCompatActivity {
-    public Statistics statistics;
-    public Statistics_Activity(){
-        statistics = new Statistics();
-    }
-    public Statistics retrievePlantStatistics(){
-        return statistics;
-    }
+    public StatisticsManager statisticsManager = new StatisticsManager(this);
 
     public void retrieveWeeklyAnalysis(){
         //TODO
@@ -33,7 +27,6 @@ public class Statistics_Activity extends AppCompatActivity {
     TextView medianTimeBetweenWatering;
     TextView lastTimeWatered;
     TextView firstTimeWatered;
-
     Button shareButton;
 
     protected void onCreate(Bundle savedInstanceState){
@@ -50,16 +43,22 @@ public class Statistics_Activity extends AppCompatActivity {
                 try {
                     Statistics statistics = statisticsDatabase.statisticsAccessObject().loadStatistics();
 
-                    curOwnedPlants.append(""+statistics.getNumOwnedPlants());
-                    totalOwnedPlants.append(""+statistics.getTotalOwnedPlants());
-                    totalDeadPlants.append(""+statistics.getTotalDeadPlants());
-                    meanTimeBetweenWatering.append(""+statistics.getMeanTimeBetweenWatering());
-                    medianTimeBetweenWatering.append(""+statistics.getMedianTimeBetweenWatering());
-                    lastTimeWatered.append(statistics.getLastTimeWatered().toString());
-                    firstTimeWatered.append(statistics.getFirstTimeWatered().toString());
+                    curOwnedPlants.append(""+statisticsManager.getNumOwnedPlants());
+                    totalOwnedPlants.append(""+statisticsManager.getTotalOwnedPlants());
+                    totalDeadPlants.append(""+statisticsManager.getTotalDeadPlants());
+                    meanTimeBetweenWatering.append(""+statisticsManager.getMeanTimeBetweenWatering());
+                    medianTimeBetweenWatering.append(""+statisticsManager.getMedianTimeBetweenWatering());
+                    lastTimeWatered.append(""+statisticsManager.getLastTimeWatered());
+                    firstTimeWatered.append(""+statisticsManager.getFirstTimeWatered());
                 }catch(NullPointerException e)
                 {
-                    curOwnedPlants.append("Database does not exist");
+                    curOwnedPlants.append("No plants currently owned");
+                    totalOwnedPlants.append("No plants ever owned");
+                    totalDeadPlants.append("No dead plants :D");
+                    meanTimeBetweenWatering.append("Never Watered");
+                    medianTimeBetweenWatering.append("Never Watered");
+                    lastTimeWatered.append("Never Watered");
+                    firstTimeWatered.append("Never Watered");
                 }
 
             }
@@ -93,7 +92,7 @@ public class Statistics_Activity extends AppCompatActivity {
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.calendar:
-                        startActivity(new Intent(getApplicationContext(),Calendar.class));
+                        startActivity(new Intent(getApplicationContext(),Calendar_Activity.class));
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.settings:
