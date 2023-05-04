@@ -38,12 +38,17 @@ public class Plant_Activity extends AppCompatActivity {
     private ActivityResultLauncher<Intent> camera;
     private PlantActivityCreatorAdapter plantAdapter;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plants);
+
+
         plantList = new ArrayList<>();
         plantDatabase = DatabaseHandler.getDatabase(getApplicationContext());
+
 
         plantGrid = findViewById(R.id.plant_recycler_view);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 1);
@@ -106,8 +111,8 @@ public class Plant_Activity extends AppCompatActivity {
                         startActivity(new Intent(getApplicationContext(), Calendar_Activity.class));
                         overridePendingTransition(0, 0);
                         return true;
-                    case R.id.settings:
-                        startActivity(new Intent(getApplicationContext(), Settings.class));
+                    case R.id.scanner:
+                        startActivity(new Intent(getApplicationContext(), QRScannerMenuActivity.class));
                         overridePendingTransition(0, 0);
                         return true;
                 }

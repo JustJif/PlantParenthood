@@ -37,7 +37,7 @@ public class Group_Activity extends AppCompatActivity {
         GroupHandler = GroupDataBaseHandler.getDatabase(getApplicationContext());
 
         GroupGrid = findViewById(R.id.Groups_recycler_view);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(),1);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 1);
         GroupGrid.setLayoutManager(gridLayoutManager);
         DatabaseHandler.getDatabase(getApplicationContext());
         AsyncTask.execute(new Runnable() {
@@ -50,7 +50,6 @@ public class Group_Activity extends AppCompatActivity {
             }
         });
 
-
         addGroup = (Button) findViewById(R.id.addGroup);
         addGroup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,41 +58,42 @@ public class Group_Activity extends AppCompatActivity {
             }
         });
         // Initialize and assign variable
-        BottomNavigationView bottomNavigationView=findViewById(R.id.bottom_navigation);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         // Set Home selected
         bottomNavigationView.setSelectedItemId(R.id.Groups);
 
         // Perform item selected listener
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        bottomNavigationView
+                .setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-                switch(item.getItemId())
-                {
-                    case R.id.Groups:
-                        return true;
-                    case R.id.plants:
-                        startActivity(new Intent(getApplicationContext(), Plant_Activity.class));
-                        overridePendingTransition(0,0);
-                        return true;
-                    case R.id.home:
-                        startActivity(new Intent(getApplicationContext(),MainActivity.class));
-                        overridePendingTransition(0,0);
-                        return true;
-                    case R.id.calendar:
-                        startActivity(new Intent(getApplicationContext(),Settings.class));
-                        overridePendingTransition(0,0);
-                        return true;
-                    case R.id.settings:
-                        startActivity(new Intent(getApplicationContext(), Group_Activity.class));
-                        overridePendingTransition(0,0);
-                        return true;
-                }
-                return false;
-            }
-        });
+                        switch (item.getItemId()) {
+                            case R.id.Groups:
+                                return true;
+                            case R.id.plants:
+                                startActivity(new Intent(getApplicationContext(), Plant_Activity.class));
+                                overridePendingTransition(0, 0);
+                                return true;
+                            case R.id.home:
+                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                overridePendingTransition(0, 0);
+                                return true;
+                            case R.id.calendar:
+                                startActivity(new Intent(getApplicationContext(), QRScannerMenuActivity.class));
+                                overridePendingTransition(0, 0);
+                                return true;
+                            case R.id.scanner:
+                                startActivity(new Intent(getApplicationContext(), Space_Activity.class));
+                                overridePendingTransition(0, 0);
+                                return true;
+                        }
+                        return false;
+                    }
+                });
     }
+
     public void createGroupGrid(RecyclerView GroupGrid) {
         GroupAdapter = new GroupActivityCreatorAdapter(groupList, this);
         GroupGrid.setAdapter(GroupAdapter);
