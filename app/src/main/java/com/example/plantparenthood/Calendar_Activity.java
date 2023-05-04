@@ -143,6 +143,11 @@ public class Calendar_Activity extends AppCompatActivity
         // highlight the start date on the calendar view
         simpleCalendarView.setDate(new Date().getTime());
     }
+
+    public void refreshPlantGrid()
+    {
+        createPlantGrid(plantGrid,findScheduledPlants());
+    }
     private void createPlantGrid(RecyclerView plantGrid, List<Plant> whatPlantsToDisplay) {
         creatorAdapter = new CalendarCreatorAdapter(whatPlantsToDisplay, this);
         plantGrid.setAdapter(creatorAdapter);
@@ -159,7 +164,7 @@ public class Calendar_Activity extends AppCompatActivity
         return showSchedule;
     }
 
-    private void checkListOfValidPlants()
+    public void checkListOfValidPlants()
     {
         AsyncTask.execute(() ->
         {

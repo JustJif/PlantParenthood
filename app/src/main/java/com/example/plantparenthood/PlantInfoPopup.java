@@ -3,14 +3,11 @@ package com.example.plantparenthood;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
-import android.provider.MediaStore;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,72 +17,34 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.Arrays;
-import java.util.List;
 
-public class PlantActivityCreatorAdapter extends AbstractCreatorAdapter
+
+public class PlantInfoPopup
 {
-    private List<Plant> plantsList;
-    private Plant_Activity plant_activity;
-    private Context whatContext;
-    private ImageView plantImage;
-    private ImageView qrImage;
-    private DatabaseHandler databaseHandler;
     private boolean[] changes;
     private EditText[] textBoxes;
     private Bitmap newImage;
     private RecyclerView.ViewHolder holder;
-    public PlantActivityCreatorAdapter(List<Plant> newPlantsList, Plant_Activity plant_activity)
+    private AbstractCreatorAdapter adapter;
+    private Plant_Activity plant_activity;
+    private Context whatContext;
+    private ImageView plantImage;
+    private ImageView qrImage;
+
+    public PlantInfoPopup(View view, Plant thisPlant, Context activityContext, RecyclerView.ViewHolder holder, AbstractCreatorAdapter adapter, Plant_Activity plant_activity)
     {
-        plantsList = newPlantsList;
+        this.holder = holder;
+        this.adapter = adapter;
         this.plant_activity = plant_activity;
-        whatContext = plant_activity;
-        databaseHandler = DatabaseHandler.getDatabase(whatContext);
+        whatContext = activityContext;
         changes = new boolean[3];
         textBoxes = new EditText[2];
-        Arrays.fill(changes,false);
+        setupPopup(view, thisPlant);
     }
 
-    @NonNull
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
-    {
-        View currentView = LayoutInflater.from(parent.getContext()).inflate(R.layout.plant_display_square,parent,false);
-        RecyclerView.ViewHolder viewHolder = new RecyclerView.ViewHolder(currentView) {};
-        return viewHolder;
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position)
-    {
-        Plant thisPlant = plantsList.get(position);
-        TextView plantCommonName = (TextView) holder.itemView.findViewById(R.id.plantCommonName);
-        plantImage = (ImageView) holder.itemView.findViewById(R.id.plantImage);
-
-        plantCommonName.setText(thisPlant.getCommon_name());
-        plantImage.setImageBitmap(thisPlant.getDefault_image());
-
-        this.holder = holder;
-        holder.itemView.setOnClickListener(view ->
-        {
-            new PlantInfoPopup(view,thisPlant,whatContext,holder,this,plant_activity);
-        });
-
-        //PlantInfoPopup plantInfoPopup = new PlantInfoPopup(view,thisPlant,whatContext,holder,this,plant_activity);
-        //holder.itemView.setOnClickListener(view -> setupPopup(view, thisPlant));
-        //holder.itemView.setOnClickListener(view -> setupPopup(view, thisPlant));
-    }
-
-    @Override
-    public int getItemCount()
-    {
-        return plantsList.size();
-    }
-
-    /*private void setupPopup(View view, Plant thisPlant) {
+    public void setupPopup(View view, Plant thisPlant) {
         LayoutInflater layoutInflater = (LayoutInflater) view.getContext()
                 .getSystemService(view.getContext().LAYOUT_INFLATER_SERVICE);
         View newPopup = layoutInflater.inflate(R.layout.activity_plant_display_popup, null);
@@ -153,6 +112,7 @@ public class PlantActivityCreatorAdapter extends AbstractCreatorAdapter
             @Override
             public void onClick(View view) {
                 changes[2] = true;
+                if(plant_activity != null)
                 plant_activity.openCamera();
             }
         });
@@ -161,26 +121,26 @@ public class PlantActivityCreatorAdapter extends AbstractCreatorAdapter
         updatePlant.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 new AlertDialog.Builder(whatContext)
-                .setTitle("Confirm changes")
-                .setMessage("Changes will override previous information, this cannot be undone.")
-                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int id)
-                    {
-                        setChanges(thisPlant);
-                        Toast.makeText(view.getContext(), "Applied changes", Toast.LENGTH_SHORT).show();
-                        newPopupWindow.dismiss();
-                    }
-                })
-                .setNegativeButton("Revert", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int id) {
-                        Toast.makeText(view.getContext(), "Reverted changes", Toast.LENGTH_SHORT).show();
-                        Arrays.fill(changes, false);
-                        newPopupWindow.dismiss();
-                    }
-                })
-                .show();
+                        .setTitle("Confirm changes")
+                        .setMessage("Changes will override previous information, this cannot be undone.")
+                        .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int id)
+                            {
+                                setChanges(thisPlant);
+                                Toast.makeText(view.getContext(), "Applied changes", Toast.LENGTH_SHORT).show();
+                                newPopupWindow.dismiss();
+                            }
+                        })
+                        .setNegativeButton("Revert", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int id) {
+                                Toast.makeText(view.getContext(), "Reverted changes", Toast.LENGTH_SHORT).show();
+                                Arrays.fill(changes, false);
+                                newPopupWindow.dismiss();
+                            }
+                        })
+                        .show();
             }
         });
     }
@@ -215,7 +175,8 @@ public class PlantActivityCreatorAdapter extends AbstractCreatorAdapter
         if(changes[2])
             plant.setDefault_image(newImage);
 
-        AsyncTask.execute(() -> databaseHandler.addPlantToDatabase(plant));
-        this.notifyItemChanged(holder.getAdapterPosition());
-    }*/
+        AsyncTask.execute(() -> DatabaseHandler.getDatabase(whatContext).addPlantToDatabase(plant));
+        if(holder != null && adapter != null)
+            adapter.notifyItemChanged(holder.getAdapterPosition());
+    }
 }
