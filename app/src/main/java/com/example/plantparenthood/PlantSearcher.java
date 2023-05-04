@@ -37,12 +37,16 @@ public class PlantSearcher extends AppCompatActivity
     private PlantCreator plantCreator;
     private PlantDatabase database;
 
+    private String tagFilter = "";
+
     private Button customPlantButton;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         customPlantButton = findViewById(R.id.addCustomPlant);
+
+
 
         binding = ActivityPlantSearcherBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -67,6 +71,9 @@ public class PlantSearcher extends AppCompatActivity
         Button leftButton = findViewById(R.id.leftButton);
         Button rightButton = findViewById(R.id.rightButton);
 
+
+
+
         leftButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -84,6 +91,19 @@ public class PlantSearcher extends AppCompatActivity
                 nextArrow(searchPage);
             }
         });
+
+
+        Button button = (Button) findViewById(R.id.filterPlants);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupFilter popup = new PopupFilter();
+                popup.show(getSupportFragmentManager(), "popup");
+            }
+        });
+
+
+
     }
 
     @Override
@@ -199,66 +219,14 @@ public class PlantSearcher extends AppCompatActivity
     {
         plantCreator.createPlant(unparsedFile,getApplicationContext(), this);
     }
-/*
-    private void filterSearchResult(String nameOfPlant)
-    {
-        if (!nameOfPlant.equals("")) {
-            errorText.setText("Loading...");
 
-            // Filter the plant list based on the search query and other filters
-            ArrayList<Plant> filteredPlants = new ArrayList<>();
-            for (Plant plant : plantCreator.getPlants()) {
-                if (plant.getName().toLowerCase().contains(nameOfPlant.toLowerCase())) {
-                    filteredPlants.add(plant);
-                }
-            }
+    public void filterSearchResult(String query, String watering, String cycle, String sunlight) {
 
-            // Display the filtered plants
-            createPlantGrid(filteredPlants, pageNumber, maxPageNumber);
-        } else {
-            errorText.setText("Error no name");
-        }
+
     }
 
 
 
-    private void applyFilters(View view) {
-        CheckBox fullSun = view.findViewById(R.id.checkbox_full_sun);
-        CheckBox partialSun = view.findViewById(R.id.checkbox_partial_sun);
-        CheckBox shade = view.findViewById(R.id.checkbox_shade);
-        CheckBox lowWater = view.findViewById(R.id.checkbox_low_water);
-        CheckBox mediumWater = view.findViewById(R.id.checkbox_medium_water);
-        CheckBox highWater = view.findViewById(R.id.checkbox_high_water);
-        CheckBox trailing = view.findViewById(R.id.checkbox_trailing);
-        CheckBox upright = view.findViewById(R.id.checkbox_upright);
 
-        // Filter plants based on selected filters
-        ArrayList<Plant> filteredPlants = new ArrayList<>();
-        for (Plant plant : currentDisplayedPlants) {
-            boolean addPlant = true;
-            if (fullSun.isChecked() && !plant.getSun().contains("full"))
-                addPlant = false;
-            if (partialSun.isChecked() && !plant.getSun().contains("partial"))
-                addPlant = false;
-            if (shade.isChecked() && !plant.getSun().contains("shade"))
-                addPlant = false;
-            if (lowWater.isChecked() && !plant.getWater().equals("low"))
-                addPlant = false;
-            if (mediumWater.isChecked() && !plant.getWater().equals("medium"))
-                addPlant = false;
-            if (highWater.isChecked() && !plant.getWater().equals("high"))
-                addPlant = false;
-            if (trailing.isChecked() && !plant.getHabit().equals("trailing"))
-                addPlant = false;
-            if (upright.isChecked() && !plant.getHabit().equals("upright"))
-                addPlant = false;
 
-            if (addPlant)
-                filteredPlants.add(plant);
-        }
-
-        // Update the plant grid with the filtered plants
-        createPlantGrid(filteredPlants, pageNumber, maxPageNumber);
     }
-    */
-}
