@@ -51,11 +51,7 @@ public class PPMobileNotificationFactory extends AbstractPPNotificationFactory {
         String content = "Your plant " + plantName + " needs to be watered!";
 
         notiBuilder.setSmallIcon(R.drawable.ic_notification_plant).setContentTitle(title).setContentText(content).setPriority(NotificationCompat.PRIORITY_DEFAULT);
-        if(notiBuilder != null){
-            noti = notiBuilder.build();
-        }else {
-            Log.e("PPMobileNotification", "NotificationCompat.Builder is null");
-        }
+        noti = notiBuilder.build();
         return noti;
     }
 

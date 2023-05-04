@@ -9,6 +9,6 @@ import android.content.Context;
 
 public abstract class AbstractPPNotificationFactory {
 
-    public abstract Object createWaterNotification(int plantID, String plantName, Context context);
+    public abstract  Object createWaterNotification(int plantID, String plantName, Context context);
 
 }

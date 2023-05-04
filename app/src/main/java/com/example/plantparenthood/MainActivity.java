@@ -4,6 +4,7 @@ package com.example.plantparenthood;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Notification;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -14,10 +15,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        PPMobileNotificationFactory.createNotificationChannel(this);//need to call this at app start
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        PPMobileNotificationFactory.createNotificationChannel(getApplicationContext());//need to call this at app start
+
 
         // Initialize and assign variable
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -55,4 +57,5 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
     }
+
 }
