@@ -10,24 +10,18 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.camera.core.CameraSelector;
-import androidx.camera.core.ImageAnalysis;
 import androidx.camera.core.ImageCapture;
 import androidx.camera.core.ImageCaptureException;
-import androidx.camera.core.ImageProxy;
 import androidx.camera.core.Preview;
 import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.camera.view.PreviewView;
@@ -42,9 +36,8 @@ import java.io.File;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
-public class LightScannerActivity extends AppCompatActivity{
+public class LightScannerActivity extends AppCompatActivity implements View.OnClickListener{
     PreviewView previewView;
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
     private ImageCapture imageCapture= null;
@@ -55,14 +48,10 @@ public class LightScannerActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_light_level);
         Button takePhoto = findViewById(R.id.image_capture_button);
-        takePhoto.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                takePhoto();
-            }
-        });
+        takePhoto.setOnClickListener(this);
 
         requestPermissions();
-        previewView = findViewById(R.id.viewFinder2);
+        previewView = findViewById(R.id.viewFinder);
 
         cameraProviderFuture = ProcessCameraProvider.getInstance(this);
         cameraProviderFuture.addListener(()->{
@@ -84,7 +73,7 @@ public class LightScannerActivity extends AppCompatActivity{
                 switch(item.getItemId())
                 {
                     case R.id.spaces:
-                        startActivity(new Intent(getApplicationContext(),LightScannerActivity.class));
+                        startActivity(new Intent(getApplicationContext(),Space_Activity.class));
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.plants:
@@ -96,7 +85,7 @@ public class LightScannerActivity extends AppCompatActivity{
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.calendar:
-                        startActivity(new Intent(getApplicationContext(),Calendar.class));
+                        startActivity(new Intent(getApplicationContext(), Calendar_Activity.class));
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.settings:
@@ -157,6 +146,15 @@ public class LightScannerActivity extends AppCompatActivity{
     public void onDestroy(){
         super.onDestroy();
         cameraExecutor.shutdown();
+    }
+
+    @Override
+    public void onClick(View view){
+        switch(view.getId()){
+            case R.id.image_capture_button:
+                takePhoto();
+                break;
+        }
     }
 
     public void calculateLightLevel(File file){
