@@ -44,7 +44,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class LightScannerActivity extends AppCompatActivity implements View.OnClickListener{
+public class LightScannerActivity extends AppCompatActivity{
     PreviewView previewView;
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
     private ImageCapture imageCapture= null;
@@ -55,10 +55,14 @@ public class LightScannerActivity extends AppCompatActivity implements View.OnCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_light_level);
         Button takePhoto = findViewById(R.id.image_capture_button);
-        takePhoto.setOnClickListener(this);
+        takePhoto.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                takePhoto();
+            }
+        });
 
         requestPermissions();
-        previewView = findViewById(R.id.viewFinder);
+        previewView = findViewById(R.id.viewFinder2);
 
         cameraProviderFuture = ProcessCameraProvider.getInstance(this);
         cameraProviderFuture.addListener(()->{
@@ -80,11 +84,11 @@ public class LightScannerActivity extends AppCompatActivity implements View.OnCl
                 switch(item.getItemId())
                 {
                     case R.id.spaces:
-                        startActivity(new Intent(getApplicationContext(),Spaces.class));
+                        startActivity(new Intent(getApplicationContext(),LightScannerActivity.class));
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.plants:
-                        startActivity(new Intent(getApplicationContext(),Plants.class));
+                        startActivity(new Intent(getApplicationContext(),Plant_Activity.class));
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.home:
@@ -153,15 +157,6 @@ public class LightScannerActivity extends AppCompatActivity implements View.OnCl
     public void onDestroy(){
         super.onDestroy();
         cameraExecutor.shutdown();
-    }
-
-    @Override
-    public void onClick(View view){
-        switch(view.getId()){
-            case R.id.image_capture_button:
-                takePhoto();
-                break;
-        }
     }
 
     public void calculateLightLevel(File file){

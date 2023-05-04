@@ -3,11 +3,6 @@ package com.example.plantparenthood;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
-import com.example.plantparenthood.databinding.ActivityMainBinding;
 
 
 import android.content.Intent;
@@ -38,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
                 switch (item.getItemId()) {
                     case R.id.spaces:
-                        startActivity(new Intent(getApplicationContext(), Space_Activity.class));
+                        startActivity(new Intent(getApplicationContext(), Statistics_Activity.class));
                         overridePendingTransition(0, 0);
                         return true;
                     case R.id.plants:
@@ -48,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.home:
                         return true;
                     case R.id.calendar:
-                        startActivity(new Intent(getApplicationContext(), Calendar.class));
+                        startActivity(new Intent(getApplicationContext(), LightScannerActivity.class));
                         overridePendingTransition(0, 0);
                         return true;
                     case R.id.settings:
