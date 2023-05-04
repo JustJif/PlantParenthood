@@ -51,6 +51,7 @@ public class PlantCreatorAdapter extends AbstractCreatorAdapter
         plantImage.setImageBitmap(thisPlant.getDefault_image());
         //plantOtherNames.setText(thisPlant.getScientific_name());
 
+
         holder.itemView.setOnClickListener(view -> setupPopup(view, thisPlant));
     }
 
@@ -93,4 +94,7 @@ public class PlantCreatorAdapter extends AbstractCreatorAdapter
             }
         });
     }
+
+
+
 }
