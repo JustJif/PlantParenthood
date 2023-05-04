@@ -25,6 +25,7 @@ public class QRCodeManager {
      */
     public static Bitmap generateQRCodeBitmap(String qrData, int size){
         Bitmap qrCodeBitmap = Bitmap.createBitmap(size, size, Bitmap.Config.RGB_565);
+        System.out.println("QR CODE!!!!!!!!!!!!! SIZE: " + size + " DATA: " + qrData);
         QRCodeWriter writer = new QRCodeWriter();
         try{
             BitMatrix bitMatrix = writer.encode(qrData, BarcodeFormat.QR_CODE, size, size);
@@ -37,11 +38,16 @@ public class QRCodeManager {
             }
             if(qrCodeBitmap != null){
                 qrCodeBitmap.setPixels(pixels, 0, size, 0, 0, size, size);
+                System.out.println("QR CODE NOT NULL!!!!!!!!!!!!!");
+            }else{
+                System.out.println("QR CODE NULL!");
             }
 
         }catch(WriterException e){
             e.printStackTrace();
         }
+
+
         return qrCodeBitmap;
     }
 

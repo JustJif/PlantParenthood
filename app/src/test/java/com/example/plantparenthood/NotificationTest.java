@@ -5,16 +5,23 @@ import android.content.Context;
 
 import androidx.core.app.NotificationCompat;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
 
+@RunWith (MockitoJUnitRunner.class)
 public class NotificationTest {
 
     private static Context mockedContext;
+    private static int plantID;
+    private static String plantName;
 
     @BeforeClass
     public static void setUp() {
@@ -22,23 +29,31 @@ public class NotificationTest {
         mockedContext = Mockito.mock(Context.class);
         when(mockedContext.getString(R.string.channel_name)).thenReturn("Test channel");
         when(mockedContext.getString(R.string.channel_description)).thenReturn("Test channel description");
+        // Set up plant info
+        plantID = 123;
+        plantName = "Test plant name";
+
     }
 
     @Test
     public void testCreateWaterNotification() {
-        // Set up inputs
-        int plantID = 123;
-        String plantName = "Test plant name";
 
         // Create the factory and call the method
         PPMobileNotificationFactory factory = new PPMobileNotificationFactory();
         if(factory != null){
             Notification result = factory.createWaterNotification(plantID, plantName, mockedContext);
 
-            // Check that the result matches the expected values
-            assertEquals(NotificationCompat.PRIORITY_DEFAULT, result.priority);
-            assertEquals("Test plant name needs to be watered!", result.extras.getString(NotificationCompat.EXTRA_TITLE));
-            assertEquals("Your plant Test plant name needs to be watered!", result.extras.getString(NotificationCompat.EXTRA_TEXT));
+            if (result != null) {
+                // Check that the result matches the expected values
+                assertEquals(NotificationCompat.PRIORITY_DEFAULT, result.priority);
+                assertEquals("Test plant name needs to be watered!", result.extras.getString(NotificationCompat.EXTRA_TITLE));
+                assertEquals("Your plant Test plant name needs to be watered!", result.extras.getString(NotificationCompat.EXTRA_TEXT));
+            }else{
+                fail();
+            }
+
+        }else{
+            fail();
         }
 
     }

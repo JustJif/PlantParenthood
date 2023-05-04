@@ -6,6 +6,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 
@@ -43,14 +44,19 @@ public class PPMobileNotificationFactory extends AbstractPPNotificationFactory {
      * @return The NotificationCompat.Builder that has been created.
      */
     public Notification createWaterNotification(int plantID, String plantName, Context context){
+        Notification noti = null;
         NotificationCompat.Builder notiBuilder = new NotificationCompat.Builder(context, CHANNEL_ID);
 
         String title = plantName + " needs to be watered!";
         String content = "Your plant " + plantName + " needs to be watered!";
 
         notiBuilder.setSmallIcon(R.drawable.ic_notification_plant).setContentTitle(title).setContentText(content).setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
-        return notiBuilder.build();
+        if(notiBuilder != null){
+            noti = notiBuilder.build();
+        }else {
+            Log.e("PPMobileNotification", "NotificationCompat.Builder is null");
+        }
+        return noti;
     }
 
 }
