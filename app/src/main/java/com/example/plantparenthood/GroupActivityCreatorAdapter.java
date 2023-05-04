@@ -119,7 +119,7 @@ public class GroupActivityCreatorAdapter extends AbstractCreatorAdapter
        addPlantToGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setupAddPlantPopup(view,thisgroup);
+                setupAddPlantPopup(newPopup, thisgroup);
             }
         });
 
@@ -186,7 +186,7 @@ public class GroupActivityCreatorAdapter extends AbstractCreatorAdapter
         displayAllPlants = newPopup.findViewById(R.id.plant_recycler_view);
         PopupWindow newPopupWindow = new PopupWindow(newPopup, LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT, true);
-        newPopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+        newPopupWindow.showAtLocation(newPopup, Gravity.CENTER, 0, 0);
 
 
         Button closeButton = newPopup.findViewById(R.id.closeButton);
@@ -197,13 +197,15 @@ public class GroupActivityCreatorAdapter extends AbstractCreatorAdapter
                 newPopupWindow.dismiss();
             }
         });
-        Button addPlant = newPopup.findViewById(R.id.addPlant);
-        addPlant.setOnClickListener(new View.OnClickListener() {
+        Button waterAll = newPopup.findViewById(R.id.waterAll);
+        waterAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showAllPlants();
+
+                thisGroup.waterAll();
             }
         });
+        showAllPlants();
     }
     public void showAllPlants() {
 
@@ -226,15 +228,14 @@ public class GroupActivityCreatorAdapter extends AbstractCreatorAdapter
     }
 
     private void createPlants() {
-        InnerPlantRecyclerAdapter adapter = new InnerPlantRecyclerAdapter(this, groupList.get(holder.getAdapterPosition()),plantList, whatContext);
+        InnerPlantRecyclerAdapter adapter = new InnerPlantRecyclerAdapter(this, groupList.get(holder.getAdapterPosition()),plantList, whatContext,false);
         displayAllPlants.setAdapter(adapter);
     }
     public void showPlants() {
-
         plantList = groupList.get(holder.getAdapterPosition()).getAllPlants();
         GridLayoutManager newGridLayoutManager = new GridLayoutManager(whatContext, 1 );
         displayAllPlants.setLayoutManager(newGridLayoutManager);
-        InnerPlantRecyclerAdapter adapter = new InnerPlantRecyclerAdapter(this, groupList.get(holder.getAdapterPosition()),plantList, whatContext);
+        InnerPlantRecyclerAdapter adapter = new InnerPlantRecyclerAdapter(this, groupList.get(holder.getAdapterPosition()),plantList, whatContext,true);
         displayAllPlants.setAdapter(adapter);
     }
 

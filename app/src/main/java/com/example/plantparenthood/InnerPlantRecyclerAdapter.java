@@ -23,13 +23,17 @@ public class InnerPlantRecyclerAdapter extends AbstractCreatorAdapter
 
     private Group thisGroup;
 
+    private boolean delete;
+
     private GroupActivityCreatorAdapter GroupActivity;
-    public InnerPlantRecyclerAdapter(GroupActivityCreatorAdapter activity, Group newGroup, List<Plant> newPlantList, Context context)
+    public InnerPlantRecyclerAdapter(GroupActivityCreatorAdapter activity, Group newGroup, List<Plant> newPlantList, Context context, boolean delete)
     {
         GroupActivity = activity;
         thisGroup = newGroup;
         plantList = newPlantList;
         whatContext = context;
+        this.delete = delete;
+
     }
 
     @NonNull
@@ -52,9 +56,37 @@ public class InnerPlantRecyclerAdapter extends AbstractCreatorAdapter
 
         ImageView plantImage = (ImageView) holder.itemView.findViewById(R.id.plantImage);
         plantImage.setImageBitmap(newPlant.getDefault_image());
+        if(delete) {
+            holder.itemView.setOnClickListener(view -> confirmDeletePopup(view, newPlant));
+        } else {
+            holder.itemView.setOnClickListener(view -> confirmPopup(view, newPlant));
+        }
 
-        holder.itemView.setOnClickListener(view -> confirmPopup(view, newPlant));
 
+    }
+
+    private void confirmDeletePopup(View view, Plant thisPlant) {
+        new AlertDialog.Builder(whatContext)
+                .setTitle("Delete this from group?")
+                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int id)
+                    {
+                        thisGroup.removePlant(thisPlant);
+                        GroupActivity.showPlants();
+
+                        AsyncTask.execute(() -> GroupDataBaseHandler.getDatabase(whatContext).addGroupToDatabase(thisGroup));
+
+
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int id) {
+
+                    }
+                })
+                .show();
     }
     private void confirmPopup(View view, Plant thisPlant) {
         new AlertDialog.Builder(whatContext)

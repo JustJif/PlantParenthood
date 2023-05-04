@@ -1,11 +1,14 @@
 package com.example.plantparenthood;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import androidx.room.Room;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import kotlin.text.Regex;
 
 /**
  * Follows singleton pattern, only call methods in here using async task,
@@ -18,6 +21,7 @@ public class GroupDataBaseHandler {
     private GroupDataBaseHandler(Context context)
     {
         GroupDB = Room.databaseBuilder(context, PlantDatabase.class, "PlantDatabase").build();
+
     }
 
     public static GroupDataBaseHandler getDatabase(Context applicationContext)
@@ -45,15 +49,29 @@ public class GroupDataBaseHandler {
     }
 
     private void loadPlantsIntoGroup(String unparsed, ArrayList<Plant> plantArrayList) {
-        String[] parsed = unparsed.split(",");
-        for(int i = 0; i < parsed.length; i++) {
-            plantArrayList.add(DatabaseHandler.getDatabase(null).getPlantFromDBbyID(Integer.parseInt(parsed[i])));
+        if(!TextUtils.isEmpty(unparsed)) {
+            String[] parsed = unparsed.split(",");
+            System.out.println("LENGTH " + parsed.length);
+            System.out.println("Plant: " + parsed[0]);
+            for(int i = 0; i < parsed.length; i++) {
+                System.out.println("Plants" + parsed[i]);
+                if(TextUtils.isDigitsOnly(parsed[i]) && !TextUtils.isEmpty(parsed[i])) {
+                    plantArrayList.add(DatabaseHandler.getDatabase(null).getPlantFromDBbyID(Integer.parseInt(parsed[i])));
+                }
+            }
         }
+
     }
 
     public List<Group> getGroupsFromDB()
     {
         List<Group> loadedGroups = GroupDB.GroupDataAccessObject().loadAllGroups();
+        ArrayList<Plant> plantArrayList = new ArrayList<Plant>();
+        for(int i = 0; i < loadedGroups.size(); i++) {
+            loadPlantsIntoGroup(loadedGroups.get(i).getPlantIDs(),plantArrayList);
+            loadedGroups.get(i).setAllPlants(plantArrayList);
+        }
+
         return loadedGroups;
     }
 

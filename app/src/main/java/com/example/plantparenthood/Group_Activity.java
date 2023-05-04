@@ -39,7 +39,7 @@ public class Group_Activity extends AppCompatActivity {
         GroupGrid = findViewById(R.id.Groups_recycler_view);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(),1);
         GroupGrid.setLayoutManager(gridLayoutManager);
-
+        DatabaseHandler.getDatabase(getApplicationContext());
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {

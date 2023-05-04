@@ -26,6 +26,7 @@ public class Group {
         this.GroupLightLevel = 0;
         this.plantList = new ArrayList<Plant>();
         numGroups++;
+        plantIDs = "";
     }
     public void setPlantIDs(String plantIDs) {
         this.plantIDs = plantIDs;
@@ -58,11 +59,6 @@ public class Group {
         this.GroupLightLevel=GroupLightLevel;
     }
 
-
-    public void parseStrings() {
-        //later
-    }
-
     // Getters and Setters
     public String getGroupName() {
         return GroupName;
@@ -74,9 +70,10 @@ public class Group {
 
     // Other Methods
     public void addPlant(Plant plant) {
-
+        System.out.println("Plant ID: " + plant.getId());
         plantList.add(plant);
         if(plantList.isEmpty()) {
+
             plantIDs += plant.getId();
         } else {
             plantIDs += ("," + plant.getId());
@@ -84,12 +81,16 @@ public class Group {
     }
 
     public void removePlant(Plant plant) {
+        String plantID = "," + Integer.toString(plant.getId());
+        int index = plantIDs.indexOf(plantID);
+        int lastIndex = plantIDs.lastIndexOf(plantID);
+        plantIDs = plantIDs.substring(0,index) + plantIDs.substring(lastIndex);
         plantList.remove(plant);
     }
 
     public void waterAll() {
         for (Plant plant : plantList) {
-            //plant.water ();
+            //plant.water();
         }
     }
 }
