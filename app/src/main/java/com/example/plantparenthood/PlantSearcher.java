@@ -104,6 +104,17 @@ public class PlantSearcher extends AppCompatActivity
 
 
 
+        Button customPlant = (Button) findViewById(R.id.addCustomPlant);
+        customPlant.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupCustomPlant popupCustom = new popupCustomPlant();
+                popupCustom.show(getSupportFragmentManager(), "popup");
+            }
+        });
+
+
+
     }
 
     @Override
@@ -174,6 +185,8 @@ public class PlantSearcher extends AppCompatActivity
             text.setText("Plant(s) not found");
 
             customPlantButton.setVisibility(View.VISIBLE);
+
+
         }
     }
 
