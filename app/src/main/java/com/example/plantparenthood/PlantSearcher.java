@@ -137,6 +137,8 @@ public class PlantSearcher extends AppCompatActivity
 
         if(plantsList.size() > 0)
         {
+
+            customPlantButton.setVisibility(View.INVISIBLE);
             PlantCreatorAdapter plantAdapter = new PlantCreatorAdapter(plantsList, PlantSearcher.this);
 
             for (int i = 0; i < plantsList.size(); i++)
@@ -150,8 +152,8 @@ public class PlantSearcher extends AppCompatActivity
         else//don't bother setting up grid as no valid plants
         {
             text.setText("Plant(s) not found");
-            customPlantButton.setVisibility(View.VISIBLE);
 
+            customPlantButton.setVisibility(View.VISIBLE);
         }
     }
 
