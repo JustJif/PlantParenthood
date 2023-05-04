@@ -72,153 +72,16 @@ public class PlantActivityCreatorAdapter extends AbstractCreatorAdapter
         plantImage.setImageBitmap(thisPlant.getDefault_image());
 
         this.holder = holder;
+        holder.itemView.setOnClickListener(view ->
+        {
+            new PlantInfoPopup(view,thisPlant,whatContext,holder,this,plant_activity);
+        });
 
-        holder.itemView.setOnClickListener(view -> setupPopup(view, thisPlant));
     }
 
     @Override
     public int getItemCount()
     {
         return plantsList.size();
-    }
-
-    private void setupPopup(View view, Plant thisPlant) {
-        LayoutInflater layoutInflater = (LayoutInflater) view.getContext()
-                .getSystemService(view.getContext().LAYOUT_INFLATER_SERVICE);
-        View newPopup = layoutInflater.inflate(R.layout.activity_plant_display_popup, null);
-
-        PopupWindow newPopupWindow = new PopupWindow(newPopup, LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT, true);
-        newPopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
-
-        EditText plantCommonName = newPopup.findViewById(R.id.plantCommonName);
-        textBoxes[0] = plantCommonName;
-        plantCommonName.setText(thisPlant.getCommon_name());
-        plantCommonName.setEnabled(false);
-
-        EditText plantScientificName = newPopup.findViewById(R.id.plantScientificName);
-        textBoxes[1] = plantScientificName;
-        plantScientificName.setText(thisPlant.getScientific_name());
-        plantScientificName.setEnabled(false);
-
-        plantImage = newPopup.findViewById(R.id.plantImage);
-        plantImage.setImageBitmap(thisPlant.getDefault_image());
-
-        qrImage = newPopup.findViewById(R.id.qr_image);
-        qrImage.post(new Runnable(){//wait until qrImage has been drawn to execute
-            @Override
-            public void run(){
-                qrImage.setImageBitmap(QRCodeManager.generateQRCodeBitmap(Integer.toString(thisPlant.getId()), qrImage.getWidth()));
-                PPMobileNotificationFactory.createNotificationChannel(qrImage.getContext()); //(DEBUG) notifications
-                NotificationManagerCompat notifMan = NotificationManagerCompat.from(qrImage.getContext());
-                Notification waterNoti = new PPMobileNotificationFactory().createWaterNotification(thisPlant.getId(), thisPlant.getCommon_name(), qrImage.getContext());
-                notifMan.notify(thisPlant.getId(),waterNoti);
-                qrImage.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        QRCodeManager.printQRCode(qrImage, Integer.toString(thisPlant.getId()), qrImage.getContext());
-                    }
-                });
-            }
-        });
-
-
-
-        Button closeButton = newPopup.findViewById(R.id.closeButton);
-        closeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                newPopupWindow.dismiss();
-            }
-        });
-
-        ImageView editCommonName = newPopup.findViewById(R.id.editCommon);
-        editCommonName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View click)
-            {
-                changes[0] = true;
-                modifyText(plantCommonName, view);
-            }
-        });
-
-        ImageView editScientificName = newPopup.findViewById(R.id.editScientific);
-        editScientificName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View click) {
-                changes[1] = true;
-                modifyText(plantScientificName, view);
-            }
-        });
-
-        ImageView editCamera = newPopup.findViewById(R.id.editCamera);
-        editCamera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                changes[2] = true;
-                plant_activity.openCamera();
-            }
-        });
-
-        Button updatePlant = newPopup.findViewById(R.id.updatePlant);
-        updatePlant.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                new AlertDialog.Builder(whatContext)
-                .setTitle("Confirm changes")
-                .setMessage("Changes will override previous information, this cannot be undone.")
-                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int id)
-                    {
-                        setChanges(thisPlant);
-                        Toast.makeText(view.getContext(), "Applied changes", Toast.LENGTH_SHORT).show();
-                        newPopupWindow.dismiss();
-                    }
-                })
-                .setNegativeButton("Revert", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int id) {
-                        Toast.makeText(view.getContext(), "Reverted changes", Toast.LENGTH_SHORT).show();
-                        Arrays.fill(changes, false);
-                        newPopupWindow.dismiss();
-                    }
-                })
-                .show();
-            }
-        });
-    }
-
-    private void modifyText(TextView editableText, View view) {
-        InputMethodManager inputMethodManager = (InputMethodManager) whatContext.getSystemService(Context.INPUT_METHOD_SERVICE);
-        if(!editableText.isEnabled())
-        {
-            editableText.setEnabled(true);
-            editableText.requestFocus();
-            inputMethodManager.showSoftInput(editableText, 1);
-        }
-        else
-        {
-            editableText.setEnabled(false);
-            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
-    }
-
-    public void setCameraPreview(Bitmap image)
-    {
-        plantImage.setImageBitmap(image);
-        newImage = image;
-    }
-
-    private void setChanges(Plant plant)
-    {
-        if(changes[0])
-            plant.setCommon_name(textBoxes[0].getText().toString());
-        if(changes[1])
-            plant.setScientific_name(textBoxes[1].getText().toString());
-        if(changes[2])
-            plant.setDefault_image(newImage);
-
-        AsyncTask.execute(() -> databaseHandler.addPlantToDatabase(plant));
-        this.notifyItemChanged(holder.getAdapterPosition());
     }
 }

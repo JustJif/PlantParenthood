@@ -43,6 +43,7 @@ public class CalendarCreatorAdapter extends AbstractCreatorAdapter
     private Calendar_Activity calendar_activity;
     private Context whatContext;
     private Schedule schedule;
+    private RecyclerView.ViewHolder newHolder;
     public CalendarCreatorAdapter(List<Plant> newPlantsList, Calendar_Activity calendar_activity)
     {
         plantsList = newPlantsList;
@@ -68,6 +69,9 @@ public class CalendarCreatorAdapter extends AbstractCreatorAdapter
         plantCommonName.setText(thisPlant.getCommon_name());
         holder.itemView.setOnClickListener(view -> setupPopup(view, thisPlant));
         TextView scheduled = (TextView) holder.itemView.findViewById(R.id.isScheduled);
+
+        newHolder = holder;
+
         Watering water = thisPlant.getWateringCycle();
         if(water != null)
         {
@@ -155,6 +159,8 @@ public class CalendarCreatorAdapter extends AbstractCreatorAdapter
                 }
 
                 schedule.addPlantSchedule(thisPlant,wateringNumber);
+                Toast.makeText(view.getContext(), "Added new watering Schedule", Toast.LENGTH_SHORT).show();
+                calendar_activity.checkListOfValidPlants();
                 newPopupWindow.dismiss();
             }
         });
@@ -211,9 +217,16 @@ public class CalendarCreatorAdapter extends AbstractCreatorAdapter
                         @Override
                         public void onClick(DialogInterface dialogInterface, int id)
                         {
-                            AsyncTask.execute(() -> water.deleteWateringSchedule());
-                            Toast.makeText(view.getContext(), "Applied changes", Toast.LENGTH_SHORT).show();
-                            notifyDataSetChanged();
+                            AsyncTask.execute(() -> {
+                                water.deleteWateringSchedule();
+                                Handler handler = new Handler(Looper.getMainLooper());
+                                handler.post(() ->
+                                {
+                                    Toast.makeText(view.getContext(), "Applied changes", Toast.LENGTH_SHORT).show();
+                                    calendar_activity.checkListOfValidPlants();
+                                });
+                            });
+
                             newPopupWindow.dismiss();
                         }
                     })
