@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,16 +23,19 @@ import com.budiyev.android.codescanner.DecodeCallback;
 
 import com.google.zxing.Result;
 
+import java.util.List;
 
 
-public class QrCodeScannerFragment extends Fragment implements View.OnClickListener {
+public class QRCodeScannerFragment extends Fragment implements View.OnClickListener {
 
     /**
-     * private class will let us asynchronously query the database.
+     * Private class will let us asynchronously query the database.
      */
     private class DatabaseAsyncTask extends AsyncTask<Void, Void, Plant> {
         private DatabaseHandler mDb;
         private int mPlantID;
+        private List<Plant> plantList;
+        private RecyclerView.ViewHolder holder;
 
         public DatabaseAsyncTask(DatabaseHandler db, int plantID){
             mDb = db;
@@ -40,6 +44,7 @@ public class QrCodeScannerFragment extends Fragment implements View.OnClickListe
 
         @Override
         protected Plant doInBackground(Void... voids) {
+            plantList = mDb.getPlantsFromDB(); //populate the plant list
             return mDb.getPlantFromDBbyID(mPlantID);
         }
 
@@ -55,12 +60,14 @@ public class QrCodeScannerFragment extends Fragment implements View.OnClickListe
                 Toast.makeText(getActivity(), "Plant not found", Toast.LENGTH_SHORT).show();
             }
         }
+
+
     }
 
     private CodeScanner mCodeScanner;
 
 
-    public QrCodeScannerFragment() {
+    public QRCodeScannerFragment() {
         // Required empty public constructor
     }
 

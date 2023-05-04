@@ -12,7 +12,7 @@
         tools:layout="@layout/activity_qr_code_scanner_menu" />
     <fragment
         android:id="@+id/qrCodeScannerFragment"
-        android:name="com.example.plantparenthood.QrCodeScannerFragment"
+        android:name="com.example.plantparenthood.QRCodeScannerFragment"
         android:label="fragment_qr_code_scanner"
         tools:layout="@layout/fragment_qr_code_scanner" >
         <action

@@ -51,6 +51,7 @@ public class PlantActivityCreatorAdapter extends AbstractCreatorAdapter
         Arrays.fill(changes,false);
     }
 
+
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
