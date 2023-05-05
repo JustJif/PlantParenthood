@@ -21,7 +21,7 @@ public class Statistics {
     private int totalOwnedPlants = 0;
     private int totalDeadPlants = 0;
     @Ignore
-    private ArrayList<Double> daysSinceLastWateringArr;
+    private long timeSinceLastWatering;
     private int totalTimesWatered = 0;
     @Ignore
     private Date firstWateringDate;
@@ -35,7 +35,7 @@ public class Statistics {
         curOwnedPlants = 0;
         totalOwnedPlants = 0;
         totalDeadPlants = 0;
-        daysSinceLastWateringArr = new ArrayList<Double>();
+        timeSinceLastWatering = 0;
         totalTimesWatered = 0;
         firstWateringDate = new Date(0);
         lastWateringDate = new Date(0);
@@ -101,11 +101,15 @@ public class Statistics {
         Date date = new Date();
         long lastWater = lastWateringDate.getTime();
         this.lastWateringDate=date;
+        this.lastWateringDateLong = this.lastWateringDate.getTime();
         totalTimesWatered++;
         long currentWateringDate = date.getTime();
         long timeBetween = currentWateringDate-lastWater;
-        double days = (double)timeBetween/86400000;
-        daysSinceLastWateringArr.add(days);
+        if(firstWateringDateLong == 0)
+        {
+            firstWateringDateLong = currentWateringDate;
+        }
+        timeSinceLastWatering = timeBetween;
     }
     private void computeMeanTimeBetweenWatering(){
         long first = firstWateringDate.getTime();

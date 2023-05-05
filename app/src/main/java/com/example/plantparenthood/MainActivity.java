@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        StatisticsDatabaseHandler.getDatabase(getApplicationContext()); // Need to call on start.
         PPMobileNotificationFactory.createNotificationChannel(getApplicationContext());//need to call this at app start
         //final MediaPlayer mediaPlayer = MediaPlayer.create(this,R.raw);
 

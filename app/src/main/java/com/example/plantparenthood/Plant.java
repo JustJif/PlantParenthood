@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.widget.EditText;
 
+import androidx.room.Ignore;
+
 public class Plant
 {
     public static class PlantBuilder
@@ -85,6 +87,8 @@ public class Plant
     private String plantImageURL;//images are large they will be fetched from api whenever required
     private Watering wateringCycle;
 
+    @Ignore
+    private StatisticsManager statisticsManager = new StatisticsManager();
     /**
      * Private constructor, please use the builder pattern to create an object of this
      * @param plantBuilder builder to create an object of Plant
@@ -104,9 +108,11 @@ public class Plant
 
     public void waterPlant(int todaysDate)
     {
+        statisticsManager.waterPlant();
         getWateringCycle().setLastWateredDay(todaysDate);
         getWateringCycle().iterateTimesWater();
         DatabaseHandler.getDatabase().saveWateringSchedule(getWateringCycle());
+
     }
 
     /**
