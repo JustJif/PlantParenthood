@@ -56,8 +56,7 @@ public class Perenual extends com.example.plantparenthood.AbstractAPI
                         try
                         {
                             queryReceived = new JSONObject(response);
-                            //plantSearcherRef.passDataToCreator(queryReceived);
-                            ArrayList<Plant> plants = plantController.createPlant(queryReceived,whatContext);
+                            plantController.createPlant(queryReceived,whatContext);
                         } catch (JSONException e)
                         {
                             throw new RuntimeException(e);
@@ -76,7 +75,7 @@ public class Perenual extends com.example.plantparenthood.AbstractAPI
     }
 
     @Override
-    public void queryImageAPI(RequestQueue queue, Plant plant, AbstractCreatorAdapter plantAdapter, int plantLocation)
+    public void queryImageAPI(RequestQueue queue, Plant plant, int plantLocation)
     {
         //this is the default image URL
         if(plant.getPlantImageURL().equals(defaultImageURL) || plant.getPlantImageURL().equals(""))
@@ -87,7 +86,7 @@ public class Perenual extends com.example.plantparenthood.AbstractAPI
             public void onResponse(Bitmap response)
             {
                 plant.setDefault_image(response);
-                plantAdapter.notifyItemChanged(plantLocation);
+                plantController.notifyAbstractCreator(plantLocation);
             }
         }, 0, 0, ImageView.ScaleType.FIT_XY, Bitmap.Config.ARGB_8888, new Response.ErrorListener()
         {

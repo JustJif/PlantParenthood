@@ -28,7 +28,6 @@ import java.util.ArrayList;
 public class PlantSearcherActivity extends AppCompatActivity
 {
     private ActivityPlantSearcherBinding binding;
-    private RequestQueue queue;
     private TextView errorText;
     private ArrayList<Plant> currentDisplayedPlants;
     private Integer pageNumber, maxPageNumber;
@@ -53,10 +52,9 @@ public class PlantSearcherActivity extends AppCompatActivity
         errorText = findViewById(R.id.errorText);
 
         plantController = new PlantController();
-        plantController.setAPI(new Perenual(plantController, getApplicationContext()));
         plantController.setPlantCreator(new PlantCreator());
         plantController.setPlantSearcherActivity(this);
-        queue = Volley.newRequestQueue(getApplicationContext());
+        plantController.setPlantSearcher(new PlantSearcher(plantController,getApplicationContext()));
 
         pageNumber = 1;
         maxPageNumber = 1;
@@ -111,7 +109,8 @@ public class PlantSearcherActivity extends AppCompatActivity
                 InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                 inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 plantName = String.valueOf(text.getText());
-                searchByNameForPlant(plantName);
+                String erxTxt = plantController.searchByNameForPlant(plantName, pageNumber);
+                errorText.setText(erxTxt);
             }
         });
         return true;
@@ -120,12 +119,8 @@ public class PlantSearcherActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings)
         {
             return true;
@@ -139,6 +134,7 @@ public class PlantSearcherActivity extends AppCompatActivity
         currentDisplayedPlants = plantsList;
         TextView text = findViewById(R.id.errorText);
         RecyclerView plantGrid = findViewById(R.id.plantGridView);
+        plantGrid.setAdapter(null);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
         plantGrid.setLayoutManager(gridLayoutManager);
         pageNumber = currentPage;
@@ -150,34 +146,20 @@ public class PlantSearcherActivity extends AppCompatActivity
         {
             customPlantButton.setVisibility(View.INVISIBLE);
             PlantCreatorAdapter plantAdapter = new PlantCreatorAdapter(plantsList, PlantSearcherActivity.this);
-
+            plantController.setAbstractCreator(plantAdapter);
             for (int i = 0; i < plantsList.size(); i++)
             {
                 Plant thisPlant = plantsList.get(i);
-                plantController.queryImageAPI(queue, thisPlant, plantAdapter, i);
+                plantController.queryImageAPI(thisPlant, i);
             }
             text.setText("");
             plantGrid.setAdapter(plantAdapter);
         }
         else//don't bother setting up grid as no valid plants
         {
+            plantGrid.setAdapter(null);
             text.setText("Plant(s) not found");
-
             customPlantButton.setVisibility(View.VISIBLE);
-        }
-    }
-
-    private void searchByNameForPlant(String nameOfPlant)
-    {
-        //apply filters later
-        if (!nameOfPlant.equals(""))
-        {
-            errorText.setText("Loading...");//this is just some UI stuff
-            plantController.queryAPI(queue, nameOfPlant, pageNumber);
-        }
-        else
-        {
-            errorText.setText("Error no name");//UI message to user saying empty query, do not processes
         }
     }
 
@@ -186,10 +168,10 @@ public class PlantSearcherActivity extends AppCompatActivity
         if(pageNumber > 1)
         {
             pageNumber--;
-            queue.cancelAll(DatabaseHandler.getDatabase()); //stops spamming the api with queries, really helps with performance
+            plantController.cancelQueueRequests();
             RecyclerView plantGrid = findViewById(R.id.plantGridView);
             plantGrid.setAdapter(null);
-            searchByNameForPlant(plantName);
+            plantController.searchByNameForPlant(plantName,pageNumber);
         }
     }
 
@@ -198,21 +180,10 @@ public class PlantSearcherActivity extends AppCompatActivity
         if(pageNumber < maxPageNumber)
         {
             pageNumber++;
-            queue.cancelAll(DatabaseHandler.getDatabase());
+            plantController.cancelQueueRequests();
             RecyclerView plantGrid = findViewById(R.id.plantGridView);
             plantGrid.setAdapter(null);
-            searchByNameForPlant(plantName);
+            plantController.searchByNameForPlant(plantName,pageNumber);
         }
-    }
-
-    /*public void passDataToCreator(JSONObject unparsedFile) throws JSONException
-    {
-        plantCreator.createPlant(unparsedFile,getApplicationContext(), this);
-    }*/
-
-    public void filterSearchResult(String query, String watering, String cycle, String sunlight)
-    {
-
-
     }
 }

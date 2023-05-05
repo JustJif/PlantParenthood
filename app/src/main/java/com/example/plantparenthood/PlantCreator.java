@@ -13,8 +13,7 @@ import java.util.ArrayList;
 
 public class PlantCreator {
 
-    PlantCreator() {
-    }
+    PlantCreator() {}
 
     public ArrayList<Plant> createPlant(JSONObject nonparsedPlants, Context applicationContext, PlantController plantController) {
         ArrayList<Plant> createdPlantObjects = new ArrayList<>();

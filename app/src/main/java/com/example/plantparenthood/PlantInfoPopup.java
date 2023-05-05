@@ -182,12 +182,6 @@ public class PlantInfoPopup
 
     private void setChanges(Plant plant)
     {
-        /*if(changes[0])
-            plant.setCommon_name(textBoxes[0].getText().toString());
-        if(changes[1])
-            plant.setScientific_name(textBoxes[1].getText().toString());
-        if(changes[2])
-            plant.setDefault_image(newImage);*/
         plantController.updatePlant(plant,changes,textBoxes,newImage);
 
         AsyncTask.execute(() -> DatabaseHandler.getDatabase(whatContext).addPlantToDatabase(plant));

@@ -14,9 +14,10 @@ import java.util.List;
 public class PlantController
 {
     private PlantCreator plantCreator;
-    private AbstractAPI abstractAPI;
     private Schedule schedule;
     private PlantSearcherActivity plantSearcherActivity;
+    private AbstractCreatorAdapter abstractCreator;
+    private PlantSearcher plantSearcher;
 
     public PlantController() {}
 
@@ -45,14 +46,9 @@ public class PlantController
         return plant.updatePlant(changes,textBoxes,newImage);
     }
 
-    public void queryAPI(RequestQueue queue, String queryParams, Integer page)
+    public void queryImageAPI(Plant plant, int plantLocation)
     {
-        abstractAPI.queryAPI(queue,queryParams,page);
-    }
-
-    public void queryImageAPI(RequestQueue queue, Plant plant, AbstractCreatorAdapter plantAdapter, int plantLocation)
-    {
-        abstractAPI.queryImageAPI(queue,plant,plantAdapter,plantLocation);
+        plantSearcher.queryImageAPI(plant,plantLocation);
     }
 
     public ArrayList<Plant> createPlant(JSONObject nonparsedPlants, Context context)
@@ -65,13 +61,23 @@ public class PlantController
         plantSearcherActivity.createPlantGrid(plantsList,currentPage,lastPage);
     }
 
+    public String searchByNameForPlant(String plantName, Integer pageNumber)
+    {
+        return plantSearcher.searchByNameForPlant(plantName, pageNumber);
+    }
+
+    public void cancelQueueRequests()
+    {
+        plantSearcher.cancelQueueRequests();
+    }
+
+    public void notifyAbstractCreator(int position)
+    {
+        abstractCreator.notifyChange(position);
+    }
 
     public void setPlantCreator(PlantCreator plantCreator) {
         this.plantCreator = plantCreator;
-    }
-
-    public void setAPI(AbstractAPI abstractAPI) {
-        this.abstractAPI = abstractAPI;
     }
 
     public void setSchedule(Schedule schedule) {
@@ -79,5 +85,13 @@ public class PlantController
     }
     public void setPlantSearcherActivity(PlantSearcherActivity plantSearcherActivity) {
         this.plantSearcherActivity = plantSearcherActivity;
+    }
+
+    public void setPlantSearcher(PlantSearcher plantSearcher) {
+        this.plantSearcher = plantSearcher;
+    }
+
+    public void setAbstractCreator(AbstractCreatorAdapter abstractCreator) {
+        this.abstractCreator = abstractCreator;
     }
 }
