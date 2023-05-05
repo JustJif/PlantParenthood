@@ -6,9 +6,11 @@ import static com.example.plantparenthood.ComputeDate.getDayOfTheYear;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Notification;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -46,6 +48,9 @@ public class Calendar_Activity extends AppCompatActivity {
 
         schedule = new Schedule();
         selectedDate = getDayOfTheYear();
+
+        // pingNotificationsForPlantsToday(); //notify user of plants that need to be
+        // watered today.
         if (showSchedule) {
             checkListOfValidPlants();
         } else {
@@ -131,6 +136,23 @@ public class Calendar_Activity extends AppCompatActivity {
 
         // highlight the start date on the calendar view
         simpleCalendarView.setDate(new Date().getTime());
+    }
+
+    public void pingNotificationsForPlantsToday() { // notify user of plants that need to be watered today
+        List<Plant> plantsToWaterToday = findScheduledPlants();
+        PPMobileNotificationFactory ppFact = new PPMobileNotificationFactory();
+        Notification waterNoti;
+        NotificationManagerCompat notifMan = NotificationManagerCompat.from(getApplicationContext());
+        if (plantsToWaterToday != null) {
+            for (Plant plant : plantsToWaterToday) {
+                waterNoti = ppFact.createWaterNotification(plant.getId(), plant.getCommon_name(),
+                        getApplicationContext());
+                synchronized (notifMan) {
+                    notifMan.notify(plant.getId(), waterNoti);
+                }
+            }
+        }
+
     }
 
     public void refreshPlantGrid() {
