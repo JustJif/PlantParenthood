@@ -1,3 +1,8 @@
+/**
+ * A receiver class is required in order to schedule a notification because of the way android works.
+ * This is not a part of our class diagram for that reason, we did not know we would need this until now.
+ */
+
 package com.example.plantparenthood;
 
 import static androidx.core.content.ContextCompat.getSystemService;
