@@ -39,7 +39,7 @@ public class PlantController
         return schedule.findScheduledPlantsForToday(listOfPlants,dateOnCalender);
     }
 
-    public boolean updatePlant(Plant plant, boolean[] changes, EditText[] textBoxes, Bitmap newImage)
+    public boolean updatePlant(Plant plant, boolean[] changes, String[] textBoxes, Bitmap newImage)
     {
         return plant.updatePlant(changes,textBoxes,newImage);
     }

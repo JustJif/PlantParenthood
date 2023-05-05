@@ -14,7 +14,7 @@ import java.util.List;
 public class DatabaseHandler {
     private static DatabaseHandler activeDatabase = null;
     private PlantCreator plantCreator;
-    private PlantDatabase plantDB;
+    private static PlantDatabase plantDB;
     private DatabaseHandler(Context context)
     {
         plantDB = Room.databaseBuilder(context, PlantDatabase.class, "PlantDatabase").build();
@@ -25,6 +25,7 @@ public class DatabaseHandler {
     {
         if(activeDatabase == null)
         {
+            System.out.println("Initalized database");
             activeDatabase = new DatabaseHandler(applicationContext);
         }
 
@@ -35,9 +36,10 @@ public class DatabaseHandler {
      * This is used for JUnit database's please don't use this within normal usage
      * @return JUnit capable database
      */
-    public static PlantDatabase createInMemoryDatabase(Context context)
+    public static DatabaseHandler createInMemoryDatabase(Context context)
     {
-        return Room.inMemoryDatabaseBuilder(context, PlantDatabase.class).build();
+        plantDB = Room.inMemoryDatabaseBuilder(context, PlantDatabase.class).build();
+        return getDatabase(context);
     }
 
     public static DatabaseHandler getDatabase()
