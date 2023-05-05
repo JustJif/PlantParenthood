@@ -29,7 +29,7 @@ public class NotificationTest {
         // Set up plant info
         plantID = 123;
         plantName = "Test plant name";
-        // Get a Context object for the app under test
+        // Get a Context object for the app under test1
         context = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
     }
