@@ -1,6 +1,5 @@
 package com.example.plantparenthood;
 
-import android.app.Application;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,13 +12,11 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class PlantCreator {
-    public DataAccessObject database;
 
-    PlantCreator(DataAccessObject newDatabase) {
-        database = newDatabase;
+    PlantCreator() {
     }
 
-    public ArrayList<Plant> createPlant(JSONObject nonparsedPlants, Context applicationContext, PlantSearcher makethisplantUI) {
+    public ArrayList<Plant> createPlant(JSONObject nonparsedPlants, Context applicationContext, PlantController plantController) {
         ArrayList<Plant> createdPlantObjects = new ArrayList<>();
 
         JSONArray plantsList = null;
@@ -32,7 +29,6 @@ public class PlantCreator {
                 int id = currentPlant.getInt("id");
                 String common_name = currentPlant.getString("common_name");
                 JSONArray scientific_name = currentPlant.getJSONArray("scientific_name");
-                JSONArray other_name = currentPlant.getJSONArray("other_name");
                 String cycle = currentPlant.getString("cycle");
                 String watering = currentPlant.getString("watering");
                 JSONArray sunlight = currentPlant.getJSONArray("sunlight");
@@ -49,12 +45,6 @@ public class PlantCreator {
                     plantScientificNames[j] = scientific_name.getString(j);
                 }
 
-                /*String[] plantOtherNames = new String[other_name.length()];
-                for (int k = 0; k < scientific_name.length(); k++)
-                {
-                    plantOtherNames[k] = other_name.getString(k);
-                }*/
-
                 String[] sunlightArray = new String[sunlight.length()];
                 for (int j = 0; j < sunlight.length(); j++) {
                     sunlightArray[j] = sunlight.getString(j);
@@ -64,7 +54,6 @@ public class PlantCreator {
                         .setId(id)
                         .setCommon_name(common_name)
                         .setScientific_name(plantScientificNames[0])
-                        //.setOther_name(plantOtherNames[0])
                         .setCycle(cycle)
                         .setWatering(watering)
                         .setSunlight(sunlightArray[0])
@@ -75,10 +64,7 @@ public class PlantCreator {
                 createdPlantObjects.add(newPlant);
             }
 
-            Integer currentPage = nonparsedPlants.getInt("current_page");
-            Integer lastPage = nonparsedPlants.getInt("last_page");
-            if(makethisplantUI != null)
-                makethisplantUI.createPlantGrid(createdPlantObjects, currentPage, lastPage);
+            plantController.passPlantslist(createdPlantObjects, nonparsedPlants.getInt("current_page"), nonparsedPlants.getInt("last_page"));
         } catch (JSONException e) {
             return null;
         }

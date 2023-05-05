@@ -1,19 +1,22 @@
 package com.example.plantparenthood;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.widget.EditText;
+
+import com.android.volley.RequestQueue;
+
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class PlantController
 {
-    //Logic classes
     private PlantCreator plantCreator;
-    private Perenual perenual;
-    private PlantSearcher plantSearcher;
+    private AbstractAPI abstractAPI;
     private Schedule schedule;
-
-    //UI Classes
-    private Calendar_Activity calendar_activity;
-    private CalendarCreatorAdapter calendarCreatorAdapter;
+    private PlantSearcherActivity plantSearcherActivity;
 
     public PlantController() {}
 
@@ -37,27 +40,44 @@ public class PlantController
         return schedule.findScheduledPlantsForToday(listOfPlants,dateOnCalender);
     }
 
+    public boolean updatePlant(Plant plant, boolean[] changes, EditText[] textBoxes, Bitmap newImage)
+    {
+        return plant.updatePlant(changes,textBoxes,newImage);
+    }
+
+    public void queryAPI(RequestQueue queue, String queryParams, Integer page)
+    {
+        abstractAPI.queryAPI(queue,queryParams,page);
+    }
+
+    public void queryImageAPI(RequestQueue queue, Plant plant, AbstractCreatorAdapter plantAdapter, int plantLocation)
+    {
+        abstractAPI.queryImageAPI(queue,plant,plantAdapter,plantLocation);
+    }
+
+    public ArrayList<Plant> createPlant(JSONObject nonparsedPlants, Context context)
+    {
+        return plantCreator.createPlant(nonparsedPlants, context, this);
+    }
+
+    public void passPlantslist(ArrayList<Plant> plantsList,Integer currentPage, Integer lastPage)
+    {
+        plantSearcherActivity.createPlantGrid(plantsList,currentPage,lastPage);
+    }
+
+
     public void setPlantCreator(PlantCreator plantCreator) {
         this.plantCreator = plantCreator;
     }
 
-    public void setPerenual(Perenual perenual) {
-        this.perenual = perenual;
-    }
-
-    public void setPlantSearcher(PlantSearcher plantSearcher) {
-        this.plantSearcher = plantSearcher;
+    public void setAPI(AbstractAPI abstractAPI) {
+        this.abstractAPI = abstractAPI;
     }
 
     public void setSchedule(Schedule schedule) {
         this.schedule = schedule;
     }
-
-    public void setCalendar_activity(Calendar_Activity calendar_activity) {
-        this.calendar_activity = calendar_activity;
-    }
-
-    public void setCalendarCreatorAdapter(CalendarCreatorAdapter calendarCreatorAdapter) {
-        this.calendarCreatorAdapter = calendarCreatorAdapter;
+    public void setPlantSearcherActivity(PlantSearcherActivity plantSearcherActivity) {
+        this.plantSearcherActivity = plantSearcherActivity;
     }
 }

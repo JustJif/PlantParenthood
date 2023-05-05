@@ -56,7 +56,6 @@ public class PlantActivityCreatorAdapter extends AbstractCreatorAdapter
         {
             new PlantInfoPopup(view,thisPlant,whatContext,holder,this,plant_activity);
         });
-
     }
 
     @Override

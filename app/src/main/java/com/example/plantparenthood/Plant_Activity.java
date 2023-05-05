@@ -1,15 +1,11 @@
 package com.example.plantparenthood;
 
-import static androidx.camera.core.impl.utils.ContextUtil.getApplicationContext;
-import static androidx.core.content.ContextCompat.startActivity;
-
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -46,17 +42,14 @@ public class Plant_Activity extends AppCompatActivity {
     private ActivityResultLauncher<Intent> camera;
     private PlantActivityCreatorAdapter plantAdapter;
 
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plants);
 
-
         plantList = new ArrayList<>();
         plantDatabase = DatabaseHandler.getDatabase(getApplicationContext());
-
 
         plantGrid = findViewById(R.id.plant_recycler_view);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 1);
@@ -152,13 +145,10 @@ public class Plant_Activity extends AppCompatActivity {
         addPlantFromDB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), PlantSearcher.class));
-
+                startActivity(new Intent(getApplicationContext(), PlantSearcherActivity.class));
             }
         });
     }
-
-
 
     @Override
     protected void onResume() {
@@ -195,7 +185,4 @@ public class Plant_Activity extends AppCompatActivity {
     {
         plantAdapter.notifyItemChanged(position);
     }
-
-
-
 }

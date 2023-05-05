@@ -26,6 +26,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Scanner;
 
 public class Calendar_Activity extends AppCompatActivity
 {
@@ -52,7 +53,6 @@ public class Calendar_Activity extends AppCompatActivity
         showSchedule = true;
 
         plantController = new PlantController();
-        plantController.setCalendar_activity(this);
         plantController.setSchedule(new Schedule());
         selectedDate = getDayOfTheYear();
         if (showSchedule)
@@ -119,7 +119,7 @@ public class Calendar_Activity extends AppCompatActivity
                 switch(item.getItemId())
                 {
                     case R.id.spaces:
-                        startActivity(new Intent(getApplicationContext(), Space_Activity.class));
+                        startActivity(new Intent(getApplicationContext(), Group_Activity.class));
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.plants:
@@ -132,8 +132,8 @@ public class Calendar_Activity extends AppCompatActivity
                         return true;
                     case R.id.calendar:
                         return true;
-                    case R.id.settings:
-                        startActivity(new Intent(getApplicationContext(),Settings.class));
+                    case R.id.scanner:
+                        startActivity(new Intent(getApplicationContext(), QRScannerMenuActivity.class));
                         overridePendingTransition(0,0);
                         return true;
                 }
@@ -151,7 +151,6 @@ public class Calendar_Activity extends AppCompatActivity
     }
     private void createPlantGrid(RecyclerView plantGrid, List<Plant> whatPlantsToDisplay) {
         creatorAdapter = new CalendarCreatorAdapter(whatPlantsToDisplay, this, plantController);
-        plantController.setCalendarCreatorAdapter(creatorAdapter);
         plantGrid.setAdapter(creatorAdapter);
     }
 

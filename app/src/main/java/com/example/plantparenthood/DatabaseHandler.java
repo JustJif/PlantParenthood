@@ -18,7 +18,7 @@ public class DatabaseHandler {
     private DatabaseHandler(Context context)
     {
         plantDB = Room.databaseBuilder(context, PlantDatabase.class, "PlantDatabase").build();
-        plantCreator = new PlantCreator(plantDB.dataAccessObject());
+        plantCreator = new PlantCreator();
     }
 
     public static DatabaseHandler getDatabase(Context applicationContext)
@@ -28,6 +28,11 @@ public class DatabaseHandler {
             activeDatabase = new DatabaseHandler(applicationContext);
         }
 
+        return activeDatabase;
+    }
+
+    public static DatabaseHandler getDatabase()
+    {
         return activeDatabase;
     }
 
