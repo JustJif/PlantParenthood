@@ -6,7 +6,7 @@
         android:id="@+id/spaces"/>
 
     <item android:title="Plants"
-        android:icon="@drawable/baseline_assist_walker_24"
+        android:icon="@drawable/plant"
         android:id="@+id/plants"/>
 
     <item android:title="Home"
@@ -17,7 +17,8 @@
         android:icon="@drawable/baseline_calendar_month_24"
         android:id="@+id/calendar"/>
 
-    <item android:title="Settings"
+    <item
+        android:id="@+id/scanner"
         android:icon="@drawable/baseline_settings_24"
-        android:id="@+id/settings"/>
+        android:title="Scanner" />
 </menu>

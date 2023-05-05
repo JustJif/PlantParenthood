@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentTop="true"
+    android:layout_centerInParent="true"
+    android:background="@color/plantparenthood_green"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:textColor="@color/white"
+        android:id="@+id/curOwnedPlants"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Currently Owned Plants: "
+        app:layout_constraintBottom_toTopOf="@+id/totalOwnedPlants"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:textColor="@color/white"
+        android:id="@+id/totalOwnedPlants"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total Owned Plants: "
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/curOwnedPlants"
+        app:layout_constraintBottom_toTopOf="@+id/totalDeadPlants"
+        tools:layout_editor_absoluteY="101dp" />
+
+    <TextView
+        android:textColor="@color/white"
+        android:id="@+id/totalDeadPlants"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total Removed Plants: "
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/totalOwnedPlants"
+        app:layout_constraintBottom_toTopOf="@+id/lastTimeWatered"
+        tools:layout_editor_absoluteY="436dp" />
+
+<!--    <TextView-->
+<!--        android:textColor="@color/white"-->
+<!--        android:id="@+id/meanTimeBetweenWatering"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Mean Time Between Watering: "-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/totalDeadPlants"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/medianTimeBetweenWatering"-->
+<!--        tools:layout_editor_absoluteY="243dp" />-->
+
+<!--    <TextView-->
+<!--        android:textColor="@color/white"-->
+<!--        android:id="@+id/medianTimeBetweenWatering"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Median Time Between Watering: "-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/meanTimeBetweenWatering"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/lastTimeWatered"-->
+<!--        tools:layout_editor_absoluteY="173dp" />-->
+
+    <TextView
+        android:textColor="@color/white"
+        android:id="@+id/lastTimeWatered"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Last Time Watered: "
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/totalDeadPlants"
+        app:layout_constraintBottom_toTopOf="@+id/firstTimeWatered"
+        tools:layout_editor_absoluteY="311dp" />
+
+    <TextView
+        android:textColor="@color/white"
+        android:id="@+id/firstTimeWatered"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="First Time Watered: "
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lastTimeWatered"
+        app:layout_constraintBottom_toTopOf="@+id/share_button"
+        tools:layout_editor_absoluteY="361dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="891dp" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="top"
+        app:constraint_referenced_ids="curOwnedPlants" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        app:itemBackground="@color/white"
+        app:itemIconTint="@drawable/selector"
+        app:itemTextColor="@drawable/selector"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/menu_navigation">
+
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
+
+    <Button
+        android:id="@+id/share_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Share It!"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
+        app:layout_constraintEnd_toStartOf="@+id/weeklyStatistics"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/firstTimeWatered" />
+
+    <Button
+        android:id="@+id/weeklyStatistics"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Weekly Statistics"
+        tools:layout_editor_absoluteX="268dp"
+        tools:layout_editor_absoluteY="500dp"
+        app:layout_constraintStart_toEndOf="@id/share_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
+        app:layout_constraintTop_toBottomOf="@id/firstTimeWatered"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

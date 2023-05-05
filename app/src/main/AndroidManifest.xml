@@ -2,8 +2,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-feature android:name="android.hardware.camera.any" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
+    <uses-permission android:name="android.permission.GRANT_URI_PERMISSION" />
+
     <application
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
@@ -12,16 +23,31 @@
         android:theme="@style/Theme.PlantParenthood.NoActionBar"
         tools:targetApi="31">
         <activity
-            android:name=".Calendar"
+            android:name=".QRScannerMenuActivity"
             android:exported="false" />
         <activity
-            android:name=".Plants"
+            android:name=".GroupPopup"
             android:exported="false" />
         <activity
-            android:name=".Spaces"
+            android:name=".PlantSearcherActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustNothing" />
+        <activity
+            android:name=".LightScannerActivity"
             android:exported="false" />
         <activity
-            android:name=".Settings"
+            android:name=".Calendar_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".Plant_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".Group_Activity"
+            android:exported="false" />
+        <activity
+            android:name=".Statistics_Activity"
+            android:exported="false" />
+        <activity android:name=".WeeklyStatistics_Activity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
