@@ -40,11 +40,12 @@ public class Group_Activity extends AppCompatActivity {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 1);
         GroupGrid.setLayoutManager(gridLayoutManager);
         DatabaseHandler.getDatabase(getApplicationContext());
+
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
+
                 groupList = GroupHandler.getGroupsFromDB();
-                System.out.println(groupList.size());
                 Handler handler = new Handler(Looper.getMainLooper());
                 handler.post(() -> createGroupGrid(GroupGrid));
             }
@@ -54,7 +55,9 @@ public class Group_Activity extends AppCompatActivity {
         addGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 startActivity(new Intent(getApplicationContext(), GroupPopup.class));
+
             }
         });
         // Initialize and assign variable

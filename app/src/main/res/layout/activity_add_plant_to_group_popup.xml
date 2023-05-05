@@ -28,18 +28,12 @@
                 android:padding="0dp"
                 android:text="X" />
 
-
-            <Button
-                android:id="@+id/waterAll"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Water All Plants" />
             <TextView
                 android:id="@+id/textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Select a plant to remove it from the group" />
+                android:text="Select a plant to add it to the group" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/plant_recycler_view"

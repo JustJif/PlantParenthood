@@ -11,7 +11,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import java.util.ArrayList;
 
 public class RecommendationManager extends AppCompatActivity {
-    //@Override
+//    @Override
 //    protected void onCreate(Bundle savedInstanceState) {
 //        super.onCreate(savedInstanceState);
 //        setContentView(R.layout.recommendation_generator);

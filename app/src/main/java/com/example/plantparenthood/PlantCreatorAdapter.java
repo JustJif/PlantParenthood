@@ -24,6 +24,7 @@ public class PlantCreatorAdapter extends AbstractCreatorAdapter
     private Context openActivity;
     private DatabaseHandler databaseHandler;
     private PlantController plantController;
+    private StatisticsManager statisticsManager = new StatisticsManager();
 
     public PlantCreatorAdapter(ArrayList<Plant> newPlantsList, Context newContext, PlantController plantController)
     {
@@ -90,8 +91,9 @@ public class PlantCreatorAdapter extends AbstractCreatorAdapter
         Button addPlant = newPopup.findViewById(R.id.addPlant);
         addPlant.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                //AsyncTask.execute(() -> databaseHandler.addPlantToDatabase(thisPlant));
                 plantController.addPlant(thisPlant);
+                AsyncTask.execute(() -> databaseHandler.addPlantToDatabase(thisPlant));
+                statisticsManager.addPlant();
                 Toast.makeText(view.getContext(), "Plant successfully added", Toast.LENGTH_SHORT).show();
             }
         });

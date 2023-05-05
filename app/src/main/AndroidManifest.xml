@@ -29,7 +29,7 @@
             android:name=".GroupPopup"
             android:exported="false" />
         <activity
-            android:name=".PlantSearcherActivity"
+            android:name=".PlantSearcher"
             android:exported="false"
             android:windowSoftInputMode="adjustNothing" />
         <activity
@@ -45,7 +45,7 @@
             android:name=".Group_Activity"
             android:exported="false" />
         <activity
-            android:name=".QRScannerMenuActivity"
+            android:name=".Statistics_Activity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

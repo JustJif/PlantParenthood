@@ -83,6 +83,6 @@ public class DatabaseHandler {
 
     public void deleteWateringSchedule(Watering watering)
     {
-     plantDB.wateringDao().deleteSchedule(watering);
+        plantDB.wateringDao().deleteSchedule(watering);
     }
 }
