@@ -15,11 +15,9 @@ public class DatabaseHandler {
     private static DatabaseHandler activeDatabase = null;
     private PlantCreator plantCreator;
     private PlantDatabase plantDB;
-    //private PlantDatabase wateringDB;
     private DatabaseHandler(Context context)
     {
         plantDB = Room.databaseBuilder(context, PlantDatabase.class, "PlantDatabase").build();
-        //wateringDB = Room.databaseBuilder(context, Water)
         plantCreator = new PlantCreator(plantDB.dataAccessObject());
     }
 

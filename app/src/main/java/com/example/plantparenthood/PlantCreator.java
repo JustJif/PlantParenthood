@@ -119,9 +119,4 @@ public class PlantCreator {
 
         return plant;
     }
-
-    public void updatePlant(Plant oldPlant, ArrayList<String> changes)
-    {
-
-    }
 }

@@ -113,7 +113,7 @@ public class PlantInfoPopup
             public void onClick(View view) {
                 changes[2] = true;
                 if(plant_activity != null)
-                plant_activity.openCamera();
+                    plant_activity.openCamera();
             }
         });
 
@@ -121,26 +121,26 @@ public class PlantInfoPopup
         updatePlant.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 new AlertDialog.Builder(whatContext)
-                        .setTitle("Confirm changes")
-                        .setMessage("Changes will override previous information, this cannot be undone.")
-                        .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int id)
-                            {
-                                setChanges(thisPlant);
-                                Toast.makeText(view.getContext(), "Applied changes", Toast.LENGTH_SHORT).show();
-                                newPopupWindow.dismiss();
-                            }
-                        })
-                        .setNegativeButton("Revert", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int id) {
-                                Toast.makeText(view.getContext(), "Reverted changes", Toast.LENGTH_SHORT).show();
-                                Arrays.fill(changes, false);
-                                newPopupWindow.dismiss();
-                            }
-                        })
-                        .show();
+                    .setTitle("Confirm changes")
+                    .setMessage("Changes will override previous information, this cannot be undone.")
+                    .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int id)
+                        {
+                            setChanges(thisPlant);
+                            Toast.makeText(view.getContext(), "Applied changes", Toast.LENGTH_SHORT).show();
+                            newPopupWindow.dismiss();
+                        }
+                    })
+                    .setNegativeButton("Revert", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int id) {
+                            Toast.makeText(view.getContext(), "Reverted changes", Toast.LENGTH_SHORT).show();
+                            Arrays.fill(changes, false);
+                            newPopupWindow.dismiss();
+                        }
+                    })
+                    .show();
             }
         });
     }
