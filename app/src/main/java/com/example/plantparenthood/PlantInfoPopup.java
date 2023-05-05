@@ -134,6 +134,8 @@ public class PlantInfoPopup
             @Override
             public void onClick(View view) {
                 AsyncTask.execute(() -> DatabaseHandler.getDatabase().deletePlant(thisPlant));
+                plant_activity.notifyGridOfUpdate(holder.getAdapterPosition());
+                newPopupWindow.dismiss();
             }
         });
 
