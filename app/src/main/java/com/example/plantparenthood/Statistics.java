@@ -38,8 +38,8 @@ public class Statistics {
         totalDeadPlants = 0;
         daysSinceLastWateringArr = new ArrayList<Double>();
         totalTimesWatered = 0;
-        firstWateringDate = new Date();
-        lastWateringDate = new Date();
+        firstWateringDate = new Date(0);
+        lastWateringDate = new Date(0);
         firstWateringDateLong = firstWateringDate.getTime();
         lastWateringDateLong = lastWateringDate.getTime();
     }

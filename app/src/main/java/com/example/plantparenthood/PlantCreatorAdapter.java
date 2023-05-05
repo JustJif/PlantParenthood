@@ -24,6 +24,7 @@ public class PlantCreatorAdapter extends AbstractCreatorAdapter
     private Context openActivity;
 
     private DatabaseHandler databaseHandler;
+    private StatisticsManager statisticsManager = new StatisticsManager();
 
     public PlantCreatorAdapter(ArrayList<Plant> newPlantsList, Context newContext)
     {
@@ -90,6 +91,7 @@ public class PlantCreatorAdapter extends AbstractCreatorAdapter
         addPlant.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 AsyncTask.execute(() -> databaseHandler.addPlantToDatabase(thisPlant));
+                statisticsManager.addPlant();
                 Toast.makeText(view.getContext(), "Plant successfully added", Toast.LENGTH_SHORT).show();
             }
         });

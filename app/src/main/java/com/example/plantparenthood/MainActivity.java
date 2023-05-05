@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         PPMobileNotificationFactory.createNotificationChannel(getApplicationContext());//need to call this at app start
-        final MediaPlayer mediaPlayer = MediaPlayer.create(this,R.raw.Mzg1ODMxNTIzMzg1ODM3_JzthsfvUY24);
+        final MediaPlayer mediaPlayer = MediaPlayer.create(this,R.raw.lol);
 
         Button rickRoll =  findViewById(R.id.rickRoll);
         rickRoll.setOnClickListener(new View.OnClickListener() {
@@ -34,6 +34,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 mediaPlayer.start();
 
+            }
+        });
+
+        Button showStatistics = findViewById(R.id.showStatistics);
+        showStatistics.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                startActivity(new Intent(getApplicationContext(), Statistics_Activity.class));
             }
         });
 
@@ -59,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
                                 overridePendingTransition(0, 0);
                                 return true;
                             case R.id.home:
-                                startActivity(new Intent(getApplicationContext(), Statistics_Activity.class));
                                 return true;
                             case R.id.calendar:
                                 startActivity(new Intent(getApplicationContext(), Calendar_Activity.class));

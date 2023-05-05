@@ -38,6 +38,7 @@ public class PlantInfoPopup
     private DatabaseHandler databaseHandler;
     private ImageView plantImage;
     private ImageView qrImage;
+    private StatisticsManager statisticsManager = new StatisticsManager();
 
     public PlantInfoPopup(View view, Plant thisPlant, Context activityContext, RecyclerView.ViewHolder holder, AbstractCreatorAdapter adapter, Plant_Activity plant_activity)
     {
@@ -121,7 +122,9 @@ public class PlantInfoPopup
             public void onClick(View view) {
                 changes[2] = true;
                 if(plant_activity != null)
-                plant_activity.openCamera();
+                {
+                    plant_activity.openCamera();
+                }
             }
         });
 
@@ -161,6 +164,7 @@ public class PlantInfoPopup
                             @Override
                             public void onClick(DialogInterface dialogInterface, int id) {
                                 deletePlant(thisPlant);
+                                statisticsManager.deletePlant();
                                 Toast.makeText(view.getContext(), "Applied changes", Toast.LENGTH_SHORT).show();
                                 newPopupWindow.dismiss();
                             }

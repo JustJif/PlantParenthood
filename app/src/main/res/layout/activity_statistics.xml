@@ -37,7 +37,7 @@
         android:id="@+id/totalDeadPlants"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Total Dead Plants: "
+        android:text="Total Removed Plants: "
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/totalOwnedPlants"

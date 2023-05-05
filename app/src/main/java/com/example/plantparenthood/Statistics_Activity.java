@@ -17,6 +17,8 @@ import androidx.room.Room;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.text.SimpleDateFormat;
+
 public class Statistics_Activity extends AppCompatActivity {
     public StatisticsManager statisticsManager;
 
@@ -43,10 +45,10 @@ public class Statistics_Activity extends AppCompatActivity {
         {
             @Override
             public void run(){
-                    if(StatisticsDatabaseHandler.getDatabase(null).getStatistics() == null)
-                    {
+//                    if(StatisticsDatabaseHandler.getDatabase(null).getStatistics() == null)
+//                    {
                         StatisticsDatabaseHandler.getDatabase(null).pushToDatabase(new Statistics());
-                    }
+//                    }
                     Log.e("ASYNC","Grabbing Database");
                     statisticsManager.setStatistics(StatisticsDatabaseHandler.getDatabase(getApplicationContext()).getStatistics());
                     Log.e("Database Test", statisticsManager.getTotalDeadPlants()+"");
@@ -98,13 +100,25 @@ public class Statistics_Activity extends AppCompatActivity {
     }
 
     private void updateTextViews() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         curOwnedPlants.append(""+statisticsManager.getNumOwnedPlants());
         totalOwnedPlants.append(""+statisticsManager.getTotalOwnedPlants());
         totalDeadPlants.append(""+statisticsManager.getTotalDeadPlants());
         meanTimeBetweenWatering.append(""+statisticsManager.getMeanTimeBetweenWatering());
         medianTimeBetweenWatering.append(""+statisticsManager.getMedianTimeBetweenWatering());
-        lastTimeWatered.append(""+statisticsManager.getLastTimeWatered());
-        firstTimeWatered.append(""+statisticsManager.getFirstTimeWatered());
+        if(statisticsManager.getLastTimeWatered() == 0)
+        {
+            lastTimeWatered.append("Never Watered");
+        }else{
+            lastTimeWatered.append(""+sdf.format(statisticsManager.getLastTimeWatered()));
+        }
+
+        if(statisticsManager.getFirstTimeWatered() == 0)
+        {
+            firstTimeWatered.append("Never Watered");
+        }else{
+            firstTimeWatered.append(""+sdf.format(statisticsManager.getFirstTimeWatered()));
+        }
     }
 
     public void shareStatistics() {
