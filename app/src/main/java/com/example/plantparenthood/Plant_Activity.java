@@ -55,6 +55,8 @@ public class Plant_Activity extends AppCompatActivity {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 1);
         plantGrid.setLayoutManager(gridLayoutManager);
 
+        StatisticsDatabaseHandler.getDatabase(getApplicationContext());
+
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {

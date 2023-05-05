@@ -29,8 +29,8 @@ public class StatisticsManager {
         AsyncTask.execute(new Runnable(){
            public void run(){
                statistics = StatisticsDatabaseHandler.getDatabase(null).getStatistics();
-               statistics.plantAdded();
-               StatisticsDatabaseHandler.getDatabase(null).pushToDatabase(statistics);
+               //statistics.plantAdded();
+               //StatisticsDatabaseHandler.getDatabase(null).pushToDatabase(statistics);
            }
         });
     }
