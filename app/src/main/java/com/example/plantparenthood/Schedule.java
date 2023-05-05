@@ -33,18 +33,24 @@ public class Schedule
     {
         Watering wateringSchedule = new Watering(plant.getId(), todaysDate, wateringInterval, 0);
         plant.setWateringCycle(wateringSchedule);
-        AsyncTask.execute(() -> DatabaseHandler.getDatabase(null).saveWateringSchedule(wateringSchedule));
-
+        AsyncTask.execute(() -> DatabaseHandler.getDatabase().saveWateringSchedule(wateringSchedule));
     }
 
-    public void removePlantSchedule(Context context, Plant plant)
+    public void deletePlantSchedule(Watering water)
     {
-
+        water.deleteWateringSchedule();
     }
 
-    public void updatePlantSchedule(Context context, Plant plant)
+    /**
+     * update plant watering schedule.
+     * Call this method async, due to database access
+     * @param thisPlant the plant watering schedule to modify
+     * @param newValue the new value of the watering interval;
+     */
+    public void updatePlantSchedule(Plant thisPlant, int newValue)
     {
-
+        thisPlant.getWateringCycle().setWateringInterval(newValue);
+        DatabaseHandler.getDatabase().saveWateringSchedule(thisPlant.getWateringCycle());
     }
 
     public List<Plant> findScheduledPlantsForToday(List<Plant> listOfPlants, int dateOnCalender)

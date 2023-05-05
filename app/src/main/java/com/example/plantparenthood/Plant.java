@@ -1,6 +1,8 @@
 package com.example.plantparenthood;
 
 import android.graphics.Bitmap;
+import android.widget.EditText;
+
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -104,6 +106,18 @@ public class Plant
         getWateringCycle().setLastWateredDay(todaysDate);
         getWateringCycle().iterateTimesWater();
         DatabaseHandler.getDatabase(null).saveWateringSchedule(getWateringCycle());
+    }
+
+    public boolean updatePlant(boolean[] changes, EditText[] textBoxes, Bitmap newImage)
+    {
+        if(changes[0])
+            setCommon_name(textBoxes[0].getText().toString());
+        if(changes[1])
+            setScientific_name(textBoxes[1].getText().toString());
+        if(changes[2] && newImage != null)
+            setDefault_image(newImage);
+
+        return true;
     }
 
     public int getId() {
