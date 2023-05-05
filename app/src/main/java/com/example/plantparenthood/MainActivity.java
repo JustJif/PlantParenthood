@@ -26,14 +26,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         PPMobileNotificationFactory.createNotificationChannel(getApplicationContext());//need to call this at app start
-        final MediaPlayer mediaPlayer = MediaPlayer.create(this,R.raw.lol);
+        //final MediaPlayer mediaPlayer = MediaPlayer.create(this,R.raw.lol);
+
+        StatisticsDatabaseHandler.getDatabase(getApplicationContext());
 
         Button rickRoll =  findViewById(R.id.rickRoll);
         rickRoll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mediaPlayer.start();
-
+                //mediaPlayer.start();
             }
         });
 

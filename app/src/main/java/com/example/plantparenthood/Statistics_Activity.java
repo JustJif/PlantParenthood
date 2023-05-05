@@ -39,7 +39,7 @@ public class Statistics_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_statistics);
         initializeViews();
 
-        StatisticsDatabaseHandler.getDatabase(this);
+        StatisticsDatabaseHandler.getDatabase(getApplicationContext());
         statisticsManager = new StatisticsManager();
         AsyncTask.execute(new Runnable()
         {

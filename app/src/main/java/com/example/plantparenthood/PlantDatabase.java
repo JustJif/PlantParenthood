@@ -10,4 +10,3 @@ public abstract class PlantDatabase extends RoomDatabase
     public abstract GroupDataAccessObject GroupDataAccessObject();
     public abstract WateringDao wateringDao();
 }
- 
