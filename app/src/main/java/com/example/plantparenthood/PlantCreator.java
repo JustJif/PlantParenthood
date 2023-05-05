@@ -11,15 +11,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class PlantCreator
 {
     private static int uniquePlantID;
     PlantCreator()
     {
-        //AsyncTask(){}
-        //DatabaseHandler.getDatabase().getPlantsFromDB();
-        //uniquePlantID =
+        AsyncTask.execute(() ->
+        {
+            List<Plant> plants = DatabaseHandler.getDatabase().getPlantsFromDB();
+            uniquePlantID = plants.size();
+        });
     }
 
     /**
@@ -39,7 +42,9 @@ public class PlantCreator
 
             for (int i = 0; i < plantsList.length(); i++) {
                 JSONObject currentPlant = plantsList.getJSONObject(i);
-                int id = currentPlant.getInt("id");
+                //int id = currentPlant.getInt("id");
+                int id = uniquePlantID;
+                uniquePlantID++;
                 String common_name = currentPlant.getString("common_name");
                 JSONArray scientific_name = currentPlant.getJSONArray("scientific_name");
                 String cycle = currentPlant.getString("cycle");

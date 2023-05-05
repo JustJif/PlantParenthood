@@ -40,7 +40,7 @@ public class PlantSearcherActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        customPlantButton = findViewById(R.id.addCustomPlant);
+        //customPlantButton = findViewById(R.id.addCustomPlant);
 
         binding = ActivityPlantSearcherBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -130,7 +130,6 @@ public class PlantSearcherActivity extends AppCompatActivity
 
     public void createPlantGrid(ArrayList<Plant> plantsList, Integer currentPage, Integer numberOfPages)
     {
-        customPlantButton = findViewById(R.id.addCustomPlant);
         currentDisplayedPlants = plantsList;
         TextView text = findViewById(R.id.errorText);
         RecyclerView plantGrid = findViewById(R.id.plantGridView);
@@ -144,7 +143,6 @@ public class PlantSearcherActivity extends AppCompatActivity
 
         if(plantsList.size() > 0)
         {
-            customPlantButton.setVisibility(View.INVISIBLE);
             PlantCreatorAdapter plantAdapter = new PlantCreatorAdapter(plantsList, PlantSearcherActivity.this, plantController);
             plantController.setAbstractCreator(plantAdapter);
             for (int i = 0; i < plantsList.size(); i++)
@@ -159,7 +157,6 @@ public class PlantSearcherActivity extends AppCompatActivity
         {
             plantGrid.setAdapter(null);
             text.setText("Plant(s) not found");
-            customPlantButton.setVisibility(View.VISIBLE);
         }
     }
 
