@@ -37,6 +37,7 @@
             app:layoutManager="LinearLayoutManager">
 
         </androidx.recyclerview.widget.RecyclerView>
+
     </FrameLayout>
 
     <TextView

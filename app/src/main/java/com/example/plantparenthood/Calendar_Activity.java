@@ -18,6 +18,7 @@ import android.os.Looper;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.Space;
 import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -118,8 +119,8 @@ public class Calendar_Activity extends AppCompatActivity
 
                 switch(item.getItemId())
                 {
-                    case R.id.spaces:
-                        startActivity(new Intent(getApplicationContext(), Space_Activity.class));
+                    case R.id.Groups:
+                        startActivity(new Intent(getApplicationContext(), Group_Activity.class));
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.plants:
@@ -132,8 +133,8 @@ public class Calendar_Activity extends AppCompatActivity
                         return true;
                     case R.id.calendar:
                         return true;
-                    case R.id.settings:
-                        startActivity(new Intent(getApplicationContext(),Settings.class));
+                    case R.id.scanner:
+                        startActivity(new Intent(getApplicationContext(),QRScannerMenuActivity.class));
                         overridePendingTransition(0,0);
                         return true;
                 }

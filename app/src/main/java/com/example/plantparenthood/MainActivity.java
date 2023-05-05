@@ -39,13 +39,14 @@ public class MainActivity extends AppCompatActivity {
                                 overridePendingTransition(0, 0);
                                 return true;
                             case R.id.home:
+                                startActivity(new Intent(getApplicationContext(), Statistics_Activity.class));
                                 return true;
                             case R.id.calendar:
                                 startActivity(new Intent(getApplicationContext(), Calendar_Activity.class));
                                 overridePendingTransition(0, 0);
                                 return true;
-                            case R.id.settings:
-                                startActivity(new Intent(getApplicationContext(), Settings.class));
+                            case R.id.scanner:
+                                startActivity(new Intent(getApplicationContext(), QRScannerMenuActivity.class));
                                 overridePendingTransition(0, 0);
                                 return true;
                         }

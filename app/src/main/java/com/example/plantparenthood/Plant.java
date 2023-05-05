@@ -86,7 +86,7 @@ public class Plant
     private String plantImageURL;//images are large they will be refetched from api whenever required
     private Watering wateringCycle;
     @Ignore
-    private StatisticsManager statisticsManager;
+    private StatisticsManager statisticsManager = new StatisticsManager();
 
     private Plant(PlantBuilder plantBuilder){
         this.id = plantBuilder.id;

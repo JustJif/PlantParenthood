@@ -38,7 +38,7 @@ public class PlantSearcher extends AppCompatActivity
     private PlantDatabase database;
 
     private String tagFilter = "";
-
+    private StatisticsManager statisticsManager = new StatisticsManager();
     private Button customPlantButton;
     @Override
     protected void onCreate(Bundle savedInstanceState)

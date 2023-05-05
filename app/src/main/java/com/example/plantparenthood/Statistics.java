@@ -15,20 +15,20 @@ import java.util.Date;
 public class Statistics {
     @PrimaryKey
     private int id = 0;
-    private double meanTimeBetweenWatering;
-    private double medianTimeBetweenWatering;
-    private int curOwnedPlants;
-    private int totalOwnedPlants;
-    private int totalDeadPlants;
+    private double meanTimeBetweenWatering = 0;
+    private double medianTimeBetweenWatering = 0;
+    private int curOwnedPlants = 0;
+    private int totalOwnedPlants = 0;
+    private int totalDeadPlants = 0;
     @Ignore
     private ArrayList<Double> daysSinceLastWateringArr;
-    private int totalTimesWatered;
+    private int totalTimesWatered = 0;
     @Ignore
     private Date firstWateringDate;
     @Ignore
     private Date lastWateringDate;
-    private long firstWateringDateLong;
-    private long lastWateringDateLong;
+    private long firstWateringDateLong = 0;
+    private long lastWateringDateLong = 0;
 
     public Statistics(){
         meanTimeBetweenWatering = 0;

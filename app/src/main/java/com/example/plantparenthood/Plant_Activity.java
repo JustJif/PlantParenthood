@@ -45,6 +45,7 @@ public class Plant_Activity extends AppCompatActivity {
     private DatabaseHandler plantDatabase;
     private ActivityResultLauncher<Intent> camera;
     private PlantActivityCreatorAdapter plantAdapter;
+    private StatisticsManager statisticsManager = new StatisticsManager();
 
 
     @Override
@@ -152,6 +153,7 @@ public class Plant_Activity extends AppCompatActivity {
         addPlantFromDB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                statisticsManager.addPlant();
                 startActivity(new Intent(getApplicationContext(), PlantSearcher.class));
                 newPopupWindow.dismiss();
             }

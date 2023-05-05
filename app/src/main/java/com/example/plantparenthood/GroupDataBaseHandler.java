@@ -84,7 +84,7 @@ public class GroupDataBaseHandler {
     public void deletePlantFromGroup(Group group, Plant plant) {
         Group loadedGroup = GroupDB.GroupDataAccessObject().loadGroupByID(group.getGroupID());
         loadedGroup.removePlant(plant);
-        GroupDB.GroupDataAccessObject().
+        GroupDB.GroupDataAccessObject().deleteGroup(group);
 
     }
 }

@@ -4,11 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
+import android.os.Looper;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
@@ -16,9 +18,8 @@ import androidx.room.Room;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class Statistics_Activity extends AppCompatActivity {
-    public StatisticsManager statisticsManager = new StatisticsManager(this);
+    public StatisticsManager statisticsManager;
 
-    public StatisticsDatabaseHandler databaseHandler;
     public void retrieveWeeklyAnalysis(){
         //TODO
     }
@@ -34,34 +35,24 @@ public class Statistics_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_statistics);
-
         initializeViews();
 
+        StatisticsDatabaseHandler.getDatabase(this);
+        statisticsManager = new StatisticsManager();
         AsyncTask.execute(new Runnable()
         {
             @Override
             public void run(){
-
-                try {
-                    databaseHandler = StatisticsDatabaseHandler.getDatabase(getApplicationContext());
-                    curOwnedPlants.append(""+statisticsManager.getNumOwnedPlants());
-                    totalOwnedPlants.append(""+statisticsManager.getTotalOwnedPlants());
-                    totalDeadPlants.append(""+statisticsManager.getTotalDeadPlants());
-                    meanTimeBetweenWatering.append(""+statisticsManager.getMeanTimeBetweenWatering());
-                    medianTimeBetweenWatering.append(""+statisticsManager.getMedianTimeBetweenWatering());
-                    lastTimeWatered.append(""+statisticsManager.getLastTimeWatered());
-                    firstTimeWatered.append(""+statisticsManager.getFirstTimeWatered());
-                }catch(NullPointerException e)
-                {
-                    curOwnedPlants.append("No plants currently owned");
-                    totalOwnedPlants.append("No plants ever owned");
-                    totalDeadPlants.append("No dead plants :D");
-                    meanTimeBetweenWatering.append("Never Watered");
-                    medianTimeBetweenWatering.append("Never Watered");
-                    lastTimeWatered.append("Never Watered");
-                    firstTimeWatered.append("Never Watered");
-                }
-
+                    if(StatisticsDatabaseHandler.getDatabase(null).getStatistics() == null)
+                    {
+                        StatisticsDatabaseHandler.getDatabase(null).pushToDatabase(new Statistics());
+                    }
+                    Log.e("ASYNC","Grabbing Database");
+                    statisticsManager.setStatistics(StatisticsDatabaseHandler.getDatabase(getApplicationContext()).getStatistics());
+                    Log.e("Database Test", statisticsManager.getTotalDeadPlants()+"");
+                    Log.e("ASYNC","Grabbed Database");
+                    Handler handler = new Handler(Looper.getMainLooper());
+                    handler.post(() -> updateTextViews());
             }
         });
 
@@ -96,8 +87,8 @@ public class Statistics_Activity extends AppCompatActivity {
                         startActivity(new Intent(getApplicationContext(),Calendar_Activity.class));
                         overridePendingTransition(0,0);
                         return true;
-                    case R.id.settings:
-                        startActivity(new Intent(getApplicationContext(),Settings.class));
+                    case R.id.scanner:
+                        startActivity(new Intent(getApplicationContext(),QRScannerMenuActivity.class));
                         overridePendingTransition(0,0);
                         return true;
                 }
@@ -105,11 +96,23 @@ public class Statistics_Activity extends AppCompatActivity {
             }
         });
     }
+
+    private void updateTextViews() {
+        curOwnedPlants.append(""+statisticsManager.getNumOwnedPlants());
+        totalOwnedPlants.append(""+statisticsManager.getTotalOwnedPlants());
+        totalDeadPlants.append(""+statisticsManager.getTotalDeadPlants());
+        meanTimeBetweenWatering.append(""+statisticsManager.getMeanTimeBetweenWatering());
+        medianTimeBetweenWatering.append(""+statisticsManager.getMedianTimeBetweenWatering());
+        lastTimeWatered.append(""+statisticsManager.getLastTimeWatered());
+        firstTimeWatered.append(""+statisticsManager.getFirstTimeWatered());
+    }
+
     public void shareStatistics() {
 
     }
 
     public void initializeViews(){
+        Log.e("TextView","Initializing Text Views");
         curOwnedPlants = (TextView)findViewById(R.id.curOwnedPlants);
         totalOwnedPlants = (TextView)findViewById(R.id.totalOwnedPlants);
         totalDeadPlants = (TextView)findViewById(R.id.totalDeadPlants);

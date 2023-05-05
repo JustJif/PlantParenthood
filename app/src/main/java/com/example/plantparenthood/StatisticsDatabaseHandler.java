@@ -14,28 +14,22 @@ import java.util.List;
 public class StatisticsDatabaseHandler {
     private static StatisticsDatabaseHandler activeDatabase = null;
     private StatisticsDatabase database;
-
     //private PlantDatabase wateringDB;
     private StatisticsDatabaseHandler(Context context) {
         database = Room.databaseBuilder(context, StatisticsDatabase.class, "StatisticsDatabase").build();
     }
-
     public static StatisticsDatabaseHandler getDatabase(Context applicationContext) {
         if (activeDatabase == null) {
             activeDatabase = new StatisticsDatabaseHandler(applicationContext);
         }
         return activeDatabase;
     }
-
     public StatisticsAccessObject getDataAccessObject() {
         return database.statisticsAccessObject();
     }
-
     public Statistics getStatistics(){
-        Statistics statistics = database.statisticsAccessObject().loadStatistics();
-        return statistics;
+        return database.statisticsAccessObject().loadStatistics();
     }
-
     public void pushToDatabase(Statistics statistics) {
         database.statisticsAccessObject().addStatistics(statistics);
     }
