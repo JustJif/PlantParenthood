@@ -8,16 +8,18 @@
     tools:context=".MainActivity">
 
     <androidx.camera.view.PreviewView
-        android:id="@+id/viewFinder"
+        android:id="@+id/viewFinder2"
         android:layout_width="414dp"
         android:layout_height="835dp"
         app:layout_constraintBottom_toBottomOf="@+id/image_capture_button"
-        tools:layout_editor_absoluteX="0dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/image_capture_button"
         android:layout_width="191dp"
-        android:layout_height="45dp"
+        android:layout_height="48dp"
         android:elevation="2dp"
         android:text="@string/take_photo"
         app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"

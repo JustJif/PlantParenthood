@@ -11,12 +11,14 @@ public class StatisticsManager {
     public StatisticsManager() {
         statistics = new Statistics();
     }
+
     public void setStatistics(Statistics statistics) {
-        if(statistics != null){
+        if (statistics != null) {
             this.statistics = statistics;
         }
     }
-    public void waterPlant(){
+
+    public void waterPlant() {
         AsyncTask.execute(new Runnable() {
             public void run() {
                 statistics = StatisticsDatabaseHandler.getDatabase(null).getStatistics();
@@ -25,16 +27,18 @@ public class StatisticsManager {
             }
         });
     }
-    public void addPlant(){
-        AsyncTask.execute(new Runnable(){
-            public void run(){
+
+    public void addPlant() {
+        AsyncTask.execute(new Runnable() {
+            public void run() {
                 statistics = StatisticsDatabaseHandler.getDatabase(null).getStatistics();
                 statistics.plantAdded();
                 StatisticsDatabaseHandler.getDatabase(null).pushToDatabase(statistics);
             }
         });
     }
-    public void deletePlant(){
+
+    public void deletePlant() {
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
@@ -44,24 +48,31 @@ public class StatisticsManager {
             }
         });
     }
+
     public int getNumOwnedPlants() {
         return statistics.getNumOwnedPlants();
     }
+
     public int getTotalOwnedPlants() {
         return statistics.getTotalOwnedPlants();
     }
+
     public int getTotalDeadPlants() {
         return statistics.getTotalDeadPlants();
     }
+
     public double getMeanTimeBetweenWatering() {
         return statistics.getMeanTimeBetweenWatering();
     }
+
     public double getMedianTimeBetweenWatering() {
         return statistics.getMedianTimeBetweenWatering();
     }
+
     public Long getLastTimeWatered() {
         return statistics.getLastWateringDateLong();
     }
+
     public Long getFirstTimeWatered() {
         return statistics.getFirstWateringDateLong();
     }

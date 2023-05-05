@@ -1,6 +1,5 @@
 package com.example.plantparenthood;
 
-import android.app.Application;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,15 +11,28 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class PlantCreator {
-    public DataAccessObject database;
-    private static int customPlants = -1;
-
-    PlantCreator() {
+public class PlantCreator
+{
+    private static int uniquePlantID;
+    PlantCreator()
+    {
+        AsyncTask.execute(() ->
+        {
+            List<Plant> plants = DatabaseHandler.getDatabase().getPlantsFromDB();
+            uniquePlantID = plants.size();
+        });
     }
 
-    public ArrayList<Plant> createPlant(JSONObject nonparsedPlants, Context applicationContext, PlantSearcher makethisplantUI) {
+    /**
+     * This parses a JSON and creates plants from the JSON.
+     * @param nonparsedPlants JSONObject of potential plants to be parsed
+     * @param applicationContext context for application (needed to fetch default image)
+     * @param plantController An object of plant controller
+     * @return A list of parsed plants from API
+     */
+    public ArrayList<Plant> createPlant(JSONObject nonparsedPlants, Context applicationContext, PlantController plantController) {
         ArrayList<Plant> createdPlantObjects = new ArrayList<>();
 
         JSONArray plantsList = null;
@@ -30,10 +42,11 @@ public class PlantCreator {
 
             for (int i = 0; i < plantsList.length(); i++) {
                 JSONObject currentPlant = plantsList.getJSONObject(i);
-                int id = currentPlant.getInt("id");
+                //int id = currentPlant.getInt("id");
+                int id = uniquePlantID;
+                uniquePlantID++;
                 String common_name = currentPlant.getString("common_name");
                 JSONArray scientific_name = currentPlant.getJSONArray("scientific_name");
-                JSONArray other_name = currentPlant.getJSONArray("other_name");
                 String cycle = currentPlant.getString("cycle");
                 String watering = currentPlant.getString("watering");
                 JSONArray sunlight = currentPlant.getJSONArray("sunlight");
@@ -50,12 +63,6 @@ public class PlantCreator {
                     plantScientificNames[j] = scientific_name.getString(j);
                 }
 
-                /*String[] plantOtherNames = new String[other_name.length()];
-                for (int k = 0; k < scientific_name.length(); k++)
-                {
-                    plantOtherNames[k] = other_name.getString(k);
-                }*/
-
                 String[] sunlightArray = new String[sunlight.length()];
                 for (int j = 0; j < sunlight.length(); j++) {
                     sunlightArray[j] = sunlight.getString(j);
@@ -65,7 +72,6 @@ public class PlantCreator {
                         .setId(id)
                         .setCommon_name(common_name)
                         .setScientific_name(plantScientificNames[0])
-                        //.setOther_name(plantOtherNames[0])
                         .setCycle(cycle)
                         .setWatering(watering)
                         .setSunlight(sunlightArray[0])
@@ -76,28 +82,33 @@ public class PlantCreator {
                 createdPlantObjects.add(newPlant);
             }
 
-            Integer currentPage = nonparsedPlants.getInt("current_page");
-            Integer lastPage = nonparsedPlants.getInt("last_page");
-            if(makethisplantUI != null)
-                makethisplantUI.createPlantGrid(createdPlantObjects, currentPage, lastPage);
+            if(plantController != null)
+                plantController.passPlantslist(createdPlantObjects, nonparsedPlants.getInt("current_page"), nonparsedPlants.getInt("last_page"));
         } catch (JSONException e) {
             return null;
         }
         return createdPlantObjects;
     }
 
-    public void addCustomPlant(Context applicationContext, String name, String sciName) {
-        Plant newPlant = new Plant.PlantBuilder()
-                .setId(customPlants)
-                .setCommon_name(name)
-                .setScientific_name(sciName)
-                .setDefault_image(BitmapFactory.decodeResource(applicationContext.getResources(), R.drawable.defaultimage))
-                .buildPlant();
-        AsyncTask.execute(() -> DatabaseHandler.getDatabase(applicationContext).addPlantToDatabase(newPlant));
-        customPlants--;
+    /**
+     * This adds the plant to the database
+     */
+    public void addPlant(Plant plant)
+    {
+        AsyncTask.execute(() -> DatabaseHandler.getDatabase().addPlantToDatabase(plant));
     }
 
+    public void addCustomPlant() {
 
+    }
+
+    /**
+     * When loading, a plant has to be created from the database, this class handles the
+     * creation of the plant
+     * @param newPlant the plant within the database
+     * @param wateringCycle a possible watering cycle, this may not exist if a schedule doesn't exist for it
+     * @return A fully loaded and initialized plant
+     */
     public Plant createPlantFromDatabase(PlantSaveToDatabase newPlant, Watering wateringCycle) {
         Plant.PlantBuilder plantBuilder = new Plant.PlantBuilder();
         plantBuilder.setId(newPlant.getId());
@@ -128,14 +139,4 @@ public class PlantCreator {
 
         return plant;
     }
-
-    public void updatePlant(Plant oldPlant, ArrayList<String> changes)
-    {
-
-    }
-
-
-
-
-
 }

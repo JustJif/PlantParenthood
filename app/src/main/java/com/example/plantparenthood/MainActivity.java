@@ -20,15 +20,15 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         PPMobileNotificationFactory.createNotificationChannel(getApplicationContext());//need to call this at app start
-        final MediaPlayer mediaPlayer = MediaPlayer.create(this,R.raw.song);
+        //final MediaPlayer mediaPlayer = MediaPlayer.create(this,R.raw.lol);
+
+        StatisticsDatabaseHandler.getDatabase(getApplicationContext());
 
         Button rickRoll =  findViewById(R.id.rickRoll);
         rickRoll.setOnClickListener(new View.OnClickListener() {
@@ -41,6 +41,11 @@ public class MainActivity extends AppCompatActivity {
                 }
 
 
+        Button showStatistics = findViewById(R.id.showStatistics);
+        showStatistics.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                startActivity(new Intent(getApplicationContext(), Statistics_Activity.class));
             }
         });
 
@@ -57,8 +62,8 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
                         switch (item.getItemId()) {
-                            case R.id.Groups:
-                                startActivity(new Intent(getApplicationContext(), Group_Activity.class));
+                            case R.id.spaces:
+                                startActivity(new Intent(getApplicationContext(), Statistics_Activity.class));
                                 overridePendingTransition(0, 0);
                                 return true;
                             case R.id.plants:
