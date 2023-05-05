@@ -129,6 +129,14 @@ public class PlantInfoPopup
             }
         });
 
+        Button deletePlant = newPopup.findViewById(R.id.deletePlant);
+        deletePlant.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AsyncTask.execute(() -> DatabaseHandler.getDatabase().deletePlant(thisPlant));
+            }
+        });
+
         Button updatePlant = newPopup.findViewById(R.id.updatePlant);
         updatePlant.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -156,6 +164,8 @@ public class PlantInfoPopup
             }
         });
     }
+
+
 
     private void modifyText(TextView editableText, View view) {
         InputMethodManager inputMethodManager = (InputMethodManager) whatContext.getSystemService(Context.INPUT_METHOD_SERVICE);

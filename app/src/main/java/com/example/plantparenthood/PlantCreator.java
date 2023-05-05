@@ -82,7 +82,8 @@ public class PlantCreator
                 createdPlantObjects.add(newPlant);
             }
 
-            plantController.passPlantslist(createdPlantObjects, nonparsedPlants.getInt("current_page"), nonparsedPlants.getInt("last_page"));
+            if(plantController != null)
+                plantController.passPlantslist(createdPlantObjects, nonparsedPlants.getInt("current_page"), nonparsedPlants.getInt("last_page"));
         } catch (JSONException e) {
             return null;
         }

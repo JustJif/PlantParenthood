@@ -31,6 +31,15 @@ public class DatabaseHandler {
         return activeDatabase;
     }
 
+    /**
+     * This is used for JUnit database's please don't use this within normal usage
+     * @return JUnit capable database
+     */
+    public static PlantDatabase createInMemoryDatabase(Context context)
+    {
+        return Room.inMemoryDatabaseBuilder(context, PlantDatabase.class).build();
+    }
+
     public static DatabaseHandler getDatabase()
     {
         return activeDatabase;
@@ -84,5 +93,17 @@ public class DatabaseHandler {
     public void deleteWateringSchedule(Watering watering)
     {
         plantDB.wateringDao().deleteSchedule(watering);
+    }
+
+    public void deletePlant(Plant plant)
+    {
+        List<PlantSaveToDatabase> loadedPlants = plantDB.dataAccessObject().loadAllPlants();
+        for (int i = 0; i < loadedPlants.size(); i++)
+        {
+            if(loadedPlants.get(i).getId()  == plant.getId()) {
+                plantDB.dataAccessObject().deletePlant(loadedPlants.get(i));
+                break;
+            }
+        }
     }
 }

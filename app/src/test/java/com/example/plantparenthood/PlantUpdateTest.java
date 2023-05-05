@@ -40,7 +40,7 @@ public class PlantUpdateTest
             fail("JSONObject creation failed");
         }
 
-        PlantCreator plantCreator = new PlantCreator(null);
+        PlantCreator plantCreator = new PlantCreator();
         Context mockContext = mock(Context.class);
         ArrayList<Plant> createdPlants = plantCreator.createPlant(lemonGrass,mockContext, null);
         Plant createdPlant = createdPlants.get(0);
