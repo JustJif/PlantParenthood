@@ -27,10 +27,12 @@ public class Group {
         this.plantList = new ArrayList<Plant>();
         numGroups++;
         plantIDs = "";
+        System.out.println("GROUP ADDED "  + numGroups + " " + GroupName);
     }
     public void setPlantIDs(String plantIDs) {
         this.plantIDs = plantIDs;
     }
+
 
     public String getPlantIDs() {
         return plantIDs;
@@ -70,27 +72,33 @@ public class Group {
 
     // Other Methods
     public void addPlant(Plant plant) {
-        System.out.println("Plant ID: " + plant.getId());
-        plantList.add(plant);
+        System.out.println("ADDED " + plant.getCommon_name() + " TO " + this.getGroupName());
         if(plantList.isEmpty()) {
-
+            plantList.add(plant);
             plantIDs += plant.getId();
         } else {
+            plantList.add(plant);
             plantIDs += ("," + plant.getId());
         }
     }
 
     public void removePlant(Plant plant) {
-        String plantID = "," + Integer.toString(plant.getId());
+        String plantID = Integer.toString(plant.getId());
         int index = plantIDs.indexOf(plantID);
         int lastIndex = plantIDs.lastIndexOf(plantID);
-        plantIDs = plantIDs.substring(0,index) + plantIDs.substring(lastIndex);
-        plantList.remove(plant);
+        if(index == 0) {
+            plantIDs = plantIDs.substring(0,index) + plantIDs.substring(lastIndex);
+            plantList.remove(plant);
+        } else {
+            plantIDs = plantIDs.substring(0,index-1) + plantIDs.substring(lastIndex);
+            plantList.remove(plant);
+        }
+
     }
 
     public void waterAll() {
         for (Plant plant : plantList) {
-            //plant.water();
+            //plant.waterPlant();
         }
     }
 }

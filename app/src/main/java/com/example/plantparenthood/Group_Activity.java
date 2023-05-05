@@ -40,11 +40,12 @@ public class Group_Activity extends AppCompatActivity {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 1);
         GroupGrid.setLayoutManager(gridLayoutManager);
         DatabaseHandler.getDatabase(getApplicationContext());
+
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
+
                 groupList = GroupHandler.getGroupsFromDB();
-                System.out.println(groupList.size());
                 Handler handler = new Handler(Looper.getMainLooper());
                 handler.post(() -> createGroupGrid(GroupGrid));
             }
@@ -54,7 +55,9 @@ public class Group_Activity extends AppCompatActivity {
         addGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 startActivity(new Intent(getApplicationContext(), GroupPopup.class));
+
             }
         });
         // Initialize and assign variable
@@ -97,5 +100,17 @@ public class Group_Activity extends AppCompatActivity {
     public void createGroupGrid(RecyclerView GroupGrid) {
         GroupAdapter = new GroupActivityCreatorAdapter(groupList, this);
         GroupGrid.setAdapter(GroupAdapter);
+        printAllGroups();
+    }
+
+    public void printAllGroups() {
+        for(int i = 0; i < groupList.size(); i++ ) {
+            System.out.println("Name: " + groupList.get(i).getGroupName() + " ID: " + groupList.get(i).getGroupID());
+            ArrayList<Plant> test = groupList.get(i).getAllPlants();
+            System.out.println("Plants: " );
+            for(int j = 0; j < test.size(); j++) {
+                System.out.println(test.get(j).getCommon_name());
+            }
+        }
     }
 }

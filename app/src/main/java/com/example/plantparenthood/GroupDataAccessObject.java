@@ -20,6 +20,8 @@ public interface GroupDataAccessObject
     @Query("SELECT * FROM `Group`")
     public List<Group> loadAllGroups();
 
+    
+
     @Delete
     void deleteGroup(Group group);
 }

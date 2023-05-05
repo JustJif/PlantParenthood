@@ -73,10 +73,11 @@ public class InnerPlantRecyclerAdapter extends AbstractCreatorAdapter
                     public void onClick(DialogInterface dialogInterface, int id)
                     {
                         thisGroup.removePlant(thisPlant);
-                        GroupActivity.showPlants();
+                        AsyncTask.execute(() -> GroupDataBaseHandler.getDatabase(whatContext).deletePlantFromGroup(thisGroup,thisPlant));
+                        GroupActivity.showPlants(thisGroup);
 
                         AsyncTask.execute(() -> GroupDataBaseHandler.getDatabase(whatContext).addGroupToDatabase(thisGroup));
-
+                        System.out.println("DELETED -^ " + thisPlant.getCommon_name() + " FROM " + thisGroup.getGroupName());
 
                     }
                 })
@@ -95,11 +96,12 @@ public class InnerPlantRecyclerAdapter extends AbstractCreatorAdapter
                     @Override
                     public void onClick(DialogInterface dialogInterface, int id)
                     {
+
                         thisGroup.addPlant(thisPlant);
-                            GroupActivity.showPlants();
+                        GroupActivity.showAllPlants(thisGroup);
 
                         AsyncTask.execute(() -> GroupDataBaseHandler.getDatabase(whatContext).addGroupToDatabase(thisGroup));
-
+                        System.out.println("ADDED -^ " + thisPlant.getCommon_name() + " TO " + thisGroup.getGroupName());
 
                     }
                 })

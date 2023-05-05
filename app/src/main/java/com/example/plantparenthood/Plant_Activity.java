@@ -153,7 +153,7 @@ public class Plant_Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), PlantSearcher.class));
-
+                newPopupWindow.dismiss();
             }
         });
     }

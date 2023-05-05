@@ -51,10 +51,7 @@ public class GroupDataBaseHandler {
     private void loadPlantsIntoGroup(String unparsed, ArrayList<Plant> plantArrayList) {
         if(!TextUtils.isEmpty(unparsed)) {
             String[] parsed = unparsed.split(",");
-            System.out.println("LENGTH " + parsed.length);
-            System.out.println("Plant: " + parsed[0]);
             for(int i = 0; i < parsed.length; i++) {
-                System.out.println("Plants" + parsed[i]);
                 if(TextUtils.isDigitsOnly(parsed[i]) && !TextUtils.isEmpty(parsed[i])) {
                     plantArrayList.add(DatabaseHandler.getDatabase(null).getPlantFromDBbyID(Integer.parseInt(parsed[i])));
                 }
@@ -75,9 +72,9 @@ public class GroupDataBaseHandler {
         return loadedGroups;
     }
 
-    public void addGroupToDatabase(Group group)
+    public void addGroupToDatabase(Group newGroup)
     {
-        GroupDB.GroupDataAccessObject().addGroup(group);
+        GroupDB.GroupDataAccessObject().addGroup(newGroup);
     }
     public void removeGroupToDatabase(Group group)
     {
@@ -85,6 +82,9 @@ public class GroupDataBaseHandler {
     }
 
     public void deletePlantFromGroup(Group group, Plant plant) {
-        group.removePlant(plant);
+        Group loadedGroup = GroupDB.GroupDataAccessObject().loadGroupByID(group.getGroupID());
+        loadedGroup.removePlant(plant);
+        GroupDB.GroupDataAccessObject().
+
     }
 }

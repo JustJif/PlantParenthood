@@ -64,7 +64,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Add Plant" />
-
+            <Button
+                android:id="@+id/waterAll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Water All Plants" />
             <Button
                 android:id="@+id/deleteGroup"
                 android:layout_width="match_parent"
@@ -76,6 +80,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Update Group" />
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Select a plant to remove it from the group" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/plant_recycler_view"

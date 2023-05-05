@@ -54,6 +54,8 @@ public class GroupActivityCreatorAdapter extends AbstractCreatorAdapter
         Arrays.fill(changes,false);
     }
 
+
+
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
@@ -122,6 +124,14 @@ public class GroupActivityCreatorAdapter extends AbstractCreatorAdapter
                 setupAddPlantPopup(newPopup, thisgroup);
             }
         });
+        Button waterAll = newPopup.findViewById(R.id.waterAll);
+        waterAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                thisgroup.waterAll();
+            }
+        });
 
         Button updategroup = newPopup.findViewById(R.id.updateGroup);
         updategroup.setOnClickListener(new View.OnClickListener() {
@@ -176,7 +186,7 @@ public class GroupActivityCreatorAdapter extends AbstractCreatorAdapter
                         .show();
             }
         });
-        showPlants();
+        showPlants(thisgroup);
     }
 
     private void setupAddPlantPopup(View view, Group thisGroup) {
@@ -197,21 +207,14 @@ public class GroupActivityCreatorAdapter extends AbstractCreatorAdapter
                 newPopupWindow.dismiss();
             }
         });
-        Button waterAll = newPopup.findViewById(R.id.waterAll);
-        waterAll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                thisGroup.waterAll();
-            }
-        });
-        showAllPlants();
+        showAllPlants(thisGroup);
     }
-    public void showAllPlants() {
+    public void showAllPlants(Group group) {
 
         GridLayoutManager newGridLayoutManager = new GridLayoutManager(whatContext, 1 );
         displayAllPlants.setLayoutManager(newGridLayoutManager);
-        ArrayList<Plant> notGrabbedPlants = groupList.get(holder.getAdapterPosition()).getAllPlants();
+        ArrayList<Plant> notGrabbedPlants = group.getAllPlants();
         AsyncTask.execute(() -> {
             plantList = DatabaseHandler.getDatabase(whatContext).getPlantsFromDB();
             for(int i = 0; i < plantList.size(); i++) {
@@ -223,19 +226,20 @@ public class GroupActivityCreatorAdapter extends AbstractCreatorAdapter
                 }
             }
             Handler plantDisplayHandler = new Handler(Looper.getMainLooper());
-            plantDisplayHandler.post(() -> createPlants());
+            plantDisplayHandler.post(() -> createPlants(group));
         });
     }
 
-    private void createPlants() {
-        InnerPlantRecyclerAdapter adapter = new InnerPlantRecyclerAdapter(this, groupList.get(holder.getAdapterPosition()),plantList, whatContext,false);
+    private void createPlants(Group group) {
+        InnerPlantRecyclerAdapter adapter = new InnerPlantRecyclerAdapter(this, group, plantList, whatContext,false);
         displayAllPlants.setAdapter(adapter);
     }
-    public void showPlants() {
-        plantList = groupList.get(holder.getAdapterPosition()).getAllPlants();
+    public void showPlants(Group group) {
+        plantList = group.getAllPlants();
         GridLayoutManager newGridLayoutManager = new GridLayoutManager(whatContext, 1 );
         displayAllPlants.setLayoutManager(newGridLayoutManager);
-        InnerPlantRecyclerAdapter adapter = new InnerPlantRecyclerAdapter(this, groupList.get(holder.getAdapterPosition()),plantList, whatContext,true);
+
+        InnerPlantRecyclerAdapter adapter = new InnerPlantRecyclerAdapter(this, group,group.getAllPlants(), whatContext,true);
         displayAllPlants.setAdapter(adapter);
     }
 
