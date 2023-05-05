@@ -1,5 +1,7 @@
 package com.example.plantparenthood;
 
+import android.content.Context;
+
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -15,8 +17,8 @@ public class Statistics {
     private int id = 0;
     private double meanTimeBetweenWatering;
     private double medianTimeBetweenWatering;
-    private static int curOwnedPlants;
-    private static int totalOwnedPlants;
+    private int curOwnedPlants;
+    private int totalOwnedPlants;
     private int totalDeadPlants;
     @Ignore
     private ArrayList<Double> daysSinceLastWateringArr;
@@ -58,7 +60,7 @@ public class Statistics {
         return totalOwnedPlants;
     }
     public void setTotalOwnedPlants(int totalOwnedPlants){
-        Statistics.totalOwnedPlants = totalOwnedPlants;
+        this.totalOwnedPlants = totalOwnedPlants;
     }
     public int getTotalTimesWatered(){
         return totalTimesWatered;
@@ -66,7 +68,7 @@ public class Statistics {
     public void setTotalTimesWatered(int totalTimesWatered){
         this.totalTimesWatered = totalTimesWatered;
     }
-    public static void plantAdded(){
+    public void plantAdded(){
         curOwnedPlants++;
         totalOwnedPlants++;
     }

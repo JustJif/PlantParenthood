@@ -1,35 +1,49 @@
 package com.example.plantparenthood;
 
 import android.content.Context;
+import android.os.AsyncTask;
 
 import androidx.room.Room;
 
 public class StatisticsManager {
-    static Statistics statistics;
-    static Context context;
+    Statistics statistics;
+    StatisticsDatabaseHandler databaseHandler;
 
     public StatisticsManager(Context context)
     {
-        this.context = context;
+        Statistics statistics;
     }
 
-    public static void waterPlant() {
-        statistics = Room.databaseBuilder(context, StatisticsDatabase.class, "StatisticsDatabase").build().statisticsAccessObject().loadStatistics();
-        statistics.waterPlant();
-        Room.databaseBuilder(context, StatisticsDatabase.class, "StatisticsDatabase").build().statisticsAccessObject().addStatistics(statistics);
+    public void waterPlant(){
+        AsyncTask.execute(new Runnable() {
+            public void run() {
+                statistics = databaseHandler.getStatistics();
+                statistics.waterPlant();
+            }
+        });
     }
 
-    public static void addPlant(){
-        statistics = Room.databaseBuilder(context, StatisticsDatabase.class, "StatisticsDatabase").build().statisticsAccessObject().loadStatistics();
-        statistics.plantAdded();
-        Room.databaseBuilder(context, StatisticsDatabase.class, "StatisticsDatabase").build().statisticsAccessObject().addStatistics(statistics);
+    public void addPlant(){
+        AsyncTask.execute(new Runnable(){
+           public void run(){
+               statistics = databaseHandler.getStatistics();
+               statistics.plantAdded();
+               databaseHandler.pushToDatabase(statistics);
+           }
+        });
     }
 
-    public static void deletePlant(){
-        statistics = Room.databaseBuilder(context, StatisticsDatabase.class, "StatisticsDatabase").build().statisticsAccessObject().loadStatistics();
-        statistics.plantDied();
-        Room.databaseBuilder(context, StatisticsDatabase.class, "StatisticsDatabase").build().statisticsAccessObject().addStatistics(statistics);
+    public void deletePlant(){
+        AsyncTask.execute(new Runnable() {
+            @Override
+            public void run() {
+                statistics = databaseHandler.getStatistics();
+                statistics.plantDied();
+                databaseHandler.pushToDatabase(statistics);
+            }
+        });
     }
+
 
     public int getNumOwnedPlants() {
         return statistics.getNumOwnedPlants();

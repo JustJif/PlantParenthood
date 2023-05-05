@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class PlantCreator {
     public DataAccessObject database;
-
+    private StatisticsManager statisticsManager;
     PlantCreator(DataAccessObject newDatabase) {
         database = newDatabase;
     }
@@ -73,6 +73,7 @@ public class PlantCreator {
                         .buildPlant();
 
                 createdPlantObjects.add(newPlant);
+                statisticsManager.addPlant();
             }
 
             Integer currentPage = nonparsedPlants.getInt("current_page");
@@ -116,7 +117,7 @@ public class PlantCreator {
             plantBuilder.setWateringCycle(wateringCycle);
 
         Plant plant = plantBuilder.buildPlant();
-        StatisticsManager.addPlant();
+
         return plant;
     }
 

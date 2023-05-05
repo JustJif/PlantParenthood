@@ -85,6 +85,8 @@ public class Plant
     private Bitmap default_image;
     private String plantImageURL;//images are large they will be refetched from api whenever required
     private Watering wateringCycle;
+    @Ignore
+    private StatisticsManager statisticsManager;
 
     private Plant(PlantBuilder plantBuilder){
         this.id = plantBuilder.id;
@@ -104,7 +106,7 @@ public class Plant
         getWateringCycle().setLastWateredDay(todaysDate);
         getWateringCycle().iterateTimesWater();
         DatabaseHandler.getDatabase(null).saveWateringSchedule(getWateringCycle());
-        StatisticsManager.waterPlant();
+        statisticsManager.waterPlant();
     }
 
     public int getId() {

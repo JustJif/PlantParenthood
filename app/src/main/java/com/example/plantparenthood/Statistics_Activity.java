@@ -1,5 +1,6 @@
 package com.example.plantparenthood;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class Statistics_Activity extends AppCompatActivity {
     public StatisticsManager statisticsManager = new StatisticsManager(this);
 
+    public StatisticsDatabaseHandler databaseHandler;
     public void retrieveWeeklyAnalysis(){
         //TODO
     }
@@ -39,10 +41,9 @@ public class Statistics_Activity extends AppCompatActivity {
         {
             @Override
             public void run(){
-                StatisticsDatabase statisticsDatabase = Room.databaseBuilder(getApplicationContext(), StatisticsDatabase.class, "StatisticsDatabase").build();
-                try {
-                    Statistics statistics = statisticsDatabase.statisticsAccessObject().loadStatistics();
 
+                try {
+                    databaseHandler = StatisticsDatabaseHandler.getDatabase(getApplicationContext());
                     curOwnedPlants.append(""+statisticsManager.getNumOwnedPlants());
                     totalOwnedPlants.append(""+statisticsManager.getTotalOwnedPlants());
                     totalDeadPlants.append(""+statisticsManager.getTotalDeadPlants());
