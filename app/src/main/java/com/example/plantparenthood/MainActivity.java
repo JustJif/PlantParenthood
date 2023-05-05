@@ -4,11 +4,19 @@ package com.example.plantparenthood;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Notification;
 import android.content.Intent;
+import android.media.AudioAttributes;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -16,6 +24,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        PPMobileNotificationFactory.createNotificationChannel(getApplicationContext());//need to call this at app start
+        final MediaPlayer mediaPlayer = MediaPlayer.create(this,R.raw.Mzg1ODMxNTIzMzg1ODM3_JzthsfvUY24);
+
+        Button rickRoll =  findViewById(R.id.rickRoll);
+        rickRoll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mediaPlayer.start();
+
+            }
+        });
 
         // Initialize and assign variable
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -54,4 +74,5 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
     }
+
 }

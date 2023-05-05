@@ -239,7 +239,7 @@ public class GroupActivityCreatorAdapter extends AbstractCreatorAdapter
         GridLayoutManager newGridLayoutManager = new GridLayoutManager(whatContext, 1 );
         displayAllPlants.setLayoutManager(newGridLayoutManager);
 
-        InnerPlantRecyclerAdapter adapter = new InnerPlantRecyclerAdapter(this, group,group.getAllPlants(), whatContext,true);
+        InnerPlantRecyclerAdapter adapter = new InnerPlantRecyclerAdapter(this, group,plantList, whatContext,true);
         displayAllPlants.setAdapter(adapter);
     }
 

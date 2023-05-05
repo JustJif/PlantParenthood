@@ -21,10 +21,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -44,15 +42,14 @@ public class CalendarCreatorAdapter extends AbstractCreatorAdapter
     private List<Plant> plantsList;
     private Calendar_Activity calendar_activity;
     private Context whatContext;
+    private Schedule schedule;
     private RecyclerView.ViewHolder newHolder;
-    private PlantController plantController;
-
-    public CalendarCreatorAdapter(List<Plant> newPlantsList, Calendar_Activity calendar_activity, PlantController plantController)
+    public CalendarCreatorAdapter(List<Plant> newPlantsList, Calendar_Activity calendar_activity)
     {
         plantsList = newPlantsList;
         this.calendar_activity = calendar_activity;
         whatContext = calendar_activity;
-        this.plantController = plantController;
+        schedule = new Schedule();
     }
 
     @NonNull
@@ -161,7 +158,7 @@ public class CalendarCreatorAdapter extends AbstractCreatorAdapter
                     return;
                 }
 
-                plantController.addPlantSchedule(thisPlant,wateringNumber);
+                schedule.addPlantSchedule(thisPlant,wateringNumber);
                 Toast.makeText(view.getContext(), "Added new watering Schedule", Toast.LENGTH_SHORT).show();
                 calendar_activity.checkListOfValidPlants();
                 newPopupWindow.dismiss();
@@ -195,11 +192,7 @@ public class CalendarCreatorAdapter extends AbstractCreatorAdapter
             {
                 thisPlant.waterPlant(getDayOfTheYear());
                 Handler handler = new Handler(Looper.getMainLooper());
-                handler.post(() ->
-                {
-                    calculateWateringCycle(newPopup,water, -1);
-                    calendar_activity.refreshPlantGrid();
-                });
+                handler.post(() -> calculateWateringCycle(newPopup,water));
             });
         });
 
@@ -208,17 +201,7 @@ public class CalendarCreatorAdapter extends AbstractCreatorAdapter
             @Override
             public void onClick(View view)
             {
-                Toast.makeText(view.getContext(), "Applied changes", Toast.LENGTH_SHORT).show();
-                EditText text = newPopup.findViewById(R.id.newIntervalValue);
-                int value = Integer.parseInt(text.getText().toString());
-                //thisPlant.getWateringCycle().setWateringInterval(value);
-
-                AsyncTask.execute(() ->
-                {
-                    plantController.updatePlantSchedule(thisPlant,value);
-                    Handler handler = new Handler(Looper.getMainLooper());
-                    handler.post(() -> calendar_activity.refreshPlantGrid());
-                });
+                //water.deleteWateringSchedule();
             }
         });
 
@@ -229,13 +212,13 @@ public class CalendarCreatorAdapter extends AbstractCreatorAdapter
             {
                 new AlertDialog.Builder(whatContext)
                     .setTitle("Confirm deletion")
-                    .setMessage("This will remove the watering schedule, this cannot be undone.")
+                    .setMessage("This wil remove the watering schedule, this cannot be undone.")
                     .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int id)
                         {
                             AsyncTask.execute(() -> {
-                                plantController.removePlantSchedule(water);
+                                water.deleteWateringSchedule();
                                 Handler handler = new Handler(Looper.getMainLooper());
                                 handler.post(() ->
                                 {
@@ -258,35 +241,8 @@ public class CalendarCreatorAdapter extends AbstractCreatorAdapter
             }
         });
 
-        ImageView edit = newPopup.findViewById(R.id.editWater);
-        edit.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                InputMethodManager inputMethodManager = (InputMethodManager) whatContext.getSystemService(Context.INPUT_METHOD_SERVICE);
-                TextView wateringInterval = newPopup.findViewById(R.id.wateringIntervalNumber);
-                EditText newInterval = newPopup.findViewById(R.id.newIntervalValue);
 
-                if(wateringInterval.getVisibility() == View.VISIBLE)
-                {
-                    wateringInterval.setVisibility(View.INVISIBLE);
-                    newInterval.setVisibility(View.VISIBLE);
-                    newInterval.requestFocus();
-                    inputMethodManager.showSoftInput(newInterval, 1);
-                }
-                else
-                {
-                    newInterval.setVisibility(View.INVISIBLE);
-                    inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                    wateringInterval.setVisibility(View.VISIBLE);
-                    calculateWateringCycle(newPopup,water, Integer.parseInt(newInterval.getText().toString()));
-                }
-            }
-        });
-
-
-        calculateWateringCycle(newPopup, water, -1);
+        calculateWateringCycle(newPopup, water);
     }
 
     private int computeNextWatering(Watering water)
@@ -294,23 +250,18 @@ public class CalendarCreatorAdapter extends AbstractCreatorAdapter
         return (water.getLastWateredDay() - getDayOfTheYear()) + water.getWateringInterval();
     }
 
-    private void calculateWateringCycle(View newPopup, Watering water, int newInterval)
+    private void calculateWateringCycle(View newPopup, Watering water)
     {
-        if(water != null)
-        {
-            int interval = newInterval == -1 ? water.getWateringInterval() : newInterval;
+        if(water != null) {
             TextView lastWatered = newPopup.findViewById(R.id.lastWateringNum);
             lastWatered.setText(computeDayMonth(false, water.getLastWateredDay()));
 
             TextView nextDayToWater = newPopup.findViewById(R.id.nextWateringNumber);
-            int nextWateringDay = water.getLastWateredDay() + interval;
+            int nextWateringDay = water.getLastWateredDay() + water.getWateringInterval();
             nextDayToWater.setText(computeDayMonth(false, nextWateringDay));
-            String wateringInt = "";
 
-            wateringInt = "Every " + interval + (interval > 1 ? " days" : " day");
-
+            String wateringInt = "Every " + water.getWateringInterval() + (water.getWateringInterval() > 1 ? " days" : " day");
             TextView wateringInterval = newPopup.findViewById(R.id.wateringIntervalNumber);
-
             wateringInterval.setText(wateringInt);
         }
     }

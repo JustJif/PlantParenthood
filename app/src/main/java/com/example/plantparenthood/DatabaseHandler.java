@@ -15,49 +15,51 @@ public class DatabaseHandler {
     private static DatabaseHandler activeDatabase = null;
     private PlantCreator plantCreator;
     private PlantDatabase plantDB;
-    private DatabaseHandler(Context context)
-    {
+
+    // private PlantDatabase wateringDB;
+    private DatabaseHandler(Context context) {
         plantDB = Room.databaseBuilder(context, PlantDatabase.class, "PlantDatabase").build();
-        plantCreator = new PlantCreator(plantDB.dataAccessObject());
+        // wateringDB = Room.databaseBuilder(context, Water)
+        plantCreator = new PlantCreator();
     }
 
-    public static DatabaseHandler getDatabase(Context applicationContext)
-    {
-        if(activeDatabase == null)
-        {
+    public static DatabaseHandler getDatabase(Context applicationContext) {
+        if (activeDatabase == null) {
             activeDatabase = new DatabaseHandler(applicationContext);
         }
 
         return activeDatabase;
     }
 
-    public DataAccessObject getDataAccessObject()
-    {
+    public DataAccessObject getDataAccessObject() {
         return plantDB.dataAccessObject();
     }
 
-    public Plant getPlantFromDBbyID(int plantID)
-    {
+    public Plant getPlantFromDBbyID(int plantID) {
+        Plant plant;
         PlantSaveToDatabase loadedPlant = plantDB.dataAccessObject().loadPlantByID(plantID);
-        Plant plant = plantCreator.createPlantFromDatabase(loadedPlant, attachWateringSchedule(loadedPlant.getId()));
+        if (loadedPlant == null) { // check for null when searching or it will be vulnerable to nullptrexceptions
+            plant = null;
+        } else {
+            plant = plantCreator.createPlantFromDatabase(loadedPlant, attachWateringSchedule(loadedPlant.getId()));
+        }
 
         return plant;
     }
 
-    public List<Plant> getPlantsFromDB()
-    {
+    public List<Plant> getPlantsFromDB() {
         List<PlantSaveToDatabase> loadedPlants = plantDB.dataAccessObject().loadAllPlants();
         List<Plant> formattedPlantOutput = new ArrayList<>();
         for (int i = 0; i < loadedPlants.size(); i++) {
             PlantSaveToDatabase thisPlant = loadedPlants.get(i);
-            formattedPlantOutput.add(plantCreator.createPlantFromDatabase(thisPlant, attachWateringSchedule(thisPlant.getId())));
+            formattedPlantOutput
+                    .add(plantCreator.createPlantFromDatabase(thisPlant, attachWateringSchedule(thisPlant.getId())));
         }
 
         return formattedPlantOutput;
     }
 
-    public void addPlantToDatabase(Plant plant)
-    {
+    public void addPlantToDatabase(Plant plant) {
         PlantSaveToDatabase newPlant = new PlantSaveToDatabase(plant);
         plantDB.dataAccessObject().addPlant(newPlant);
     }
@@ -66,18 +68,21 @@ public class DatabaseHandler {
      * As the database cannot save objects, watering schedule is fetched separately
      * query the id of plantID, it may or may not be valid
      */
-    private Watering attachWateringSchedule(int plantID)
-    {
+    private Watering attachWateringSchedule(int plantID) {
         return plantDB.wateringDao().loadWateringByID(plantID);
     }
 
-    public void saveWateringSchedule(Watering watering)
-    {
+    public void saveWateringSchedule(Watering watering) {
         plantDB.wateringDao().addWatering(watering);
     }
 
-    public void deleteWateringSchedule(Watering watering)
-    {
-     plantDB.wateringDao().deleteSchedule(watering);
+    public void deleteWateringSchedule(Watering watering) {
+        plantDB.wateringDao().deleteSchedule(watering);
     }
+
+    public void deletePlant(int plantID) {
+        PlantSaveToDatabase plant = plantDB.dataAccessObject().loadPlantByID(plantID);
+        plantDB.dataAccessObject().deletePlant(plant);
+    }
+
 }

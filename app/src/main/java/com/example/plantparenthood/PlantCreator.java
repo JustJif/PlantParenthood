@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.text.TextUtils;
 
 import org.json.JSONArray;
@@ -14,9 +15,9 @@ import java.util.ArrayList;
 
 public class PlantCreator {
     public DataAccessObject database;
+    private static int customPlants = -1;
 
-    PlantCreator(DataAccessObject newDatabase) {
-        database = newDatabase;
+    PlantCreator() {
     }
 
     public ArrayList<Plant> createPlant(JSONObject nonparsedPlants, Context applicationContext, PlantSearcher makethisplantUI) {
@@ -85,9 +86,17 @@ public class PlantCreator {
         return createdPlantObjects;
     }
 
-    public void addCustomPlant() {
-
+    public void addCustomPlant(Context applicationContext, String name, String sciName) {
+        Plant newPlant = new Plant.PlantBuilder()
+                .setId(customPlants)
+                .setCommon_name(name)
+                .setScientific_name(sciName)
+                .setDefault_image(BitmapFactory.decodeResource(applicationContext.getResources(), R.drawable.defaultimage))
+                .buildPlant();
+        AsyncTask.execute(() -> DatabaseHandler.getDatabase(applicationContext).addPlantToDatabase(newPlant));
+        customPlants--;
     }
+
 
     public Plant createPlantFromDatabase(PlantSaveToDatabase newPlant, Watering wateringCycle) {
         Plant.PlantBuilder plantBuilder = new Plant.PlantBuilder();
@@ -119,4 +128,14 @@ public class PlantCreator {
 
         return plant;
     }
+
+    public void updatePlant(Plant oldPlant, ArrayList<String> changes)
+    {
+
+    }
+
+
+
+
+
 }

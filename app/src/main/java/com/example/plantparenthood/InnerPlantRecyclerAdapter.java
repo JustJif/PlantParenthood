@@ -50,7 +50,6 @@ public class InnerPlantRecyclerAdapter extends AbstractCreatorAdapter
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position)
     {
         Plant newPlant = plantList.get(position);
-        System.out.println(newPlant.getCommon_name());
         TextView name = holder.itemView.findViewById(R.id.plantCommonName);
         name.setText(newPlant.getCommon_name());
 
@@ -72,12 +71,9 @@ public class InnerPlantRecyclerAdapter extends AbstractCreatorAdapter
                     @Override
                     public void onClick(DialogInterface dialogInterface, int id)
                     {
-                        thisGroup.removePlant(thisPlant);
-                        AsyncTask.execute(() -> GroupDataBaseHandler.getDatabase(whatContext).deletePlantFromGroup(thisGroup,thisPlant));
                         GroupActivity.showPlants(thisGroup);
-
-                        AsyncTask.execute(() -> GroupDataBaseHandler.getDatabase(whatContext).addGroupToDatabase(thisGroup));
-                        System.out.println("DELETED -^ " + thisPlant.getCommon_name() + " FROM " + thisGroup.getGroupName());
+                        AsyncTask.execute(() -> GroupDataBaseHandler.getDatabase(whatContext).deletePlantFromGroup(thisGroup,thisPlant));
+                        System.out.println("DELETED - " + thisPlant.getCommon_name() + " FROM " + thisGroup.getGroupName());
 
                     }
                 })
@@ -101,7 +97,6 @@ public class InnerPlantRecyclerAdapter extends AbstractCreatorAdapter
                         GroupActivity.showAllPlants(thisGroup);
 
                         AsyncTask.execute(() -> GroupDataBaseHandler.getDatabase(whatContext).addGroupToDatabase(thisGroup));
-                        System.out.println("ADDED -^ " + thisPlant.getCommon_name() + " TO " + thisGroup.getGroupName());
 
                     }
                 })

@@ -88,7 +88,6 @@ public class Plant_Activity extends AppCompatActivity {
                     {
                         if (result.getResultCode() == RESULT_OK)
                         {
-                            System.out.println("Image found");
                             Bitmap image = (Bitmap) result.getData().getExtras().get("data");
                             //plantAdapter.setCameraPreview(image);
                         }
@@ -134,12 +133,9 @@ public class Plant_Activity extends AppCompatActivity {
         LayoutInflater layoutInflater = (LayoutInflater) view.getContext()
                 .getSystemService(view.getContext().LAYOUT_INFLATER_SERVICE);
         View newPopup = layoutInflater.inflate(R.layout.custom_plant_popup, null);
-
         PopupWindow newPopupWindow = new PopupWindow(newPopup, LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT, true);
         newPopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
-
-        EditText plantName = newPopup.findViewById(R.id.plantCommonName);
 
         Button closeButton = newPopup.findViewById(R.id.closeButton);
         closeButton.setOnClickListener(new View.OnClickListener() {
@@ -155,6 +151,44 @@ public class Plant_Activity extends AppCompatActivity {
             public void onClick(View view) {
                 statisticsManager.addPlant();
                 startActivity(new Intent(getApplicationContext(), PlantSearcher.class));
+                newPopupWindow.dismiss();
+            }
+        });
+        Button addCustomPlant = newPopup.findViewById(R.id.addCustomPlant);
+        addCustomPlant.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setupInnerPopup(view);
+                newPopupWindow.dismiss();
+            }
+        });
+    }
+    private void setupInnerPopup(View view) {
+        LayoutInflater layoutInflater = (LayoutInflater) view.getContext()
+                .getSystemService(view.getContext().LAYOUT_INFLATER_SERVICE);
+        View newPopup = layoutInflater.inflate(R.layout.custom_plant_create_popup, null);
+
+        PopupWindow newPopupWindow = new PopupWindow(newPopup, LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT, true);
+        newPopupWindow.showAtLocation(newPopup, Gravity.CENTER, 0, 0);
+
+        EditText plantName = newPopup.findViewById(R.id.plantCommonName);
+        EditText plantSciName = newPopup.findViewById(R.id.plantScientificName);
+
+        Button closeButton = newPopup.findViewById(R.id.closeButton);
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                newPopupWindow.dismiss();
+            }
+        });
+
+        Button submit = newPopup.findViewById(R.id.submitButton);
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PlantCreator newPlantCreator = new PlantCreator();
+                newPlantCreator.addCustomPlant(getApplicationContext(),plantName.getText().toString(),plantSciName.getText().toString());
                 newPopupWindow.dismiss();
             }
         });

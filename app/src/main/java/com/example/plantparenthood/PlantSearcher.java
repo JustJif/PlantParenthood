@@ -66,7 +66,7 @@ public class PlantSearcher extends AppCompatActivity
         previousPlantName = "";
 
         database = Room.databaseBuilder(getApplicationContext(),PlantDatabase.class, "PlantDatabase").build();
-        plantCreator = new PlantCreator(database.dataAccessObject());
+        plantCreator = new PlantCreator();
         TextView searchPage = findViewById(R.id.pageNum);
         Button leftButton = findViewById(R.id.leftButton);
         Button rightButton = findViewById(R.id.rightButton);

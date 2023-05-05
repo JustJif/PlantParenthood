@@ -89,7 +89,6 @@
                     android:inputType="numberSigned"
                     android:textSize="20sp"
                     android:textStyle="bold" />
-
             </LinearLayout>
 
             <LinearLayout
@@ -117,29 +116,6 @@
                     android:inputType="numberSigned"
                     android:textSize="20sp"
                     android:textStyle="bold" />
-
-                <EditText
-                    android:id="@+id/newIntervalValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:padding="10dp"
-                    android:visibility="invisible"
-                    android:inputType="numberSigned"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <ImageView
-                    android:id="@+id/editWater"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="0dp"
-
-                    android:layout_marginEnd="10dp"
-                    android:forceHasOverlappingRendering="true"
-                    app:srcCompat="@drawable/baseline_edit_24" />
             </LinearLayout>
 
             <Button

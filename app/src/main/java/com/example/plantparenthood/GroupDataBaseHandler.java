@@ -49,6 +49,7 @@ public class GroupDataBaseHandler {
     }
 
     private void loadPlantsIntoGroup(String unparsed, ArrayList<Plant> plantArrayList) {
+
         if(!TextUtils.isEmpty(unparsed)) {
             String[] parsed = unparsed.split(",");
             for(int i = 0; i < parsed.length; i++) {
@@ -63,8 +64,8 @@ public class GroupDataBaseHandler {
     public List<Group> getGroupsFromDB()
     {
         List<Group> loadedGroups = GroupDB.GroupDataAccessObject().loadAllGroups();
-        ArrayList<Plant> plantArrayList = new ArrayList<Plant>();
         for(int i = 0; i < loadedGroups.size(); i++) {
+            ArrayList<Plant> plantArrayList = new ArrayList<Plant>();
             loadPlantsIntoGroup(loadedGroups.get(i).getPlantIDs(),plantArrayList);
             loadedGroups.get(i).setAllPlants(plantArrayList);
         }
@@ -82,9 +83,16 @@ public class GroupDataBaseHandler {
     }
 
     public void deletePlantFromGroup(Group group, Plant plant) {
-        Group loadedGroup = GroupDB.GroupDataAccessObject().loadGroupByID(group.getGroupID());
-        loadedGroup.removePlant(plant);
-        GroupDB.GroupDataAccessObject().deleteGroup(group);
-
+        group.removePlant(plant);
+        GroupDB.GroupDataAccessObject().addGroup(group);
+    }
+    public void deletePlantFromGroups(Plant plant) {
+        List<Group> loadedGroups = GroupDB.GroupDataAccessObject().loadAllGroups();
+        for(int i = 0; i < loadedGroups.size(); i++) {
+            if(loadedGroups.get(i).getPlantIDs().contains(String.valueOf(plant.getId()))) {
+                loadedGroups.get(i).removePlant(plant);
+                GroupDB.GroupDataAccessObject().addGroup(loadedGroups.get(i));
+            }
+        }
     }
 }
