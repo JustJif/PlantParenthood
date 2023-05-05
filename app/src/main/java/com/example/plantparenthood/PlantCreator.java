@@ -98,8 +98,15 @@ public class PlantCreator
         AsyncTask.execute(() -> DatabaseHandler.getDatabase().addPlantToDatabase(plant));
     }
 
-    public void addCustomPlant() {
-
+    public void addCustomPlant(Context applicationContext, String name, String sciName) {
+        Plant newPlant = new Plant.PlantBuilder()
+                .setId(uniquePlantID)
+                .setCommon_name(name)
+                .setScientific_name(sciName)
+                .setDefault_image(BitmapFactory.decodeResource(applicationContext.getResources(), R.drawable.defaultimage))
+                .buildPlant();
+        AsyncTask.execute(() -> DatabaseHandler.getDatabase(applicationContext).addPlantToDatabase(newPlant));
+        uniquePlantID++;
     }
 
     /**

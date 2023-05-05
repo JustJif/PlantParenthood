@@ -31,59 +31,63 @@ public class MainActivity extends AppCompatActivity {
         StatisticsDatabaseHandler.getDatabase(getApplicationContext());
 
         Button rickRoll =  findViewById(R.id.rickRoll);
+        MediaPlayer mediaPlayer = MediaPlayer.create(getApplicationContext(),R.raw.song);
         rickRoll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(mediaPlayer.isPlaying()) {
+                if (mediaPlayer.isPlaying()) {
                     mediaPlayer.pause();
                 } else {
                     mediaPlayer.start();
                 }
-
-
-        Button showStatistics = findViewById(R.id.showStatistics);
-        showStatistics.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                startActivity(new Intent(getApplicationContext(), Statistics_Activity.class));
             }
         });
 
-        // Initialize and assign variable
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
-        // Set Home selected
-        bottomNavigationView.setSelectedItemId(R.id.home);
-
-        // Perform item selected listener
-        bottomNavigationView
-                .setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            Button showStatistics = findViewById(R.id.showStatistics);
+            showStatistics.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-                        switch (item.getItemId()) {
-                            case R.id.spaces:
-                                startActivity(new Intent(getApplicationContext(), Statistics_Activity.class));
-                                overridePendingTransition(0, 0);
-                                return true;
-                            case R.id.plants:
-                                startActivity(new Intent(getApplicationContext(), Plant_Activity.class));
-                                overridePendingTransition(0, 0);
-                                return true;
-                            case R.id.home:
-                                return true;
-                            case R.id.calendar:
-                                startActivity(new Intent(getApplicationContext(), Calendar_Activity.class));
-                                overridePendingTransition(0, 0);
-                                return true;
-                            case R.id.scanner:
-                                startActivity(new Intent(getApplicationContext(), QRScannerMenuActivity.class));
-                                overridePendingTransition(0, 0);
-                                return true;
-                        }
-                        return false;
+                    public void onClick(View v) {
+                        startActivity(new Intent(getApplicationContext(), Statistics_Activity.class));
                     }
-                });
-    }
+            });
 
-}
+
+            // Initialize and assign variable
+            BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+            // Set Home selected
+            bottomNavigationView.setSelectedItemId(R.id.home);
+
+            // Perform item selected listener
+            bottomNavigationView
+                    .setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+                        @Override
+                        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                            switch (item.getItemId()) {
+                                case R.id.Groups:
+                                    startActivity(new Intent(getApplicationContext(), Group_Activity.class));
+                                    overridePendingTransition(0, 0);
+                                    return true;
+                                case R.id.plants:
+                                    startActivity(new Intent(getApplicationContext(), Plant_Activity.class));
+                                    overridePendingTransition(0, 0);
+                                    return true;
+                                case R.id.home:
+                                    return true;
+                                case R.id.calendar:
+                                    startActivity(new Intent(getApplicationContext(), Calendar_Activity.class));
+                                    overridePendingTransition(0, 0);
+                                    return true;
+                                case R.id.scanner:
+                                    startActivity(new Intent(getApplicationContext(), QRScannerMenuActivity.class));
+                                    overridePendingTransition(0, 0);
+                                    return true;
+                            }
+                            return false;
+                        }
+                    });
+
+        }
+    }

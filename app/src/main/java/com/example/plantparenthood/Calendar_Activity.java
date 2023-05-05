@@ -118,7 +118,7 @@ public class Calendar_Activity extends AppCompatActivity
 
                 switch(item.getItemId())
                 {
-                    case R.id.spaces:
+                    case R.id.Groups:
                         startActivity(new Intent(getApplicationContext(), Group_Activity.class));
                         overridePendingTransition(0,0);
                         return true;
