@@ -33,7 +33,6 @@ public class PlantSearcherActivity extends AppCompatActivity
     private Integer pageNumber, maxPageNumber;
     private String plantName, previousPlantName;
     private String tagFilter = "";
-    private Button customPlantButton;
     private PlantController plantController;
 
     @Override
