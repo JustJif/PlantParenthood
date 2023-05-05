@@ -1,15 +1,11 @@
 package com.example.plantparenthood;
 
-import static androidx.camera.core.impl.utils.ContextUtil.getApplicationContext;
-import static androidx.core.content.ContextCompat.startActivity;
-
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -47,15 +43,13 @@ public class Plant_Activity extends AppCompatActivity {
     private PlantActivityCreatorAdapter plantAdapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plants);
 
-
         plantList = new ArrayList<>();
         plantDatabase = DatabaseHandler.getDatabase(getApplicationContext());
-
 
         plantGrid = findViewById(R.id.plant_recycler_view);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 1);
@@ -86,6 +80,7 @@ public class Plant_Activity extends AppCompatActivity {
                     {
                         if (result.getResultCode() == RESULT_OK)
                         {
+                            System.out.println("Image found");
                             Bitmap image = (Bitmap) result.getData().getExtras().get("data");
                             //plantAdapter.setCameraPreview(image);
                         }
@@ -131,9 +126,12 @@ public class Plant_Activity extends AppCompatActivity {
         LayoutInflater layoutInflater = (LayoutInflater) view.getContext()
                 .getSystemService(view.getContext().LAYOUT_INFLATER_SERVICE);
         View newPopup = layoutInflater.inflate(R.layout.custom_plant_popup, null);
+
         PopupWindow newPopupWindow = new PopupWindow(newPopup, LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT, true);
         newPopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+
+        EditText plantName = newPopup.findViewById(R.id.plantCommonName);
 
         Button closeButton = newPopup.findViewById(R.id.closeButton);
         closeButton.setOnClickListener(new View.OnClickListener() {
@@ -147,51 +145,10 @@ public class Plant_Activity extends AppCompatActivity {
         addPlantFromDB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), PlantSearcher.class));
-                newPopupWindow.dismiss();
-            }
-        });
-        Button addCustomPlant = newPopup.findViewById(R.id.addCustomPlant);
-        addCustomPlant.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setupInnerPopup(view);
-                newPopupWindow.dismiss();
+                startActivity(new Intent(getApplicationContext(), PlantSearcherActivity.class));
             }
         });
     }
-    private void setupInnerPopup(View view) {
-        LayoutInflater layoutInflater = (LayoutInflater) view.getContext()
-                .getSystemService(view.getContext().LAYOUT_INFLATER_SERVICE);
-        View newPopup = layoutInflater.inflate(R.layout.custom_plant_create_popup, null);
-
-        PopupWindow newPopupWindow = new PopupWindow(newPopup, LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT, true);
-        newPopupWindow.showAtLocation(newPopup, Gravity.CENTER, 0, 0);
-
-        EditText plantName = newPopup.findViewById(R.id.plantCommonName);
-        EditText plantSciName = newPopup.findViewById(R.id.plantScientificName);
-
-        Button closeButton = newPopup.findViewById(R.id.closeButton);
-        closeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                newPopupWindow.dismiss();
-            }
-        });
-
-        Button submit = newPopup.findViewById(R.id.submitButton);
-        submit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                PlantCreator newPlantCreator = new PlantCreator();
-                newPlantCreator.addCustomPlant(getApplicationContext(),plantName.getText().toString(),plantSciName.getText().toString());
-                newPopupWindow.dismiss();
-            }
-        });
-    }
-
-
 
     @Override
     protected void onResume() {
@@ -228,7 +185,4 @@ public class Plant_Activity extends AppCompatActivity {
     {
         plantAdapter.notifyItemChanged(position);
     }
-
-
-
 }
