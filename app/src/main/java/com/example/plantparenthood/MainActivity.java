@@ -12,8 +12,12 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        PPMobileNotificationFactory.createNotificationChannel(this);//need to call this at app start
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -30,8 +34,8 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
                         switch (item.getItemId()) {
-                            case R.id.spaces:
-                                startActivity(new Intent(getApplicationContext(), Space_Activity.class));
+                            case R.id.Groups:
+                                startActivity(new Intent(getApplicationContext(), Group_Activity.class));
                                 overridePendingTransition(0, 0);
                                 return true;
                             case R.id.plants:
@@ -44,8 +48,8 @@ public class MainActivity extends AppCompatActivity {
                                 startActivity(new Intent(getApplicationContext(), Calendar_Activity.class));
                                 overridePendingTransition(0, 0);
                                 return true;
-                            case R.id.settings:
-                                startActivity(new Intent(getApplicationContext(), Settings.class));
+                            case R.id.scanner:
+                                startActivity(new Intent(getApplicationContext(), QRScannerMenuActivity.class));
                                 overridePendingTransition(0, 0);
                                 return true;
                         }

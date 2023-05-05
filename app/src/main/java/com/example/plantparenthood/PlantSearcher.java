@@ -36,10 +36,17 @@ public class PlantSearcher extends AppCompatActivity
     private String plantName, previousPlantName;
     private PlantCreator plantCreator;
     private PlantDatabase database;
+
+    private String tagFilter = "";
+
+    private Button customPlantButton;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        customPlantButton = findViewById(R.id.addCustomPlant);
+
+
 
         binding = ActivityPlantSearcherBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -64,6 +71,9 @@ public class PlantSearcher extends AppCompatActivity
         Button leftButton = findViewById(R.id.leftButton);
         Button rightButton = findViewById(R.id.rightButton);
 
+
+
+
         leftButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -81,6 +91,19 @@ public class PlantSearcher extends AppCompatActivity
                 nextArrow(searchPage);
             }
         });
+
+
+        Button button = (Button) findViewById(R.id.filterPlants);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupFilter popup = new PopupFilter();
+                popup.show(getSupportFragmentManager(), "popup");
+            }
+        });
+
+
+
     }
 
     @Override
@@ -121,6 +144,7 @@ public class PlantSearcher extends AppCompatActivity
 
     public void createPlantGrid(ArrayList<Plant> plantsList, Integer currentPage, Integer numberOfPages)
     {
+        customPlantButton = findViewById(R.id.addCustomPlant);
         currentDisplayedPlants = plantsList;
         TextView text = findViewById(R.id.errorText);
         RecyclerView plantGrid = findViewById(R.id.plantGridView);
@@ -133,6 +157,8 @@ public class PlantSearcher extends AppCompatActivity
 
         if(plantsList.size() > 0)
         {
+
+            customPlantButton.setVisibility(View.INVISIBLE);
             PlantCreatorAdapter plantAdapter = new PlantCreatorAdapter(plantsList, PlantSearcher.this);
 
             for (int i = 0; i < plantsList.size(); i++)
@@ -146,6 +172,8 @@ public class PlantSearcher extends AppCompatActivity
         else//don't bother setting up grid as no valid plants
         {
             text.setText("Plant(s) not found");
+
+            customPlantButton.setVisibility(View.VISIBLE);
         }
     }
 
@@ -192,8 +220,13 @@ public class PlantSearcher extends AppCompatActivity
         plantCreator.createPlant(unparsedFile,getApplicationContext(), this);
     }
 
-    private void filterSearchResult()
-    {
-        //this will filter data
+    public void filterSearchResult(String query, String watering, String cycle, String sunlight) {
+
+
     }
-}
+
+
+
+
+
+    }

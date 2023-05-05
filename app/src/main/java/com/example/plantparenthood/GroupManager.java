@@ -18,11 +18,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class SpaceManager extends RecyclerView.Adapter {
+public class GroupManager extends RecyclerView.Adapter {
     private ArrayList<Plant> plantsList;
     private Context openActivity;
 
-    public SpaceManager(ArrayList<Plant> newPlantsList, Context newContext) {
+    public GroupManager(ArrayList<Plant> newPlantsList, Context newContext) {
         plantsList = newPlantsList;
         openActivity = newContext;
     }
@@ -41,11 +41,11 @@ public class SpaceManager extends RecyclerView.Adapter {
         Plant thisPlant = plantsList.get(position);
         TextView plantCommonName = (TextView) holder.itemView.findViewById(R.id.plantCommonName);
         ImageView plantImage = (ImageView) holder.itemView.findViewById(R.id.plantImage);
-        TextView plantOtherNames = (TextView) holder.itemView.findViewById(R.id.plantScientificNames);
+        //TextView plantOtherNames = (TextView) holder.itemView.findViewById(R.id.plantScientificNames);
 
         plantCommonName.setText(thisPlant.getCommon_name());
         plantImage.setImageBitmap(thisPlant.getDefault_image());
-        plantOtherNames.setText(thisPlant.getScientific_name());
+        //plantOtherNames.setText(thisPlant.getScientific_name());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

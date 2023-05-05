@@ -1,5 +1,8 @@
 package com.example.plantparenthood;
 
+import static androidx.camera.core.impl.utils.ContextUtil.getApplicationContext;
+import static androidx.core.content.ContextCompat.startActivity;
+
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -21,8 +24,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -30,19 +39,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Plant_Activity extends AppCompatActivity {
-    private CardView addPlant;
+    private Button addPlant;
     private List<Plant> plantList;
     private RecyclerView plantGrid;
     private DatabaseHandler plantDatabase;
     private ActivityResultLauncher<Intent> camera;
     private PlantActivityCreatorAdapter plantAdapter;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plants);
+
+
         plantList = new ArrayList<>();
         plantDatabase = DatabaseHandler.getDatabase(getApplicationContext());
+
 
         plantGrid = findViewById(R.id.plant_recycler_view);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 1);
@@ -56,11 +70,11 @@ public class Plant_Activity extends AppCompatActivity {
                 handler.post(() -> createPlantGrid(plantGrid));
             }
         });
-        addPlant = (CardView) findViewById(R.id.addplant);
+        addPlant = (Button) findViewById(R.id.addplant);
         addPlant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), PlantSearcher.class));
+                setupPopup(v);
             }
         });
 
@@ -91,8 +105,8 @@ public class Plant_Activity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
-                    case R.id.spaces:
-                        startActivity(new Intent(getApplicationContext(), Space_Activity.class));
+                    case R.id.Groups:
+                        startActivity(new Intent(getApplicationContext(), Group_Activity.class));
                         overridePendingTransition(0, 0);
                         return true;
                     case R.id.plants:
@@ -105,8 +119,8 @@ public class Plant_Activity extends AppCompatActivity {
                         startActivity(new Intent(getApplicationContext(), Calendar_Activity.class));
                         overridePendingTransition(0, 0);
                         return true;
-                    case R.id.settings:
-                        startActivity(new Intent(getApplicationContext(), Settings.class));
+                    case R.id.scanner:
+                        startActivity(new Intent(getApplicationContext(), QRScannerMenuActivity.class));
                         overridePendingTransition(0, 0);
                         return true;
                 }
@@ -114,6 +128,37 @@ public class Plant_Activity extends AppCompatActivity {
             }
         });
     }
+
+    private void setupPopup(View view) {
+        LayoutInflater layoutInflater = (LayoutInflater) view.getContext()
+                .getSystemService(view.getContext().LAYOUT_INFLATER_SERVICE);
+        View newPopup = layoutInflater.inflate(R.layout.custom_plant_popup, null);
+
+        PopupWindow newPopupWindow = new PopupWindow(newPopup, LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT, true);
+        newPopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+
+        EditText plantName = newPopup.findViewById(R.id.plantCommonName);
+
+        Button closeButton = newPopup.findViewById(R.id.closeButton);
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                newPopupWindow.dismiss();
+            }
+        });
+
+        Button addPlantFromDB = newPopup.findViewById(R.id.addPlantFromDB);
+        addPlantFromDB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), PlantSearcher.class));
+
+            }
+        });
+    }
+
+
 
     @Override
     protected void onResume() {
@@ -150,4 +195,7 @@ public class Plant_Activity extends AppCompatActivity {
     {
         plantAdapter.notifyItemChanged(position);
     }
+
+
+
 }
