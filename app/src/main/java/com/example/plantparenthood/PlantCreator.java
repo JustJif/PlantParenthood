@@ -42,7 +42,6 @@ public class PlantCreator
 
             for (int i = 0; i < plantsList.length(); i++) {
                 JSONObject currentPlant = plantsList.getJSONObject(i);
-                //int id = currentPlant.getInt("id");
                 int id = uniquePlantID;
                 uniquePlantID++;
                 String common_name = currentPlant.getString("common_name");

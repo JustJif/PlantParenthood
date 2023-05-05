@@ -49,11 +49,6 @@ public class PlantController
         plantSearcher.queryImageAPI(plant,plantLocation);
     }
 
-    public ArrayList<Plant> createPlant(JSONObject nonparsedPlants, Context context)
-    {
-        return plantCreator.createPlant(nonparsedPlants, context, this);
-    }
-
     public void addPlant(Plant plant)
     {
         plantCreator.addPlant(plant);
