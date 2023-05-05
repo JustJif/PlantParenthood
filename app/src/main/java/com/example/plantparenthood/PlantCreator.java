@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class PlantCreator {
     public DataAccessObject database;
-    private StatisticsManager statisticsManager;
+
     PlantCreator(DataAccessObject newDatabase) {
         database = newDatabase;
     }
@@ -73,7 +73,6 @@ public class PlantCreator {
                         .buildPlant();
 
                 createdPlantObjects.add(newPlant);
-                statisticsManager.addPlant();
             }
 
             Integer currentPage = nonparsedPlants.getInt("current_page");
@@ -86,19 +85,9 @@ public class PlantCreator {
         return createdPlantObjects;
     }
 
-    public class addCustomPlant {
-
-        private DataAccessObject database;
-        private Context context;
-
-        addCustomPlant(DataAccessObject newDatabase, Context applicationContext) {
-            database = newDatabase;
-            context = applicationContext;
-        }
-
+    public void addCustomPlant() {
 
     }
-
 
     public Plant createPlantFromDatabase(PlantSaveToDatabase newPlant, Watering wateringCycle) {
         Plant.PlantBuilder plantBuilder = new Plant.PlantBuilder();
@@ -130,14 +119,4 @@ public class PlantCreator {
 
         return plant;
     }
-
-    public void updatePlant(Plant oldPlant, ArrayList<String> changes)
-    {
-
-    }
-
-
-
-
-
 }
