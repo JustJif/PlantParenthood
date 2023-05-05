@@ -28,7 +28,7 @@
                 android:padding="0dp"
                 android:text="X" />
 
-            <EditText
+            <TextView
                 android:id="@+id/plantCommonName"
                 android:layout_gravity="center"
                 android:layout_width="wrap_content"
@@ -37,7 +37,7 @@
                 android:textStyle="bold"
                 android:padding="10dp"/>
 
-            <EditText
+            <TextView
                 android:id="@+id/plantScientificName"
                 android:layout_gravity="center"
                 android:layout_width="wrap_content"

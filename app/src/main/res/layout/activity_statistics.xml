@@ -41,32 +41,32 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/totalOwnedPlants"
-        app:layout_constraintBottom_toTopOf="@+id/meanTimeBetweenWatering"
+        app:layout_constraintBottom_toTopOf="@+id/lastTimeWatered"
         tools:layout_editor_absoluteY="436dp" />
 
-    <TextView
-        android:textColor="@color/white"
-        android:id="@+id/meanTimeBetweenWatering"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Mean Time Between Watering: "
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/totalDeadPlants"
-        app:layout_constraintBottom_toTopOf="@+id/medianTimeBetweenWatering"
-        tools:layout_editor_absoluteY="243dp" />
+<!--    <TextView-->
+<!--        android:textColor="@color/white"-->
+<!--        android:id="@+id/meanTimeBetweenWatering"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Mean Time Between Watering: "-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/totalDeadPlants"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/medianTimeBetweenWatering"-->
+<!--        tools:layout_editor_absoluteY="243dp" />-->
 
-    <TextView
-        android:textColor="@color/white"
-        android:id="@+id/medianTimeBetweenWatering"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Median Time Between Watering: "
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/meanTimeBetweenWatering"
-        app:layout_constraintBottom_toTopOf="@+id/lastTimeWatered"
-        tools:layout_editor_absoluteY="173dp" />
+<!--    <TextView-->
+<!--        android:textColor="@color/white"-->
+<!--        android:id="@+id/medianTimeBetweenWatering"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Median Time Between Watering: "-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/meanTimeBetweenWatering"-->
+<!--        app:layout_constraintBottom_toTopOf="@+id/lastTimeWatered"-->
+<!--        tools:layout_editor_absoluteY="173dp" />-->
 
     <TextView
         android:textColor="@color/white"
@@ -76,7 +76,7 @@
         android:text="Last Time Watered: "
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/medianTimeBetweenWatering"
+        app:layout_constraintTop_toBottomOf="@id/totalDeadPlants"
         app:layout_constraintBottom_toTopOf="@+id/firstTimeWatered"
         tools:layout_editor_absoluteY="311dp" />
 
@@ -88,7 +88,7 @@
         android:text="First Time Watered: "
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/medianTimeBetweenWatering"
+        app:layout_constraintTop_toBottomOf="@id/lastTimeWatered"
         app:layout_constraintBottom_toTopOf="@+id/share_button"
         tools:layout_editor_absoluteY="361dp" />
 
@@ -130,8 +130,20 @@
         android:text="Share It!"
         android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/bottom_navigation"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/weeklyStatistics"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/firstTimeWatered" />
+
+    <Button
+        android:id="@+id/weeklyStatistics"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Weekly Statistics"
+        tools:layout_editor_absoluteX="268dp"
+        tools:layout_editor_absoluteY="500dp"
+        app:layout_constraintStart_toEndOf="@id/share_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
+        app:layout_constraintTop_toBottomOf="@id/firstTimeWatered"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

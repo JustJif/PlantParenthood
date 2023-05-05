@@ -1,6 +1,7 @@
 package com.example.plantparenthood;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.room.Entity;
 import androidx.room.Ignore;
@@ -16,7 +17,6 @@ public class Statistics {
     @PrimaryKey
     private int id = 0;
     private double meanTimeBetweenWatering = 0;
-    private double medianTimeBetweenWatering = 0;
     private int curOwnedPlants = 0;
     private int totalOwnedPlants = 0;
     private int totalDeadPlants = 0;
@@ -32,7 +32,6 @@ public class Statistics {
 
     public Statistics(){
         meanTimeBetweenWatering = 0;
-        medianTimeBetweenWatering = 0;
         curOwnedPlants = 0;
         totalOwnedPlants = 0;
         totalDeadPlants = 0;
@@ -69,6 +68,7 @@ public class Statistics {
         this.totalTimesWatered = totalTimesWatered;
     }
     public void plantAdded(){
+        Log.d("Adding Plant","Incrementing curOwnedPlants");
         curOwnedPlants++;
         totalOwnedPlants++;
     }
@@ -86,9 +86,6 @@ public class Statistics {
     }
     public void setMeanTimeBetweenWatering(double meanTimeBetweenWatering){
         this.meanTimeBetweenWatering = meanTimeBetweenWatering;
-    }
-    public void setMedianTimeBetweenWatering(double meanTimeBetweenWatering){
-        this.medianTimeBetweenWatering = meanTimeBetweenWatering;
     }
     public void plantDied(){
         if(curOwnedPlants>0){
@@ -120,19 +117,9 @@ public class Statistics {
             meanTimeBetweenWatering = totalTimesWatered/days;
         }
     }
-    private void computeMedianTimeBetweenWatering(){
-        Collections.sort(daysSinceLastWateringArr);
-        if(daysSinceLastWateringArr.size()>0){
-            medianTimeBetweenWatering = daysSinceLastWateringArr.get(daysSinceLastWateringArr.size()/2);
-        }
-    }
     public double getMeanTimeBetweenWatering(){
         computeMeanTimeBetweenWatering();
         return meanTimeBetweenWatering;
-    }
-    public double getMedianTimeBetweenWatering(){
-        computeMedianTimeBetweenWatering();
-        return medianTimeBetweenWatering;
     }
     public Date getLastTimeWatered(){
         return new Date(firstWateringDateLong);

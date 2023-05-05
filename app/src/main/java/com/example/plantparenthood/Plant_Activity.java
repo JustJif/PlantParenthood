@@ -55,6 +55,8 @@ public class Plant_Activity extends AppCompatActivity {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 1);
         plantGrid.setLayoutManager(gridLayoutManager);
 
+        StatisticsDatabaseHandler.getDatabase(getApplicationContext());
+
         AsyncTask.execute(new Runnable() {
             @Override
             public void run() {
@@ -131,8 +133,6 @@ public class Plant_Activity extends AppCompatActivity {
                 LinearLayout.LayoutParams.MATCH_PARENT, true);
         newPopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
 
-        EditText plantName = newPopup.findViewById(R.id.plantCommonName);
-
         Button closeButton = newPopup.findViewById(R.id.closeButton);
         closeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,6 +146,7 @@ public class Plant_Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), PlantSearcherActivity.class));
+                newPopupWindow.dismiss();
             }
         });
     }

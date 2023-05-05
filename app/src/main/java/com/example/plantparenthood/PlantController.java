@@ -4,8 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.widget.EditText;
 
-import com.android.volley.RequestQueue;
-
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -54,6 +52,11 @@ public class PlantController
     public ArrayList<Plant> createPlant(JSONObject nonparsedPlants, Context context)
     {
         return plantCreator.createPlant(nonparsedPlants, context, this);
+    }
+
+    public void addPlant(Plant plant)
+    {
+        plantCreator.addPlant(plant);
     }
 
     public void passPlantslist(ArrayList<Plant> plantsList,Integer currentPage, Integer lastPage)

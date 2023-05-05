@@ -49,6 +49,8 @@
     </string-array>
 
     <string name="sunlight">Sunlight Drop Down Menu</string>
+    <string name="mean_time_between_watering">Mean Time Between Watering:</string>
+    <string name="share_it">Share It!</string>
     <string-array name="sunlight">
         <item>full_shade</item>
         <item>part_shade</item>
