@@ -130,14 +130,31 @@ public class PlantInfoPopup
         });
 
         Button deletePlant = newPopup.findViewById(R.id.deletePlant);
-        deletePlant.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AsyncTask.execute(() -> DatabaseHandler.getDatabase().deletePlant(thisPlant));
-                plant_activity.notifyGridOfUpdate(holder.getAdapterPosition());
-                newPopupWindow.dismiss();
-            }
-        });
+        deletePlant.setOnClickListener(new View.OnClickListener()
+        {
+           @Override
+           public void onClick(View view) {
+               new AlertDialog.Builder(whatContext)
+                   .setTitle("Remove plant")
+                   .setMessage("Removing a plant is permanent this cannot be undone.")
+                   .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                       @Override
+                       public void onClick(DialogInterface dialogInterface, int id) {
+                           AsyncTask.execute(() -> DatabaseHandler.getDatabase().deletePlant(thisPlant));
+                           plant_activity.notifyGridOfUpdate(holder.getAdapterPosition());
+                           Toast.makeText(view.getContext(), "Plant deleted", Toast.LENGTH_SHORT).show();
+                           newPopupWindow.dismiss();
+                       }
+                   })
+                   .setNegativeButton("Revert", new DialogInterface.OnClickListener() {
+                       @Override
+                       public void onClick(DialogInterface dialogInterface, int id) {
+                           Toast.makeText(view.getContext(), "Deletion reverted", Toast.LENGTH_SHORT).show();
+                       }
+                   })
+                   .show();
+           }
+       });
 
         Button updatePlant = newPopup.findViewById(R.id.updatePlant);
         updatePlant.setOnClickListener(new View.OnClickListener() {
