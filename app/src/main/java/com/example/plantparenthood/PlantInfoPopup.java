@@ -18,7 +18,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 
 public class PlantInfoPopup
@@ -30,6 +33,9 @@ public class PlantInfoPopup
     private AbstractCreatorAdapter adapter;
     private Plant_Activity plant_activity;
     private Context whatContext;
+    private GroupDataBaseHandler groupDataBaseHandler;
+
+    private DatabaseHandler databaseHandler;
     private ImageView plantImage;
     private ImageView qrImage;
 
@@ -39,6 +45,8 @@ public class PlantInfoPopup
         this.adapter = adapter;
         this.plant_activity = plant_activity;
         whatContext = activityContext;
+        this.databaseHandler = DatabaseHandler.getDatabase(whatContext);
+        this.groupDataBaseHandler = GroupDataBaseHandler.getDatabase(whatContext);
         changes = new boolean[3];
         textBoxes = new EditText[2];
         setupPopup(view, thisPlant);
@@ -143,6 +151,44 @@ public class PlantInfoPopup
                         .show();
             }
         });
+        Button deletePlant = newPopup.findViewById(R.id.deletePlant);
+        deletePlant.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                new AlertDialog.Builder(whatContext)
+                        .setTitle("Delete Plant?")
+                        .setMessage("Changes will override previous information, this cannot be undone.")
+                        .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int id) {
+                                deletePlant(thisPlant);
+                                Toast.makeText(view.getContext(), "Applied changes", Toast.LENGTH_SHORT).show();
+                                newPopupWindow.dismiss();
+                            }
+                        })
+                        .setNegativeButton("Revert", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int id) {
+                                Toast.makeText(view.getContext(), "Reverted changes", Toast.LENGTH_SHORT).show();
+                                Arrays.fill(changes, false);
+                                newPopupWindow.dismiss();
+                            }
+                        })
+                        .show();
+            }
+        });
+    }
+
+    private void deletePlant(Plant plant)
+    {
+        AsyncTask.execute(() -> databaseHandler.deletePlant(plant.getId()));
+        plant_activity.notifyGridOfUpdate(holder.getAdapterPosition());
+        deletePlantFromGroups(plant);
+
+
+    }
+
+    private void deletePlantFromGroups(Plant plant) {
+        AsyncTask.execute(() -> GroupDataBaseHandler.getDatabase(whatContext).deletePlantFromGroups(plant));
     }
 
     private void modifyText(TextView editableText, View view) {

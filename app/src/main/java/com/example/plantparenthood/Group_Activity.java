@@ -100,17 +100,5 @@ public class Group_Activity extends AppCompatActivity {
     public void createGroupGrid(RecyclerView GroupGrid) {
         GroupAdapter = new GroupActivityCreatorAdapter(groupList, this);
         GroupGrid.setAdapter(GroupAdapter);
-        printAllGroups();
-    }
-
-    public void printAllGroups() {
-        for(int i = 0; i < groupList.size(); i++ ) {
-            System.out.println("Name: " + groupList.get(i).getGroupName() + " ID: " + groupList.get(i).getGroupID());
-            ArrayList<Plant> test = groupList.get(i).getAllPlants();
-            System.out.println("Plants: " );
-            for(int j = 0; j < test.size(); j++) {
-                System.out.println(test.get(j).getCommon_name());
-            }
-        }
     }
 }

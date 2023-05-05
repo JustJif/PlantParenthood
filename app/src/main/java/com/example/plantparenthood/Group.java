@@ -15,7 +15,7 @@ public class Group {
     @Ignore
     private ArrayList<Plant> plantList;
 
-    private static int numGroups;
+    private static int numGroups = 0;
 
     private String plantIDs;
 
@@ -27,7 +27,6 @@ public class Group {
         this.plantList = new ArrayList<Plant>();
         numGroups++;
         plantIDs = "";
-        System.out.println("GROUP ADDED "  + numGroups + " " + GroupName);
     }
     public void setPlantIDs(String plantIDs) {
         this.plantIDs = plantIDs;
@@ -72,7 +71,6 @@ public class Group {
 
     // Other Methods
     public void addPlant(Plant plant) {
-        System.out.println("ADDED " + plant.getCommon_name() + " TO " + this.getGroupName());
         if(plantList.isEmpty()) {
             plantList.add(plant);
             plantIDs += plant.getId();
@@ -84,13 +82,12 @@ public class Group {
 
     public void removePlant(Plant plant) {
         String plantID = Integer.toString(plant.getId());
-        int index = plantIDs.indexOf(plantID);
-        int lastIndex = plantIDs.lastIndexOf(plantID);
+        int index = this.plantIDs.indexOf(plantID);
         if(index == 0) {
-            plantIDs = plantIDs.substring(0,index) + plantIDs.substring(lastIndex);
+            setPlantIDs(this.plantIDs.substring(index + (String.valueOf(plant.getId())).length()));
             plantList.remove(plant);
         } else {
-            plantIDs = plantIDs.substring(0,index-1) + plantIDs.substring(lastIndex);
+            this.plantIDs = this.plantIDs.substring(0,index-1) + this.plantIDs.substring((String.valueOf(plant.getId())).length());
             plantList.remove(plant);
         }
 
@@ -98,7 +95,7 @@ public class Group {
 
     public void waterAll() {
         for (Plant plant : plantList) {
-            //plant.waterPlant();
+            plant.waterPlant(ComputeDate.getDayOfTheYear());
         }
     }
 }

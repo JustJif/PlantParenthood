@@ -16,9 +16,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -49,14 +46,17 @@ public class Plant_Activity extends AppCompatActivity {
     private ActivityResultLauncher<Intent> camera;
     private PlantActivityCreatorAdapter plantAdapter;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plants);
 
+
         plantList = new ArrayList<>();
         plantDatabase = DatabaseHandler.getDatabase(getApplicationContext());
+
 
         plantGrid = findViewById(R.id.plant_recycler_view);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 1);
@@ -74,23 +74,25 @@ public class Plant_Activity extends AppCompatActivity {
         addPlant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), PlantSearcher.class));
-
+                setupPopup(v);
             }
         });
 
         camera = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>() {
+                new ActivityResultCallback<ActivityResult>()
+                {
                     @Override
-                    public void onActivityResult(ActivityResult result) {
-                        if (result.getResultCode() == RESULT_OK) {
-                            System.out.println("Image found");
+                    public void onActivityResult(ActivityResult result)
+                    {
+                        if (result.getResultCode() == RESULT_OK)
+                        {
                             Bitmap image = (Bitmap) result.getData().getExtras().get("data");
-                            // plantAdapter.setCameraPreview(image);
+                            //plantAdapter.setCameraPreview(image);
                         }
                     }
-                });
+                }
+        );
 
         // Initialize and assign variable
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -98,33 +100,32 @@ public class Plant_Activity extends AppCompatActivity {
         bottomNavigationView.setSelectedItemId(R.id.plants);
 
         // Perform item selected listener
-        bottomNavigationView
-                .setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.Groups:
-                                startActivity(new Intent(getApplicationContext(), Group_Activity.class));
-                                overridePendingTransition(0, 0);
-                                return true;
-                            case R.id.plants:
-                                return true;
-                            case R.id.home:
-                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                                overridePendingTransition(0, 0);
-                                return true;
-                            case R.id.calendar:
-                                startActivity(new Intent(getApplicationContext(), Calendar_Activity.class));
-                                overridePendingTransition(0, 0);
-                                return true;
-                            case R.id.scanner:
-                                startActivity(new Intent(getApplicationContext(), QRScannerMenuActivity.class));
-                                overridePendingTransition(0, 0);
-                                return true;
-                        }
-                        return false;
-                    }
-                });
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.Groups:
+                        startActivity(new Intent(getApplicationContext(), Group_Activity.class));
+                        overridePendingTransition(0, 0);
+                        return true;
+                    case R.id.plants:
+                        return true;
+                    case R.id.home:
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        overridePendingTransition(0, 0);
+                        return true;
+                    case R.id.calendar:
+                        startActivity(new Intent(getApplicationContext(), Calendar_Activity.class));
+                        overridePendingTransition(0, 0);
+                        return true;
+                    case R.id.scanner:
+                        startActivity(new Intent(getApplicationContext(), QRScannerMenuActivity.class));
+                        overridePendingTransition(0, 0);
+                        return true;
+                }
+                return false;
+            }
+        });
     }
 
     private void setupPopup(View view) {
@@ -156,6 +157,8 @@ public class Plant_Activity extends AppCompatActivity {
         });
     }
 
+
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -174,17 +177,24 @@ public class Plant_Activity extends AppCompatActivity {
         plantGrid.setAdapter(plantAdapter);
     }
 
-    public void openCamera() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.CAMERA }, 0);
-        } else {
+    public void openCamera()
+    {
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 0);
+        }
+        else
+        {
             Intent cameraInt = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             camera.launch(cameraInt);
         }
     }
 
-    public void notifyGridOfUpdate(int position) {
+    public void notifyGridOfUpdate(int position)
+    {
         plantAdapter.notifyItemChanged(position);
     }
+
+
 
 }
