@@ -17,8 +17,7 @@ public class PlantCreator {
     public DataAccessObject database;
     private static int customPlants = -1;
 
-    PlantCreator() {
-    }
+    PlantCreator() {}
 
     public ArrayList<Plant> createPlant(JSONObject nonparsedPlants, Context applicationContext, PlantSearcher makethisplantUI) {
         ArrayList<Plant> createdPlantObjects = new ArrayList<>();
