@@ -86,9 +86,19 @@ public class PlantCreator {
         return createdPlantObjects;
     }
 
-    public void addCustomPlant() {
+    public class addCustomPlant {
+
+        private DataAccessObject database;
+        private Context context;
+
+        addCustomPlant(DataAccessObject newDatabase, Context applicationContext) {
+            database = newDatabase;
+            context = applicationContext;
+        }
+
 
     }
+
 
     public Plant createPlantFromDatabase(PlantSaveToDatabase newPlant, Watering wateringCycle) {
         Plant.PlantBuilder plantBuilder = new Plant.PlantBuilder();
@@ -125,4 +135,9 @@ public class PlantCreator {
     {
 
     }
+
+
+
+
+
 }

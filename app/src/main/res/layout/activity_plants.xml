@@ -29,23 +29,23 @@
         android:layout_height="match_parent">
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/addplant"
             android:layout_width="match_parent"
             android:layout_height="120dp"
             android:layout_gravity="top|center"
             android:layout_margin="5dp">
 
-            <ImageView
-                android:layout_width="93dp"
-                android:layout_height="98dp"
+            <Button
+                android:id="@+id/addplant"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:src="@drawable/baseline_add_24" />
+                android:text="Add Plant" />
         </androidx.cardview.widget.CardView>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/plant_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="460dp"
+            android:layout_height="604dp"
             android:layout_marginTop="130dp"
             android:scrollbars="vertical"
             app:layoutManager="LinearLayoutManager"></androidx.recyclerview.widget.RecyclerView>

@@ -32,6 +32,11 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+                <Button
+                    android:id="@+id/addPlantFromDB"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Search Database" />
 
                 <EditText
                     android:id="@+id/plantCommonName"
@@ -87,19 +92,59 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/tint"
-                android:layout_width="98dp"
-                android:layout_height="95dp"
-                android:layout_gravity="center"
-                android:foregroundTint="#F1E9E9">
 
-                <ImageView
-                    android:id="@+id/qr_image"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:visibility="visible"
-                    tools:srcCompat="@drawable/baseline_qr_code_2_24" />
+                android:id="@+id/cycleDrop"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <Spinner
+                    android:id="@+id/spinner_cycle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/Cycles"
+                    android:spinnerMode="dropdown"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />/>
+
             </RelativeLayout>
+
+            <RelativeLayout
+
+                android:id="@+id/waterDrop"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <Spinner
+                    android:id="@+id/spinner_water"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/wateringType"
+                    android:spinnerMode="dropdown"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />/>
+
+            </RelativeLayout>
+
+
+    <RelativeLayout
+
+        android:id="@+id/sunlightDrop"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Spinner
+            android:id="@+id/spinner_sunlight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/wateringType"
+            android:spinnerMode="dropdown"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />/>
+
+    </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="350dp"
@@ -134,16 +179,11 @@
 
             </RelativeLayout>
             <Button
-                android:id="@+id/updatePlant"
+                android:id="@+id/createPlant"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Update Plant" />
+                android:text="Create Plant" />
 
-            <Button
-                android:id="@+id/deletePlant"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Delete Plant" />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
