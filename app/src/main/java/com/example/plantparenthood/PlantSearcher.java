@@ -9,14 +9,18 @@ public class PlantSearcher
 {
     private AbstractAPI api;
     private RequestQueue queue;
-    private PlantController plantController;
     public PlantSearcher(PlantController plantController, Context context)
     {
-        this.plantController = plantController;
         api = new Perenual(plantController,context);
         queue = Volley.newRequestQueue(context);
     }
 
+    /**
+     * Searched the api by name for a plant, given that the name isnt an empty string
+     * @param nameOfPlant the name of the plant
+     * @param pageNumber the page to search (each page display 30 plants)
+     * @return either a success or a failure string
+     */
     public String searchByNameForPlant(String nameOfPlant, Integer pageNumber)
     {
         if (!nameOfPlant.equals(""))
@@ -30,11 +34,20 @@ public class PlantSearcher
         }
     }
 
+    /**
+     * stops spamming the api with queries, really helps with performance
+     */
     public void cancelQueueRequests()
     {
-        queue.cancelAll(DatabaseHandler.getDatabase()); //stops spamming the api with queries, really helps with performance
+        queue.cancelAll(DatabaseHandler.getDatabase());
     }
 
+    /**
+     * Queries an image for each plant found by the API,
+     * due to the size of images they have to be queried separately than plans
+     * @param plant the plant to query the image for
+     * @param plantLocation the location of the plant within the recycler
+     */
     public void queryImageAPI(Plant plant, int plantLocation)
     {
         api.queryImageAPI(queue,plant,plantLocation);

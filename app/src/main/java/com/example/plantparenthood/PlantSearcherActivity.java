@@ -145,7 +145,7 @@ public class PlantSearcherActivity extends AppCompatActivity
         if(plantsList.size() > 0)
         {
             customPlantButton.setVisibility(View.INVISIBLE);
-            PlantCreatorAdapter plantAdapter = new PlantCreatorAdapter(plantsList, PlantSearcherActivity.this);
+            PlantCreatorAdapter plantAdapter = new PlantCreatorAdapter(plantsList, PlantSearcherActivity.this, plantController);
             plantController.setAbstractCreator(plantAdapter);
             for (int i = 0; i < plantsList.size(); i++)
             {

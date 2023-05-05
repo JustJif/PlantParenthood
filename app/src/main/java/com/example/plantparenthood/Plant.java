@@ -1,11 +1,8 @@
 package com.example.plantparenthood;
 
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.widget.EditText;
-
-import androidx.room.Entity;
-import androidx.room.Ignore;
-import androidx.room.PrimaryKey;
 
 public class Plant
 {
@@ -85,9 +82,13 @@ public class Plant
     private String watering;
     private String sunlight;
     private Bitmap default_image;
-    private String plantImageURL;//images are large they will be refetched from api whenever required
+    private String plantImageURL;//images are large they will be fetched from api whenever required
     private Watering wateringCycle;
 
+    /**
+     * Private constructor, please use the builder pattern to create an object of this
+     * @param plantBuilder builder to create an object of Plant
+     */
     private Plant(PlantBuilder plantBuilder){
         this.id = plantBuilder.id;
         this.common_name = plantBuilder.common_name;
@@ -105,9 +106,16 @@ public class Plant
     {
         getWateringCycle().setLastWateredDay(todaysDate);
         getWateringCycle().iterateTimesWater();
-        DatabaseHandler.getDatabase(null).saveWateringSchedule(getWateringCycle());
+        DatabaseHandler.getDatabase().saveWateringSchedule(getWateringCycle());
     }
 
+    /**
+     * This updates a plant if changes had been made
+     * @param changes which data has been changes
+     * @param textBoxes references to data that has been changed
+     * @param newImage new image to upload
+     * @return if it successful
+     */
     public boolean updatePlant(boolean[] changes, EditText[] textBoxes, Bitmap newImage)
     {
         if(changes[0])

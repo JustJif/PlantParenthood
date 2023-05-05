@@ -36,6 +36,11 @@ public class Schedule
         AsyncTask.execute(() -> DatabaseHandler.getDatabase().saveWateringSchedule(wateringSchedule));
     }
 
+    /**
+     * Removes a schedule from a plant, its associated via the primary key
+     * within the watering to know the plant it belongs to.
+     * @param water the watering schedule to remove
+     */
     public void deletePlantSchedule(Watering water)
     {
         water.deleteWateringSchedule();

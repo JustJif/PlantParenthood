@@ -3,6 +3,7 @@ package com.example.plantparenthood;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.text.TextUtils;
 
 import org.json.JSONArray;
@@ -11,10 +12,23 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class PlantCreator {
+public class PlantCreator
+{
+    private static int uniquePlantID;
+    PlantCreator()
+    {
+        //AsyncTask(){}
+        //DatabaseHandler.getDatabase().getPlantsFromDB();
+        //uniquePlantID =
+    }
 
-    PlantCreator() {}
-
+    /**
+     * This parses a JSON and creates plants from the JSON.
+     * @param nonparsedPlants JSONObject of potential plants to be parsed
+     * @param applicationContext context for application (needed to fetch default image)
+     * @param plantController An object of plant controller
+     * @return A list of parsed plants from API
+     */
     public ArrayList<Plant> createPlant(JSONObject nonparsedPlants, Context applicationContext, PlantController plantController) {
         ArrayList<Plant> createdPlantObjects = new ArrayList<>();
 
@@ -70,10 +84,25 @@ public class PlantCreator {
         return createdPlantObjects;
     }
 
+    /**
+     * This adds the plant to the database
+     */
+    public void addPlant(Plant plant)
+    {
+        AsyncTask.execute(() -> DatabaseHandler.getDatabase().addPlantToDatabase(plant));
+    }
+
     public void addCustomPlant() {
 
     }
 
+    /**
+     * When loading, a plant has to be created from the database, this class handles the
+     * creation of the plant
+     * @param newPlant the plant within the database
+     * @param wateringCycle a possible watering cycle, this may not exist if a schedule doesn't exist for it
+     * @return A fully loaded and initialized plant
+     */
     public Plant createPlantFromDatabase(PlantSaveToDatabase newPlant, Watering wateringCycle) {
         Plant.PlantBuilder plantBuilder = new Plant.PlantBuilder();
         plantBuilder.setId(newPlant.getId());
