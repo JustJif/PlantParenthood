@@ -31,26 +31,22 @@ public class Calendar_Activity extends AppCompatActivity {
     private DatabaseHandler plantDatabase;
     private RecyclerView plantGrid;
     private CalendarCreatorAdapter creatorAdapter;
-    private boolean showSchedule;
+    private boolean showSchedule = true;
     private List<Plant> plantList;
+    private Schedule schedule;
     private int selectedDate;
-    private PlantController plantController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
-
         plantDatabase = DatabaseHandler.getDatabase(getApplicationContext());
 
         plantGrid = findViewById(R.id.plantGrid);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 1);
         plantGrid.setLayoutManager(gridLayoutManager);
-        showSchedule = true;
 
-        plantController = new PlantController();
-        plantController.setCalendar_activity(this);
-        plantController.setSchedule(new Schedule());
+        schedule = new Schedule();
         selectedDate = getDayOfTheYear();
 
         // pingNotificationsForPlantsToday(); //notify user of plants that need to be
@@ -58,6 +54,9 @@ public class Calendar_Activity extends AppCompatActivity {
         if (showSchedule) {
             checkListOfValidPlants();
         } else {
+            // check for all the plants that need to be watered today
+            // remove all other plants
+            // TODO
             AsyncTask.execute(() -> {
                 plantList = plantDatabase.getPlantsFromDB();
                 Handler handler = new Handler(Looper.getMainLooper());
@@ -161,13 +160,12 @@ public class Calendar_Activity extends AppCompatActivity {
     }
 
     private void createPlantGrid(RecyclerView plantGrid, List<Plant> whatPlantsToDisplay) {
-        creatorAdapter = new CalendarCreatorAdapter(whatPlantsToDisplay, this, plantController);
-        plantController.setCalendarCreatorAdapter(creatorAdapter);
+        creatorAdapter = new CalendarCreatorAdapter(whatPlantsToDisplay, this);
         plantGrid.setAdapter(creatorAdapter);
     }
 
     private List<Plant> findScheduledPlants() {
-        List<Plant> currentPlants = plantController.findScheduledPlantsForToday(plantList, selectedDate);
+        List<Plant> currentPlants = schedule.findScheduledPlantsForToday(plantList, selectedDate);
         return currentPlants;
     }
 

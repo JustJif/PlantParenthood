@@ -1,6 +1,5 @@
 package com.example.plantparenthood;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.widget.ImageView;
 
@@ -14,8 +13,6 @@ import com.android.volley.toolbox.StringRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-
 public class Perenual extends com.example.plantparenthood.AbstractAPI
 {
     private String APIUrl;
@@ -24,9 +21,10 @@ public class Perenual extends com.example.plantparenthood.AbstractAPI
     private String APIParams;
     private JSONObject queryReceived;
     private String defaultImageURL;
-    private PlantController plantController;
-    private Context whatContext;
-    public Perenual(PlantController plantController, Context context)
+
+    private PlantSearcher plantSearcherRef;
+
+    public Perenual(PlantSearcher plantRef)
     {
         APIUrl = "https://perenual.com/api/species-list?";
         APIPage = "page=";
@@ -34,8 +32,7 @@ public class Perenual extends com.example.plantparenthood.AbstractAPI
         APIParams = "&q=";
         queryReceived = null;
         defaultImageURL = "https://perenual.com/storage/species_image/2_abies_alba_pyramidalis/og/49255769768_df55596553_b.jpg";
-        this.plantController = plantController;
-        whatContext = context;
+        plantSearcherRef = plantRef;
     }
 
     @Override
@@ -56,8 +53,8 @@ public class Perenual extends com.example.plantparenthood.AbstractAPI
                         try
                         {
                             queryReceived = new JSONObject(response);
-                            //plantSearcherRef.passDataToCreator(queryReceived);
-                            ArrayList<Plant> plants = plantController.createPlant(queryReceived,whatContext);
+                            plantSearcherRef.passDataToCreator(queryReceived);
+                            //PlantCreator.addPlant(queryReceived, plantSearcherRef);
                         } catch (JSONException e)
                         {
                             throw new RuntimeException(e);
@@ -86,6 +83,7 @@ public class Perenual extends com.example.plantparenthood.AbstractAPI
             @Override
             public void onResponse(Bitmap response)
             {
+                //System.out.println("Found image for: " + plant.getCommon_name());
                 plant.setDefault_image(response);
                 plantAdapter.notifyItemChanged(plantLocation);
             }
@@ -97,7 +95,7 @@ public class Perenual extends com.example.plantparenthood.AbstractAPI
                 System.out.println("Error finding image");
             }
         });
-        imageRequest.setTag(DatabaseHandler.getDatabase());
+        imageRequest.setTag(plantSearcherRef);
         queue.add(imageRequest);
     }
 }

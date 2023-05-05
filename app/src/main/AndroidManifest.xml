@@ -29,7 +29,7 @@
             android:name=".GroupPopup"
             android:exported="false" />
         <activity
-            android:name=".PlantSearcherActivity"
+            android:name=".PlantSearcher"
             android:exported="false"
             android:windowSoftInputMode="adjustNothing" />
         <activity

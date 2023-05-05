@@ -16,8 +16,10 @@ public class DatabaseHandler {
     private PlantCreator plantCreator;
     private PlantDatabase plantDB;
 
+    // private PlantDatabase wateringDB;
     private DatabaseHandler(Context context) {
         plantDB = Room.databaseBuilder(context, PlantDatabase.class, "PlantDatabase").build();
+        // wateringDB = Room.databaseBuilder(context, Water)
         plantCreator = new PlantCreator();
     }
 
@@ -29,17 +31,18 @@ public class DatabaseHandler {
         return activeDatabase;
     }
 
-    public static DatabaseHandler getDatabase() {
-        return activeDatabase;
-    }
-
     public DataAccessObject getDataAccessObject() {
         return plantDB.dataAccessObject();
     }
 
     public Plant getPlantFromDBbyID(int plantID) {
+        Plant plant;
         PlantSaveToDatabase loadedPlant = plantDB.dataAccessObject().loadPlantByID(plantID);
-        Plant plant = plantCreator.createPlantFromDatabase(loadedPlant, attachWateringSchedule(loadedPlant.getId()));
+        if (loadedPlant == null) { // check for null when searching or it will be vulnerable to nullptrexceptions
+            plant = null;
+        } else {
+            plant = plantCreator.createPlantFromDatabase(loadedPlant, attachWateringSchedule(loadedPlant.getId()));
+        }
 
         return plant;
     }
@@ -76,4 +79,10 @@ public class DatabaseHandler {
     public void deleteWateringSchedule(Watering watering) {
         plantDB.wateringDao().deleteSchedule(watering);
     }
+
+    public void deletePlant(int plantID) {
+        PlantSaveToDatabase plant = plantDB.dataAccessObject().loadPlantByID(plantID);
+        plantDB.dataAccessObject().deletePlant(plant);
+    }
+
 }

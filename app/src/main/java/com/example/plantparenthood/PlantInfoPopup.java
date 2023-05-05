@@ -38,7 +38,6 @@ public class PlantInfoPopup
     private DatabaseHandler databaseHandler;
     private ImageView plantImage;
     private ImageView qrImage;
-    private PlantController plantController;
 
     public PlantInfoPopup(View view, Plant thisPlant, Context activityContext, RecyclerView.ViewHolder holder, AbstractCreatorAdapter adapter, Plant_Activity plant_activity)
     {
@@ -50,16 +49,6 @@ public class PlantInfoPopup
         this.groupDataBaseHandler = GroupDataBaseHandler.getDatabase(whatContext);
         changes = new boolean[3];
         textBoxes = new EditText[2];
-        plantController = new PlantController();
-        setupPopup(view, thisPlant);
-    }
-
-    public PlantInfoPopup(View view, Plant thisPlant, Context activityContext)
-    {
-        whatContext = activityContext;
-        changes = new boolean[3];
-        textBoxes = new EditText[2];
-        plantController = new PlantController();
         setupPopup(view, thisPlant);
     }
 
@@ -86,8 +75,7 @@ public class PlantInfoPopup
         plantImage.setImageBitmap(thisPlant.getDefault_image());
 
         qrImage = newPopup.findViewById(R.id.qr_image);
-        qrImage.post(new Runnable()
-        {//wait until qrImage has been drawn to execute
+        qrImage.post(new Runnable(){//wait until qrImage has been drawn to execute
             @Override
             public void run(){
                 qrImage.setImageBitmap(QRCodeManager.generateQRCodeBitmap(Integer.toString(thisPlant.getId()), qrImage.getWidth()));
@@ -133,7 +121,7 @@ public class PlantInfoPopup
             public void onClick(View view) {
                 changes[2] = true;
                 if(plant_activity != null)
-                    plant_activity.openCamera();
+                plant_activity.openCamera();
             }
         });
 
@@ -141,26 +129,26 @@ public class PlantInfoPopup
         updatePlant.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 new AlertDialog.Builder(whatContext)
-                    .setTitle("Confirm changes")
-                    .setMessage("Changes will override previous information, this cannot be undone.")
-                    .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int id)
-                        {
-                            setChanges(thisPlant);
-                            Toast.makeText(view.getContext(), "Applied changes", Toast.LENGTH_SHORT).show();
-                            newPopupWindow.dismiss();
-                        }
-                    })
-                    .setNegativeButton("Revert", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int id) {
-                            Toast.makeText(view.getContext(), "Reverted changes", Toast.LENGTH_SHORT).show();
-                            Arrays.fill(changes, false);
-                            newPopupWindow.dismiss();
-                        }
-                    })
-                    .show();
+                        .setTitle("Confirm changes")
+                        .setMessage("Changes will override previous information, this cannot be undone.")
+                        .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int id)
+                            {
+                                setChanges(thisPlant);
+                                Toast.makeText(view.getContext(), "Applied changes", Toast.LENGTH_SHORT).show();
+                                newPopupWindow.dismiss();
+                            }
+                        })
+                        .setNegativeButton("Revert", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int id) {
+                                Toast.makeText(view.getContext(), "Reverted changes", Toast.LENGTH_SHORT).show();
+                                Arrays.fill(changes, false);
+                                newPopupWindow.dismiss();
+                            }
+                        })
+                        .show();
             }
         });
         Button deletePlant = newPopup.findViewById(R.id.deletePlant);
@@ -220,21 +208,18 @@ public class PlantInfoPopup
 
     public void setCameraPreview(Bitmap image)
     {
-        if(image != null) {
-            plantImage.setImageBitmap(image);
-            newImage = image;
-        }
+        plantImage.setImageBitmap(image);
+        newImage = image;
     }
 
     private void setChanges(Plant plant)
     {
-        /*if(changes[0])
+        if(changes[0])
             plant.setCommon_name(textBoxes[0].getText().toString());
         if(changes[1])
             plant.setScientific_name(textBoxes[1].getText().toString());
         if(changes[2])
-            plant.setDefault_image(newImage);*/
-        plantController.updatePlant(plant,changes,textBoxes,newImage);
+            plant.setDefault_image(newImage);
 
         AsyncTask.execute(() -> DatabaseHandler.getDatabase(whatContext).addPlantToDatabase(plant));
         if(holder != null && adapter != null)

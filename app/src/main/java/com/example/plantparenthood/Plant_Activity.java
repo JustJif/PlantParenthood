@@ -1,11 +1,15 @@
 package com.example.plantparenthood;
 
+import static androidx.camera.core.impl.utils.ContextUtil.getApplicationContext;
+import static androidx.core.content.ContextCompat.startActivity;
+
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -42,13 +46,17 @@ public class Plant_Activity extends AppCompatActivity {
     private ActivityResultLauncher<Intent> camera;
     private PlantActivityCreatorAdapter plantAdapter;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plants);
 
+
         plantList = new ArrayList<>();
         plantDatabase = DatabaseHandler.getDatabase(getApplicationContext());
+
 
         plantGrid = findViewById(R.id.plant_recycler_view);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 1);
@@ -72,15 +80,19 @@ public class Plant_Activity extends AppCompatActivity {
 
         camera = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>() {
+                new ActivityResultCallback<ActivityResult>()
+                {
                     @Override
-                    public void onActivityResult(ActivityResult result) {
-                        if (result.getResultCode() == RESULT_OK) {
+                    public void onActivityResult(ActivityResult result)
+                    {
+                        if (result.getResultCode() == RESULT_OK)
+                        {
                             Bitmap image = (Bitmap) result.getData().getExtras().get("data");
-                            // plantAdapter.setCameraPreview(image);
+                            //plantAdapter.setCameraPreview(image);
                         }
                     }
-                });
+                }
+        );
 
         // Initialize and assign variable
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -88,33 +100,32 @@ public class Plant_Activity extends AppCompatActivity {
         bottomNavigationView.setSelectedItemId(R.id.plants);
 
         // Perform item selected listener
-        bottomNavigationView
-                .setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.Groups:
-                                startActivity(new Intent(getApplicationContext(), Group_Activity.class));
-                                overridePendingTransition(0, 0);
-                                return true;
-                            case R.id.plants:
-                                return true;
-                            case R.id.home:
-                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                                overridePendingTransition(0, 0);
-                                return true;
-                            case R.id.calendar:
-                                startActivity(new Intent(getApplicationContext(), Calendar_Activity.class));
-                                overridePendingTransition(0, 0);
-                                return true;
-                            case R.id.scanner:
-                                startActivity(new Intent(getApplicationContext(), QRScannerMenuActivity.class));
-                                overridePendingTransition(0, 0);
-                                return true;
-                        }
-                        return false;
-                    }
-                });
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.Groups:
+                        startActivity(new Intent(getApplicationContext(), Group_Activity.class));
+                        overridePendingTransition(0, 0);
+                        return true;
+                    case R.id.plants:
+                        return true;
+                    case R.id.home:
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        overridePendingTransition(0, 0);
+                        return true;
+                    case R.id.calendar:
+                        startActivity(new Intent(getApplicationContext(), Calendar_Activity.class));
+                        overridePendingTransition(0, 0);
+                        return true;
+                    case R.id.scanner:
+                        startActivity(new Intent(getApplicationContext(), QRScannerMenuActivity.class));
+                        overridePendingTransition(0, 0);
+                        return true;
+                }
+                return false;
+            }
+        });
     }
 
     private void setupPopup(View view) {
@@ -137,10 +148,51 @@ public class Plant_Activity extends AppCompatActivity {
         addPlantFromDB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), PlantSearcherActivity.class));
+                startActivity(new Intent(getApplicationContext(), PlantSearcher.class));
+                newPopupWindow.dismiss();
+            }
+        });
+        Button addCustomPlant = newPopup.findViewById(R.id.addCustomPlant);
+        addCustomPlant.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setupInnerPopup(view);
+                newPopupWindow.dismiss();
             }
         });
     }
+    private void setupInnerPopup(View view) {
+        LayoutInflater layoutInflater = (LayoutInflater) view.getContext()
+                .getSystemService(view.getContext().LAYOUT_INFLATER_SERVICE);
+        View newPopup = layoutInflater.inflate(R.layout.custom_plant_create_popup, null);
+
+        PopupWindow newPopupWindow = new PopupWindow(newPopup, LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT, true);
+        newPopupWindow.showAtLocation(newPopup, Gravity.CENTER, 0, 0);
+
+        EditText plantName = newPopup.findViewById(R.id.plantCommonName);
+        EditText plantSciName = newPopup.findViewById(R.id.plantScientificName);
+
+        Button closeButton = newPopup.findViewById(R.id.closeButton);
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                newPopupWindow.dismiss();
+            }
+        });
+
+        Button submit = newPopup.findViewById(R.id.submitButton);
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PlantCreator newPlantCreator = new PlantCreator();
+                newPlantCreator.addCustomPlant(getApplicationContext(),plantName.getText().toString(),plantSciName.getText().toString());
+                newPopupWindow.dismiss();
+            }
+        });
+    }
+
+
 
     @Override
     protected void onResume() {
@@ -160,16 +212,24 @@ public class Plant_Activity extends AppCompatActivity {
         plantGrid.setAdapter(plantAdapter);
     }
 
-    public void openCamera() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.CAMERA }, 0);
-        } else {
+    public void openCamera()
+    {
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 0);
+        }
+        else
+        {
             Intent cameraInt = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             camera.launch(cameraInt);
         }
     }
 
-    public void notifyGridOfUpdate(int position) {
+    public void notifyGridOfUpdate(int position)
+    {
         plantAdapter.notifyItemChanged(position);
     }
+
+
+
 }
