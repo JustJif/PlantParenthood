@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
                 if (mediaPlayer.isPlaying()) {
                     mediaPlayer.pause();
                 } else {
-                    mediaPlayer.start();
+                    //mediaPlayer.start();
                 }
             }
         });
