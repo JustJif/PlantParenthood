@@ -14,3 +14,9 @@ Here is a list of a few of the features that PlantParenthood will have.
 * Open the project in Android Studio Electric Eel 2022.1.1. The IDE should automatically download dependencies via gradle.
 * For running and testing the app, create a virtual android device in Android Studio or connect an Android device with developer mode and USB debugging enabled.
 * Build and run through that device.
+## TO FIND UNIT TESTING
+* LOCATED IN PlantParenthood/app/src/androidTest/java/com/example/plantparenthood/
+
+
+
+
