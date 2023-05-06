@@ -4,16 +4,13 @@ import android.content.Context;
 
 import androidx.room.Room;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Follows singleton pattern, only call methods in here using async task,
  * as database cannot be accesses on the main thread
  */
 public class StatisticsDatabaseHandler {
     private static StatisticsDatabaseHandler activeDatabase = null;
-    private StatisticsDatabase database;
+    private static StatisticsDatabase database;
     //private PlantDatabase wateringDB;
     private StatisticsDatabaseHandler(Context context) {
         database = Room.databaseBuilder(context, StatisticsDatabase.class, "StatisticsDatabase").build();
@@ -32,5 +29,11 @@ public class StatisticsDatabaseHandler {
     }
     public void pushToDatabase(Statistics statistics) {
         database.statisticsAccessObject().addStatistics(statistics);
+    }
+
+    public static StatisticsDatabaseHandler createInMemoryDatabase(Context context)
+    {
+        database = Room.inMemoryDatabaseBuilder(context, StatisticsDatabase.class).build();
+        return getDatabase(context);
     }
 }

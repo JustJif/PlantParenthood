@@ -28,9 +28,9 @@ public class StatisticsManager {
     public void addPlant(){
         AsyncTask.execute(new Runnable(){
            public void run(){
-               //statistics = StatisticsDatabaseHandler.getDatabase(null).getStatistics();
-               //statistics.plantAdded();
-               //StatisticsDatabaseHandler.getDatabase(null).pushToDatabase(statistics);
+               statistics = StatisticsDatabaseHandler.getDatabase(null).getStatistics();
+               statistics.plantAdded();
+               StatisticsDatabaseHandler.getDatabase(null).pushToDatabase(statistics);
            }
         });
     }
@@ -56,13 +56,11 @@ public class StatisticsManager {
     public double getMeanTimeBetweenWatering() {
         return statistics.getMeanTimeBetweenWatering();
     }
-    public double getMedianTimeBetweenWatering() {
-        return statistics.getMedianTimeBetweenWatering();
-    }
     public Long getLastTimeWatered() {
         return statistics.getLastWateringDateLong();
     }
     public Long getFirstTimeWatered() {
         return statistics.getFirstWateringDateLong();
     }
+    public int getTotalTimesWatered(){return statistics.getTotalTimesWatered();}
 }

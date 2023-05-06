@@ -68,7 +68,6 @@ public class Statistics {
         this.totalTimesWatered = totalTimesWatered;
     }
     public void plantAdded(){
-        Log.d("Adding Plant","Incrementing curOwnedPlants");
         curOwnedPlants++;
         totalOwnedPlants++;
     }

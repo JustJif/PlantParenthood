@@ -54,11 +54,6 @@ public class PlantController
         plantCreator.addPlant(plant);
     }
 
-    public void addPlant(Plant plant)
-    {
-        plantCreator.addPlant(plant);
-    }
-
     public void passPlantslist(ArrayList<Plant> plantsList,Integer currentPage, Integer lastPage)
     {
         plantSearcherActivity.createPlantGrid(plantsList,currentPage,lastPage);
