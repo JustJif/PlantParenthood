@@ -220,9 +220,9 @@ public class PlantInfoPopup
 
     private void setChanges(Plant plant)
     {
-        plantController.updatePlant(plant,changes,textBoxes,newImage);
+        String[] values = {textBoxes[0].getText().toString(),textBoxes[1].getText().toString()};
+        plantController.updatePlant(plant,changes,values,newImage);
 
-        AsyncTask.execute(() -> DatabaseHandler.getDatabase(whatContext).addPlantToDatabase(plant));
         if(holder != null && adapter != null)
             adapter.notifyItemChanged(holder.getAdapterPosition());
     }

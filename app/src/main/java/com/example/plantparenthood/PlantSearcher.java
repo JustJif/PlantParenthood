@@ -5,6 +5,8 @@ import android.content.Context;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
+import java.util.ArrayList;
+
 public class PlantSearcher
 {
     private AbstractAPI api;

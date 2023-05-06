@@ -39,7 +39,7 @@ public class PlantController
         return schedule.findScheduledPlantsForToday(listOfPlants,dateOnCalender);
     }
 
-    public boolean updatePlant(Plant plant, boolean[] changes, EditText[] textBoxes, Bitmap newImage)
+    public boolean updatePlant(Plant plant, boolean[] changes, String[] textBoxes, Bitmap newImage)
     {
         return plant.updatePlant(changes,textBoxes,newImage);
     }
@@ -47,11 +47,6 @@ public class PlantController
     public void queryImageAPI(Plant plant, int plantLocation)
     {
         plantSearcher.queryImageAPI(plant,plantLocation);
-    }
-
-    public ArrayList<Plant> createPlant(JSONObject nonparsedPlants, Context context)
-    {
-        return plantCreator.createPlant(nonparsedPlants, context, this);
     }
 
     public void addPlant(Plant plant)
