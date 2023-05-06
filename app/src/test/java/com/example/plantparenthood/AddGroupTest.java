@@ -122,7 +122,7 @@ public class AddGroupTest {
     public void cleanUp()
     {
         for (int i = 0; i < comparedGroups.size(); i++) {
-            handler.removeGroupToDatabase(comparedGroups.get(i)););
+            handler.removeGroupToDatabase(comparedGroups.get(i));
         }
     }
 }
