@@ -63,13 +63,8 @@ public class StatisticsManager {
 
     public double getMeanTimeBetweenWatering() {
         return statistics.getMeanTimeBetweenWatering();
-    }<<<<<<<HEAD
-
-    public double getMedianTimeBetweenWatering() {
-        return statistics.getMedianTimeBetweenWatering();
     }
 
-    =======>>>>>>>origin/Tadas
 
     public Long getLastTimeWatered() {
         return statistics.getLastWateringDateLong();

@@ -4,7 +4,10 @@ import static com.example.plantparenthood.ComputeDate.computeDayMonth;
 import static com.example.plantparenthood.ComputeDate.getDayOfTheYear;
 
 import android.Manifest;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -164,10 +167,50 @@ public class CalendarCreatorAdapter extends AbstractCreatorAdapter
                 plantController.addPlantSchedule(thisPlant,wateringNumber);
                 Toast.makeText(view.getContext(), "Added new watering Schedule", Toast.LENGTH_SHORT).show();
                 calendar_activity.checkListOfValidPlants();
+                scheduleWateringNotification(thisPlant.getId(), getDayOfTheYear() + wateringNumber, view.getContext());
                 newPopupWindow.dismiss();
             }
         });
     }
+    private void scheduleWateringNotification(int plantID, int notifDate, Context context){
+
+        AsyncTask.execute(() ->
+        {
+            //find plant from DB
+            DatabaseHandler db = DatabaseHandler.getDatabase(context);
+            Plant plant = db.getPlantFromDBbyID(plantID);
+
+            //create the water notification
+            PPMobileNotificationFactory ppFact = new PPMobileNotificationFactory();
+            Notification waterNoti = ppFact.createWaterNotification(plantID, plant.getCommon_name(), context);
+
+            //create new intent for when the notification is clicked
+            Intent intent = new Intent(context, PPMobileWaterNotificationReceiver.class);
+            intent.putExtra("plantID", plantID);
+            intent.putExtra("plantName", plant.getCommon_name());
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, plantID, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
+            //get alarm time
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.DAY_OF_YEAR, notifDate);
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+
+            long alarmTime = calendar.getTimeInMillis();
+            int currDay = getDayOfTheYear();
+            int delay = notifDate - currDay;
+
+            if(delay > 0) {
+                AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, alarmTime, pendingIntent);
+                waterNoti.contentIntent = pendingIntent;
+            }
+        });
+
+
+    }
+
 
     private void addExistingSchedulePopup(View view, Plant thisPlant)
     {

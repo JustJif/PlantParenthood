@@ -3,6 +3,7 @@ package com.example.plantparenthood;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationManagerCompat;
 
 import android.app.Notification;
 import android.content.Intent;
@@ -10,6 +11,7 @@ import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -24,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         PPMobileNotificationFactory.createNotificationChannel(getApplicationContext());//need to call this at app start
         //final MediaPlayer mediaPlayer = MediaPlayer.create(this,R.raw.lol);
@@ -51,7 +54,13 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(new Intent(getApplicationContext(), Statistics_Activity.class));
                     }
             });
-
+            // Check if the app has permission to show notifications
+            if (!NotificationManagerCompat.from(this).areNotificationsEnabled()) {
+                // Request permission to show notifications
+                Intent intent = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
+                intent.putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
+                startActivity(intent);
+            }
 
             // Initialize and assign variable
             BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
