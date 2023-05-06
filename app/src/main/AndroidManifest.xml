@@ -48,6 +48,8 @@
         <activity
             android:name=".Statistics_Activity"
             android:exported="false" />
+        <activity android:name=".WeeklyStatistics_Activity"
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

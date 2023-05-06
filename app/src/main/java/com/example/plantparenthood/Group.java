@@ -20,10 +20,10 @@ public class Group {
     private String plantIDs;
 
     // Constructor
-    public Group(String GroupName) {
+    public Group(String GroupName, int GroupLightLevel) {
         this.GroupID = numGroups;
         this.GroupName = GroupName;
-        this.GroupLightLevel = 0;
+        this.GroupLightLevel = GroupLightLevel;
         this.plantList = new ArrayList<Plant>();
         numGroups++;
         plantIDs = "";

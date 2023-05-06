@@ -1,6 +1,7 @@
 package com.example.plantparenthood;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.room.Entity;
 import androidx.room.Ignore;
@@ -16,12 +17,11 @@ public class Statistics {
     @PrimaryKey
     private int id = 0;
     private double meanTimeBetweenWatering = 0;
-    private double medianTimeBetweenWatering = 0;
     private int curOwnedPlants = 0;
     private int totalOwnedPlants = 0;
     private int totalDeadPlants = 0;
     @Ignore
-    private ArrayList<Double> daysSinceLastWateringArr;
+    private long timeSinceLastWatering;
     private int totalTimesWatered = 0;
     @Ignore
     private Date firstWateringDate;
@@ -32,11 +32,10 @@ public class Statistics {
 
     public Statistics(){
         meanTimeBetweenWatering = 0;
-        medianTimeBetweenWatering = 0;
         curOwnedPlants = 0;
         totalOwnedPlants = 0;
         totalDeadPlants = 0;
-        daysSinceLastWateringArr = new ArrayList<Double>();
+        timeSinceLastWatering = 0;
         totalTimesWatered = 0;
         firstWateringDate = new Date(0);
         lastWateringDate = new Date(0);
@@ -87,9 +86,6 @@ public class Statistics {
     public void setMeanTimeBetweenWatering(double meanTimeBetweenWatering){
         this.meanTimeBetweenWatering = meanTimeBetweenWatering;
     }
-    public void setMedianTimeBetweenWatering(double meanTimeBetweenWatering){
-        this.medianTimeBetweenWatering = meanTimeBetweenWatering;
-    }
     public void plantDied(){
         if(curOwnedPlants>0){
             totalDeadPlants++;
@@ -104,11 +100,15 @@ public class Statistics {
         Date date = new Date();
         long lastWater = lastWateringDate.getTime();
         this.lastWateringDate=date;
+        this.lastWateringDateLong = this.lastWateringDate.getTime();
         totalTimesWatered++;
         long currentWateringDate = date.getTime();
         long timeBetween = currentWateringDate-lastWater;
-        double days = (double)timeBetween/86400000;
-        daysSinceLastWateringArr.add(days);
+        if(firstWateringDateLong == 0)
+        {
+            firstWateringDateLong = currentWateringDate;
+        }
+        timeSinceLastWatering = timeBetween;
     }
     private void computeMeanTimeBetweenWatering(){
         long first = firstWateringDate.getTime();
@@ -120,19 +120,9 @@ public class Statistics {
             meanTimeBetweenWatering = totalTimesWatered/days;
         }
     }
-    private void computeMedianTimeBetweenWatering(){
-        Collections.sort(daysSinceLastWateringArr);
-        if(daysSinceLastWateringArr.size()>0){
-            medianTimeBetweenWatering = daysSinceLastWateringArr.get(daysSinceLastWateringArr.size()/2);
-        }
-    }
     public double getMeanTimeBetweenWatering(){
         computeMeanTimeBetweenWatering();
         return meanTimeBetweenWatering;
-    }
-    public double getMedianTimeBetweenWatering(){
-        computeMedianTimeBetweenWatering();
-        return medianTimeBetweenWatering;
     }
     public Date getLastTimeWatered(){
         return new Date(firstWateringDateLong);
