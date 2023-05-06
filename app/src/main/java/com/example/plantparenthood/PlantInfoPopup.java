@@ -1,10 +1,17 @@
 package com.example.plantparenthood;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +24,13 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.net.URI;
 import java.util.Arrays;
 
 
@@ -33,6 +46,8 @@ public class PlantInfoPopup
     private ImageView plantImage;
     private ImageView qrImage;
     private PlantController plantController;
+
+    private Uri uri;
 
     public PlantInfoPopup(View view, Plant thisPlant, Context activityContext, RecyclerView.ViewHolder holder, AbstractCreatorAdapter adapter, Plant_Activity plant_activity)
     {
@@ -123,11 +138,11 @@ public class PlantInfoPopup
         editCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                changes[2] = true;
-                if(plant_activity != null)
-                    plant_activity.openCamera();
+
             }
         });
+        ImageView image = (ImageView) newPopup.findViewById(R.id.plantImage);
+        image.setImageURI(uri);
 
         Button deletePlant = newPopup.findViewById(R.id.deletePlant);
         deletePlant.setOnClickListener(new View.OnClickListener()
@@ -186,6 +201,7 @@ public class PlantInfoPopup
 
 
 
+
     private void modifyText(TextView editableText, View view) {
         InputMethodManager inputMethodManager = (InputMethodManager) whatContext.getSystemService(Context.INPUT_METHOD_SERVICE);
         if(!editableText.isEnabled())
@@ -201,13 +217,6 @@ public class PlantInfoPopup
         }
     }
 
-    public void setCameraPreview(Bitmap image)
-    {
-        if(image != null) {
-            plantImage.setImageBitmap(image);
-            newImage = image;
-        }
-    }
 
     private void setChanges(Plant plant)
     {

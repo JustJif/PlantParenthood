@@ -3,6 +3,7 @@ package com.example.plantparenthood;
 import android.graphics.Bitmap;
 
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.io.ByteArrayOutputStream;
@@ -35,8 +36,9 @@ public class PlantSaveToDatabase
         watering = plantToSave.getWatering();
         sunlight = plantToSave.getSunlight();
 
+
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        plantToSave.getDefault_image().compress(Bitmap.CompressFormat.JPEG,10,byteArrayOutputStream);
+        plantToSave.getDefault_image().compress(Bitmap.CompressFormat.PNG,10,byteArrayOutputStream);
         default_image = byteArrayOutputStream.toByteArray();
         plantImageURL = plantToSave.getPlantImageURL();
     }
@@ -74,9 +76,16 @@ public class PlantSaveToDatabase
         this.sunlight = sunlight;
     }
 
+    public void setDefaults_image(Bitmap image) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.PNG,10,byteArrayOutputStream);
+        this.default_image = byteArrayOutputStream.toByteArray();
+    }
+
     public void setDefault_image(byte[] default_image) {
         this.default_image = default_image;
     }
+
 
     public void setPlantImageURL(String plantImageURL) {
         this.plantImageURL = plantImageURL;

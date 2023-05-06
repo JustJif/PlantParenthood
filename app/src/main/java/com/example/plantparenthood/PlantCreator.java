@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.text.TextUtils;
+import android.widget.ImageView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -98,10 +99,11 @@ public class PlantCreator
         AsyncTask.execute(() -> DatabaseHandler.getDatabase().addPlantToDatabase(plant));
     }
 
-    public void addCustomPlant(Context applicationContext, String name, String sciName) {
+    public void addCustomPlant(Context applicationContext, String name, Bitmap image, String sciName) {
         Plant newPlant = new Plant.PlantBuilder()
                 .setId(uniquePlantID)
                 .setCommon_name(name)
+                .setDefault_image(image)
                 .setScientific_name(sciName)
                 .setDefault_image(BitmapFactory.decodeResource(applicationContext.getResources(), R.drawable.defaultimage))
                 .buildPlant();

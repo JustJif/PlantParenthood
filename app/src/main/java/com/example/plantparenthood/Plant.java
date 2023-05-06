@@ -9,6 +9,8 @@ public class Plant
     public static class PlantBuilder
     {
         private int id;
+
+        private String imageName;
         private String common_name;
         private String scientific_name;
         private String other_name;
@@ -24,6 +26,11 @@ public class Plant
             this.id = id;
             return this;
         }
+        public PlantBuilder setImageName(String imageName) {
+            this.imageName = imageName;
+            return this;
+        }
+
 
         public PlantBuilder setCommon_name(String common_name) {
             this.common_name = common_name;
@@ -75,6 +82,10 @@ public class Plant
     }
 
     private int id;
+
+    private String imageName;
+
+    private Bitmap image;
     private String common_name;
     private String scientific_name;
     private String other_name;

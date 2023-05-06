@@ -95,7 +95,10 @@ public class Group {
 
     public void waterAll() {
         for (Plant plant : plantList) {
-            plant.waterPlant(ComputeDate.getDayOfTheYear());
+            if(plant != null && plant.getWateringCycle() != null) {
+                plant.waterPlant(ComputeDate.getDayOfTheYear());
+            }
+
         }
     }
 }

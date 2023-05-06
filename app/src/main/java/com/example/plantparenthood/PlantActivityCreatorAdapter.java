@@ -1,6 +1,7 @@
 package com.example.plantparenthood;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,6 +51,7 @@ public class PlantActivityCreatorAdapter extends AbstractCreatorAdapter
 
         plantCommonName.setText(thisPlant.getCommon_name());
         plantImage.setImageBitmap(thisPlant.getDefault_image());
+        //plant_activity.chooseImage();
 
         this.holder = holder;
         holder.itemView.setOnClickListener(view ->
@@ -57,7 +59,12 @@ public class PlantActivityCreatorAdapter extends AbstractCreatorAdapter
             new PlantInfoPopup(view,thisPlant,whatContext,holder,this,plant_activity);
         });
     }
-
+    public void setPreview(Bitmap image)
+    {
+        if(image != null) {
+            plantImage.setImageBitmap(image);
+        }
+    }
     @Override
     public int getItemCount()
     {

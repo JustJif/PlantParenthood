@@ -119,7 +119,7 @@
                     android:layout_marginBottom="0dp"
                     android:scaleType="fitXY"
                     android:src="@color/plantparenthood_green"
-                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MaterialComponents.MaterialCalendar.Day"/>
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MaterialComponents.MaterialCalendar.Day" />
 
                 <ImageView
                     android:id="@+id/editCamera"

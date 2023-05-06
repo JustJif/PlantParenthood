@@ -1,9 +1,12 @@
 package com.example.plantparenthood;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.graphics.Bitmap;
 
 import androidx.room.Room;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,6 +75,7 @@ public class DatabaseHandler {
 
     public void addPlantToDatabase(Plant plant)
     {
+
         PlantSaveToDatabase newPlant = new PlantSaveToDatabase(plant);
         plantDB.dataAccessObject().addPlant(newPlant);
     }

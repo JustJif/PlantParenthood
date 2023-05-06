@@ -5,6 +5,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -12,25 +13,36 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,8 +51,12 @@ public class Plant_Activity extends AppCompatActivity {
     private List<Plant> plantList;
     private RecyclerView plantGrid;
     private DatabaseHandler plantDatabase;
+    private Uri imageFilePath;
+    private Bitmap imageToStore;
     private ActivityResultLauncher<Intent> camera;
     private PlantActivityCreatorAdapter plantAdapter;
+    private static final int PICK_IMAGE_REQUEST = 100;
+    private ImageView image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -73,22 +89,7 @@ public class Plant_Activity extends AppCompatActivity {
             }
         });
 
-        camera = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>()
-                {
-                    @Override
-                    public void onActivityResult(ActivityResult result)
-                    {
-                        if (result.getResultCode() == RESULT_OK)
-                        {
-                            System.out.println("Image found");
-                            Bitmap image = (Bitmap) result.getData().getExtras().get("data");
-                            //plantAdapter.setCameraPreview(image);
-                        }
-                    }
-                }
-        );
+
 
         // Initialize and assign variable
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -178,18 +179,55 @@ public class Plant_Activity extends AppCompatActivity {
             }
         });
 
+        ImageView editCamera = newPopup.findViewById(R.id.editCamera);
+        editCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                chooseImage();
+
+            }
+        });
+        image = (ImageView) newPopup.findViewById(R.id.plantImage);
+
+
         Button submit = newPopup.findViewById(R.id.submitButton);
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 PlantCreator newPlantCreator = new PlantCreator();
-                newPlantCreator.addCustomPlant(getApplicationContext(),plantName.getText().toString(),plantSciName.getText().toString());
+                newPlantCreator.addCustomPlant(getApplicationContext(),plantName.getText().toString(),imageToStore,plantSciName.getText().toString());
                 newPopupWindow.dismiss();
             }
         });
     }
 
+    public void chooseImage() {
 
+        Intent objectIntent = new Intent();
+        objectIntent.setType("image/*");
+        objectIntent.setAction(Intent.ACTION_GET_CONTENT);
+
+        startActivityForResult(objectIntent,PICK_IMAGE_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        try{
+            super.onActivityResult(requestCode, resultCode, data);
+            if(requestCode==PICK_IMAGE_REQUEST && resultCode ==RESULT_OK && data != null && data.getData() != null) {
+                {
+                    imageFilePath = data.getData();
+                    imageToStore = MediaStore.Images.Media.getBitmap(getContentResolver(),imageFilePath);
+
+                    image.setImageBitmap(imageToStore);
+                }
+            }
+        }
+        catch(Exception e) {
+            Toast.makeText(this,e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+    }
 
     @Override
     protected void onResume() {
@@ -209,18 +247,7 @@ public class Plant_Activity extends AppCompatActivity {
         plantGrid.setAdapter(plantAdapter);
     }
 
-    public void openCamera()
-    {
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
-        {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 0);
-        }
-        else
-        {
-            Intent cameraInt = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            camera.launch(cameraInt);
-        }
-    }
+
 
     public void notifyGridOfUpdate(int position)
     {
