@@ -6,6 +6,7 @@ import static android.graphics.Color.green;
 import static android.graphics.Color.red;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -172,6 +173,14 @@ public class LightScannerActivity extends AppCompatActivity implements View.OnCl
         Toast.makeText(LightScannerActivity.this
                 ,"Brightness: " + String.format("%.1f",brightness) + "%"
                 , Toast.LENGTH_SHORT).show();
+
+        Intent resultIntent = new Intent();
+
+        resultIntent.putExtra("lightLevel",(int)(Math.round(brightness)));
+        Log.e("Camera","Added in: " + resultIntent.getIntExtra("lightLevel",0));
+
+        setResult(Activity.RESULT_OK,resultIntent);
+        finish();
     }
 
     public void requestPermissions() {

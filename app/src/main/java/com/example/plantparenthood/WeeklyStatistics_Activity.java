@@ -89,7 +89,13 @@ public class WeeklyStatistics_Activity extends AppCompatActivity {
 
     private void updateTextViews() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        meanTimeBetweenWatering.append(""+statisticsManager.getMeanTimeBetweenWatering());
+        if(statisticsManager.getTimesWatered() != 0)
+        {
+            meanTimeBetweenWatering.append(""+statisticsManager.getMeanTimeBetweenWatering());
+        }else{
+            meanTimeBetweenWatering.append("Have not watered yet");
+        }
+
     }
 
     public void initializeViews(){

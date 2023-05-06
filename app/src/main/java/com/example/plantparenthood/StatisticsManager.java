@@ -60,6 +60,10 @@ public class StatisticsManager {
     public double getMeanTimeBetweenWatering() {
         return statistics.getMeanTimeBetweenWatering();
     }
+
+    public int getTimesWatered(){
+        return statistics.getTotalTimesWatered();
+    }
     public Long getLastTimeWatered() {
         return statistics.getLastWateringDateLong();
     }
