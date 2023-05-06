@@ -2,7 +2,6 @@ package com.example.plantparenthood;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -93,9 +92,8 @@ public class PlantCreatorAdapter extends AbstractCreatorAdapter
         addPlant.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 plantController.addPlant(thisPlant);
-                statisticsManager.addPlant();
                 AsyncTask.execute(() -> databaseHandler.addPlantToDatabase(thisPlant));
-
+                statisticsManager.addPlant();
                 Toast.makeText(view.getContext(), "Plant successfully added", Toast.LENGTH_SHORT).show();
             }
         });

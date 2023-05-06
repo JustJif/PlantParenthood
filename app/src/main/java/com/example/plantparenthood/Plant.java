@@ -122,15 +122,15 @@ public class Plant
      * @param newImage new image to upload
      * @return if it successful
      */
-    public boolean updatePlant(boolean[] changes, EditText[] textBoxes, Bitmap newImage)
+    public boolean updatePlant(boolean[] changes, String[] textBoxes, Bitmap newImage)
     {
         if(changes[0])
-            setCommon_name(textBoxes[0].getText().toString());
+            setCommon_name(textBoxes[0]);
         if(changes[1])
-            setScientific_name(textBoxes[1].getText().toString());
+            setScientific_name(textBoxes[1]);
         if(changes[2] && newImage != null)
             setDefault_image(newImage);
-
+        AsyncTask.execute(() -> DatabaseHandler.getDatabase().addPlantToDatabase(this));
         return true;
     }
 

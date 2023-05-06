@@ -129,6 +129,33 @@ public class PlantInfoPopup
             }
         });
 
+        Button deletePlant = newPopup.findViewById(R.id.deletePlant);
+        deletePlant.setOnClickListener(new View.OnClickListener()
+        {
+           @Override
+           public void onClick(View view) {
+               new AlertDialog.Builder(whatContext)
+                   .setTitle("Remove plant")
+                   .setMessage("Removing a plant is permanent this cannot be undone.")
+                   .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                       @Override
+                       public void onClick(DialogInterface dialogInterface, int id) {
+                           AsyncTask.execute(() -> DatabaseHandler.getDatabase().deletePlant(thisPlant));
+                           plant_activity.notifyGridOfUpdate(holder.getAdapterPosition());
+                           Toast.makeText(view.getContext(), "Plant deleted", Toast.LENGTH_SHORT).show();
+                           newPopupWindow.dismiss();
+                       }
+                   })
+                   .setNegativeButton("Revert", new DialogInterface.OnClickListener() {
+                       @Override
+                       public void onClick(DialogInterface dialogInterface, int id) {
+                           Toast.makeText(view.getContext(), "Deletion reverted", Toast.LENGTH_SHORT).show();
+                       }
+                   })
+                   .show();
+           }
+       });
+
         Button updatePlant = newPopup.findViewById(R.id.updatePlant);
         updatePlant.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -157,6 +184,8 @@ public class PlantInfoPopup
         });
     }
 
+
+
     private void modifyText(TextView editableText, View view) {
         InputMethodManager inputMethodManager = (InputMethodManager) whatContext.getSystemService(Context.INPUT_METHOD_SERVICE);
         if(!editableText.isEnabled())
@@ -182,9 +211,9 @@ public class PlantInfoPopup
 
     private void setChanges(Plant plant)
     {
-        plantController.updatePlant(plant,changes,textBoxes,newImage);
+        String[] values = {textBoxes[0].getText().toString(),textBoxes[1].getText().toString()};
+        plantController.updatePlant(plant,changes,values,newImage);
 
-        AsyncTask.execute(() -> DatabaseHandler.getDatabase(whatContext).addPlantToDatabase(plant));
         if(holder != null && adapter != null)
             adapter.notifyItemChanged(holder.getAdapterPosition());
     }

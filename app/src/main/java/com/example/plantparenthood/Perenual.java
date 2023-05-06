@@ -26,6 +26,7 @@ public class Perenual extends com.example.plantparenthood.AbstractAPI
     private String defaultImageURL;
     private PlantController plantController;
     private Context whatContext;
+    private PlantCreator plantCreator;
     public Perenual(PlantController plantController, Context context)
     {
         APIUrl = "https://perenual.com/api/species-list?";
@@ -36,6 +37,7 @@ public class Perenual extends com.example.plantparenthood.AbstractAPI
         defaultImageURL = "https://perenual.com/storage/species_image/2_abies_alba_pyramidalis/og/49255769768_df55596553_b.jpg";
         this.plantController = plantController;
         whatContext = context;
+        plantCreator = new PlantCreator();
     }
 
     @Override
@@ -56,7 +58,7 @@ public class Perenual extends com.example.plantparenthood.AbstractAPI
                         try
                         {
                             queryReceived = new JSONObject(response);
-                            plantController.createPlant(queryReceived,whatContext);
+                            plantCreator.createPlant(queryReceived,whatContext,plantController);
                         } catch (JSONException e)
                         {
                             throw new RuntimeException(e);

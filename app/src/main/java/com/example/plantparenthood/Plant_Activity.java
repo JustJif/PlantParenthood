@@ -184,6 +184,7 @@ public class Plant_Activity extends AppCompatActivity {
 
     public void notifyGridOfUpdate(int position)
     {
+        plantList.remove(position);
         plantAdapter.notifyItemChanged(position);
     }
 }

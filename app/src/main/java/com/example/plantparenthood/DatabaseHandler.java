@@ -14,7 +14,7 @@ import java.util.List;
 public class DatabaseHandler {
     private static DatabaseHandler activeDatabase = null;
     private PlantCreator plantCreator;
-    private PlantDatabase plantDB;
+    private static PlantDatabase plantDB;
     private DatabaseHandler(Context context)
     {
         plantDB = Room.databaseBuilder(context, PlantDatabase.class, "PlantDatabase").build();
@@ -25,10 +25,21 @@ public class DatabaseHandler {
     {
         if(activeDatabase == null)
         {
+            System.out.println("Initalized database");
             activeDatabase = new DatabaseHandler(applicationContext);
         }
 
         return activeDatabase;
+    }
+
+    /**
+     * This is used for JUnit database's please don't use this within normal usage
+     * @return JUnit capable database
+     */
+    public static DatabaseHandler createInMemoryDatabase(Context context)
+    {
+        plantDB = Room.inMemoryDatabaseBuilder(context, PlantDatabase.class).build();
+        return getDatabase(context);
     }
 
     public static DatabaseHandler getDatabase()
@@ -84,5 +95,17 @@ public class DatabaseHandler {
     public void deleteWateringSchedule(Watering watering)
     {
         plantDB.wateringDao().deleteSchedule(watering);
+    }
+
+    public void deletePlant(Plant plant)
+    {
+        List<PlantSaveToDatabase> loadedPlants = plantDB.dataAccessObject().loadAllPlants();
+        for (int i = 0; i < loadedPlants.size(); i++)
+        {
+            if(loadedPlants.get(i).getId()  == plant.getId()) {
+                plantDB.dataAccessObject().deletePlant(loadedPlants.get(i));
+                break;
+            }
+        }
     }
 }

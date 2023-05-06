@@ -46,7 +46,6 @@ public class CalendarCreatorAdapter extends AbstractCreatorAdapter
     private Context whatContext;
     private RecyclerView.ViewHolder newHolder;
     private PlantController plantController;
-    private StatisticsManager statisticsManager = new StatisticsManager();
 
     public CalendarCreatorAdapter(List<Plant> newPlantsList, Calendar_Activity calendar_activity, PlantController plantController)
     {
@@ -194,7 +193,6 @@ public class CalendarCreatorAdapter extends AbstractCreatorAdapter
         {
             AsyncTask.execute(() ->
             {
-                statisticsManager.waterPlant();
                 thisPlant.waterPlant(getDayOfTheYear());
                 Handler handler = new Handler(Looper.getMainLooper());
                 handler.post(() ->

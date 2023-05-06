@@ -2,7 +2,6 @@ package com.example.plantparenthood;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import androidx.room.Room;
 
@@ -29,12 +28,9 @@ public class StatisticsManager {
     public void addPlant(){
         AsyncTask.execute(new Runnable(){
            public void run(){
-               Log.e("Adding Plant","Retreiving Database");
-               statistics = StatisticsDatabaseHandler.getDatabase(null).getStatistics();
-               Log.e("Adding Plant","Calling statistics.plantAdded()");
-               statistics.plantAdded();
-               Log.e("Adding Plant","Pushing to database");
-               StatisticsDatabaseHandler.getDatabase(null).pushToDatabase(statistics);
+               //statistics = StatisticsDatabaseHandler.getDatabase(null).getStatistics();
+               //statistics.plantAdded();
+               //StatisticsDatabaseHandler.getDatabase(null).pushToDatabase(statistics);
            }
         });
     }
@@ -60,9 +56,8 @@ public class StatisticsManager {
     public double getMeanTimeBetweenWatering() {
         return statistics.getMeanTimeBetweenWatering();
     }
-
-    public int getTimesWatered(){
-        return statistics.getTotalTimesWatered();
+    public double getMedianTimeBetweenWatering() {
+        return statistics.getMedianTimeBetweenWatering();
     }
     public Long getLastTimeWatered() {
         return statistics.getLastWateringDateLong();
