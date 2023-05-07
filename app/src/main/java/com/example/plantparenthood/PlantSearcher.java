@@ -58,6 +58,18 @@ public class PlantSearcher
 
     public void filterSearchResult(String query, String watering, String cycle, String sunlight)
     {
-        
+
     }
+    /*public List<Plant> filterPlants(List<Plant> plants, boolean fullShade, boolean minimum, boolean average, boolean frequent, boolean perennial, boolean none, boolean fullSun, boolean sunPartShade, boolean partShade, boolean biannual, boolean biennial, boolean annual) {
+        List<Plant> filteredPlants = new ArrayList<>();
+
+        for (Plant plant : plants) {
+            if ((fullShade && plant.isFullShade()) || (minimum && plant.isMinimum()) || (average && plant.isAverage()) || (frequent && plant.isFrequent()) || (perennial && plant.isPerennial()) || (none && plant.isNone()) || (fullSun && plant.isFullSun()) || (sunPartShade && plant.isSunPartShade()) || (partShade && plant.isPartShade()) || (biannual && plant.isBiannual()) || (biennial && plant.isBiennial()) || (annual && plant.isAnnual())) {
+                filteredPlants.add(plant);
+            }
+        }
+
+        return filteredPlants;
+    }*/
+
 }
